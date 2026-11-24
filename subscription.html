@@ -946,6 +946,16 @@
       transition: all var(--transition-fast);
     }
 
+    .action-btn.calendar {
+      color: #c2410c;
+    }
+
+    .action-btn.calendar:hover {
+      background-color: #ffedd5;
+      color: #9a3412;
+      transform: scale(1.15);
+    }
+
     .action-btn.edit {
       color: #b81744;
     }
@@ -1163,13 +1173,204 @@
       background: var(--primary-dark);
     }
 
+    /* ==========================================================================
+       Customer-Specific Off Day Calendar Modal & Widget Styles
+       ========================================================================== */
+    .cal-customer-selector-bar {
+      margin-bottom: 12px;
+      background: #faf4f5;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .cal-field-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .cal-customer-select {
+      width: 100%;
+      height: 38px;
+      padding: 6px 12px;
+      border: 1.5px solid var(--border-input);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      background-color: #ffffff;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .cal-customer-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-tint);
+    }
+
+    /* Customer Summary Card inside Modal */
+    .cal-customer-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(139, 25, 61, 0.03);
+    }
+
+    .cal-cust-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .cal-cust-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cal-cust-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .cal-cust-offday-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-tint);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+    }
+
+    .cal-cust-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border-light);
+    }
+
+    .cal-cust-meta strong {
+      color: var(--text-main);
+    }
+
+    .cal-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+
+    .cal-stat-item {
+      padding: 6px 4px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .cal-stat-item.off {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px dashed #f87171;
+    }
+
+    .cal-stat-item.delivery {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .cal-stat-item.inactive {
+      background: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+    }
+
+    .cal-stat-num {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .cal-stat-lbl {
+      font-size: 10.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Month Navigator */
+    .cal-month-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 6px;
+      padding: 0 4px;
+    }
+
+    .cal-month-nav h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cal-nav-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border-card);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .cal-nav-btn:hover {
+      background: var(--primary-tint);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
     /* Calendar Grid Modal */
     .calendar-widget-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 6px;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .cal-header-day {
@@ -1177,26 +1378,85 @@
       font-weight: 700;
       color: var(--primary);
       padding: 6px 0;
+      background: var(--primary-tint);
+      border-radius: var(--radius-sm);
     }
 
     .cal-cell {
-      padding: 10px 4px;
+      padding: 8px 2px;
       border-radius: var(--radius-sm);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       background: #faf4f5;
       color: var(--text-main);
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+    }
+
+    .cal-cell:hover:not(.is-padding):not(.is-inactive) {
+      transform: scale(1.05);
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     .cal-cell.is-offday {
       background: #fee2e2;
       color: #dc2626;
-      border: 1px dashed #f87171;
+      border: 1.5px dashed #f87171;
     }
 
     .cal-cell.is-delivery {
       background: #dcfce7;
       color: #15803d;
+      border: 1.5px solid #86efac;
+    }
+
+    .cal-cell.is-inactive {
+      background: #f9fafb;
+      color: #9ca3af;
+      cursor: not-allowed;
+      border: 1px solid #e5e7eb;
+      opacity: 0.7;
+    }
+
+    .cal-cell.is-padding {
+      opacity: 0.25;
+      background: transparent;
+      cursor: default;
+    }
+
+    .cal-cell-badge {
+      font-size: 9.5px;
+      display: block;
+      font-weight: 700;
+      margin-top: 2px;
+      opacity: 0.9;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    /* Clickable Offday Pill in Table */
+    .offday-pill.clickable-offday {
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .offday-pill.clickable-offday:hover {
+      background-color: #fed7aa;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(194, 65, 12, 0.25);
     }
 
     /* Toast Notification */
@@ -1897,34 +2157,7 @@
 
       <!-- Header Actions: Notifications & User Profile -->
       <div class="header-actions">
-        <!-- Notification Button & Popover -->
-        <div style="position: relative;">
-          <button class="notification-btn" id="notificationBtn" title="Notifications" aria-label="Notifications">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            <span class="notification-badge"></span>
-          </button>
-          
-          <div class="dropdown-popover" id="notifPopover">
-            <div class="popover-header">Notifications (3 new)</div>
-            <ul class="popover-list">
-              <li class="popover-item">
-                <strong>New Subscriber #SUB-1005</strong>
-                Priya Mohanty subscribed to Weekly Plan.
-              </li>
-              <li class="popover-item">
-                <strong>Off Day Alert</strong>
-                Anita Das off day active for Sunday.
-              </li>
-              <li class="popover-item">
-                <strong>Subscription Paused</strong>
-                Sumi Patnaik paused their plan.
-              </li>
-            </ul>
-          </div>
-        </div>
+    
 
         <!-- User Profile Dropdown -->
         <div style="position: relative;">
@@ -2058,17 +2291,6 @@
       </div>
 
       <div class="title-actions-group">
-        <!-- Off Day Calendar Button -->
-        <button class="btn-offday-calendar" id="openOffDayModal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-          <span>Off Day Calendar</span>
-        </button>
-
         <!-- Add Subscription Button -->
         <button class="btn-add-subscription" id="openAddSubscriptionModal">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2332,82 +2554,113 @@
   </div>
 
   <!-- ====================================================================
-       Modal: Off Day Calendar Preview
+       Modal: Customer-Specific Off Day Calendar
        ==================================================================== -->
   <div class="modal-overlay" id="offDayModal">
-    <div class="modal-container" style="max-width: 460px;">
+    <div class="modal-container" style="max-width: 520px;">
       <div class="modal-header">
-        <h3>Off Day Calendar - November 2026</h3>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b193d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <h3 id="calModalTitle">Customer Off Day Calendar</h3>
+        </div>
         <button class="modal-close-btn" id="closeOffDayBtn">&times;</button>
       </div>
-      <div class="modal-body">
-        <p style="font-size: 13px; color: var(--text-secondary);">
-          Overview of customer delivery off days for this month. Red highlighted days indicate scheduled pause/off days.
-        </p>
 
-        <div class="calendar-widget-grid">
-          <div class="cal-header-day">Sun</div>
-          <div class="cal-header-day">Mon</div>
-          <div class="cal-header-day">Tue</div>
-          <div class="cal-header-day">Wed</div>
-          <div class="cal-header-day">Thu</div>
-          <div class="cal-header-day">Fri</div>
-          <div class="cal-header-day">Sat</div>
-
-          <!-- Calendar Sample Days -->
-          <div class="cal-cell is-offday">1</div>
-          <div class="cal-cell is-delivery">2</div>
-          <div class="cal-cell is-delivery">3</div>
-          <div class="cal-cell is-offday">4</div>
-          <div class="cal-cell is-delivery">5</div>
-          <div class="cal-cell is-delivery">6</div>
-          <div class="cal-cell is-offday">7</div>
-
-          <div class="cal-cell is-offday">8</div>
-          <div class="cal-cell is-delivery">9</div>
-          <div class="cal-cell is-delivery">10</div>
-          <div class="cal-cell is-delivery">11</div>
-          <div class="cal-cell is-offday">12</div>
-          <div class="cal-cell is-delivery">13</div>
-          <div class="cal-cell is-offday">14</div>
-
-          <div class="cal-cell is-offday">15</div>
-          <div class="cal-cell is-delivery">16</div>
-          <div class="cal-cell is-delivery">17</div>
-          <div class="cal-cell is-offday">18</div>
-          <div class="cal-cell is-delivery">19</div>
-          <div class="cal-cell is-delivery">20</div>
-          <div class="cal-cell is-offday">21</div>
-
-          <div class="cal-cell is-offday">22</div>
-          <div class="cal-cell is-delivery">23</div>
-          <div class="cal-cell is-delivery">24</div>
-          <div class="cal-cell is-delivery">25</div>
-          <div class="cal-cell is-delivery">26</div>
-          <div class="cal-cell is-delivery">27</div>
-          <div class="cal-cell is-offday">28</div>
-
-          <div class="cal-cell is-offday">29</div>
-          <div class="cal-cell is-delivery">30</div>
-          <div class="cal-cell" style="opacity: 0.3;">1</div>
-          <div class="cal-cell" style="opacity: 0.3;">2</div>
-          <div class="cal-cell" style="opacity: 0.3;">3</div>
-          <div class="cal-cell" style="opacity: 0.3;">4</div>
-          <div class="cal-cell" style="opacity: 0.3;">5</div>
+      <div class="modal-body" style="padding-top: 14px;">
+        <!-- Customer Selection Bar -->
+        <div class="cal-customer-selector-bar">
+          <label for="offDayCustomerSelect" class="cal-field-label">
+            <span>Select Customer / Subscription:</span>
+            <span style="font-size: 11px; color: var(--primary); font-weight: 700; text-transform: none;">Personalized Schedule</span>
+          </label>
+          <select id="offDayCustomerSelect" class="cal-customer-select">
+            <!-- Dynamically populated from subscriptionsData -->
+          </select>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 12px; font-weight: 600;">
+        <!-- Customer Summary Detail Card -->
+        <div class="cal-customer-card" id="calCustomerCard">
+          <div class="cal-cust-header">
+            <div class="cal-cust-main">
+              <span class="cal-cust-name" id="calCustName">Anita Das</span>
+              <span class="sub-id-badge" id="calCustId">SUB-1001</span>
+              <span class="plan-pill weekly" id="calCustPlan">Weekly</span>
+            </div>
+            <div class="cal-cust-offday-tag">
+              <span>Scheduled Off:</span>
+              <strong id="calCustOffRule">Sun</strong>
+            </div>
+          </div>
+          <div class="cal-cust-meta">
+            <span>Period: <strong id="calCustPeriod">Nov 1 – Nov 28, 2026</strong></span>
+            <span>Food: <strong id="calCustItem">Bihari Thali (FD-001)</strong></span>
+          </div>
+          <div class="cal-stats-strip">
+            <div class="cal-stat-item off">
+              <span class="cal-stat-num" id="calCountOff">0</span>
+              <span class="cal-stat-lbl">Off Days</span>
+            </div>
+            <div class="cal-stat-item delivery">
+              <span class="cal-stat-num" id="calCountDelivery">0</span>
+              <span class="cal-stat-lbl">Delivery Days</span>
+            </div>
+            <div class="cal-stat-item inactive">
+              <span class="cal-stat-num" id="calCountInactive">0</span>
+              <span class="cal-stat-lbl">Outside Period</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Month Navigation -->
+        <div class="cal-month-nav">
+          <button type="button" class="cal-nav-btn" id="calPrevMonth" title="Previous Month">«</button>
+          <h4 id="calMonthTitle">November 2026</h4>
+          <button type="button" class="cal-nav-btn" id="calNextMonth" title="Next Month">»</button>
+        </div>
+
+        <!-- Dynamic Calendar Grid -->
+        <div class="calendar-widget-grid" id="calendarWidgetGrid">
+          <!-- Dynamically populated days -->
+        </div>
+
+        <!-- Legend and Tip -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 11.5px; font-weight: 600; flex-wrap: wrap; gap: 8px;">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 12px; height: 12px; background: #fee2e2; border: 1px dashed #f87171; border-radius: 3px;"></span>
+            <span style="width: 12px; height: 12px; background: #fee2e2; border: 1.5px dashed #f87171; border-radius: 3px;"></span>
             <span>Off Day (No Delivery)</span>
           </div>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 12px; height: 12px; background: #dcfce7; border-radius: 3px;"></span>
+            <span style="width: 12px; height: 12px; background: #dcfce7; border: 1.5px solid #86efac; border-radius: 3px;"></span>
             <span>Delivery Scheduled</span>
           </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 12px; height: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 3px;"></span>
+            <span>Outside Period</span>
+          </div>
         </div>
+
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 10px; text-align: center;">
+          💡 <em>Tip: Click any active calendar day to toggle custom pause/delivery for this customer.</em>
+        </p>
       </div>
-      <div class="modal-footer">
+
+      <div class="modal-footer" style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label for="calQuickChangeOffDay" style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Rule:</label>
+          <select id="calQuickChangeOffDay" style="height: 32px; padding: 2px 8px; font-size: 12px; font-weight: 700; border-radius: var(--radius-sm); border: 1px solid var(--border-input); color: var(--primary);">
+            <option value="Sun">Sun</option>
+            <option value="Sat, Sun">Sat, Sun</option>
+            <option value="Wed">Wed</option>
+            <option value="Mon, Thu">Mon, Thu</option>
+            <option value="Fri">Fri</option>
+            <option value="None">None (All 7 Days)</option>
+          </select>
+        </div>
         <button type="button" class="btn-primary" onclick="document.getElementById('offDayModal').classList.remove('open')">Close</button>
       </div>
     </div>
@@ -2559,7 +2812,10 @@
               </span>
             </td>
             <td>
-              <span class="offday-pill">${sub.offDays || 'None'}</span>
+              <span class="offday-pill clickable-offday" onclick="window.openCustomerOffDayCalendar('${sub.id}')" title="Click to view & customize ${sub.customer}'s off-day calendar">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right: 4px; vertical-align: -1px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                ${sub.offDays || 'None'}
+              </span>
             </td>
             <td>
               <div class="food-item-with-code">
@@ -2586,6 +2842,19 @@
             </td>
             <td style="text-align: center;">
               <div class="actions-cell">
+                <button class="action-btn calendar" onclick="window.openCustomerOffDayCalendar('${sub.id}')" title="Off Day Calendar for ${sub.customer}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <circle cx="8" cy="14" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="14" r="1" fill="currentColor"/>
+                    <circle cx="16" cy="14" r="1" fill="currentColor"/>
+                    <circle cx="8" cy="18" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                  </svg>
+                </button>
                 <button class="action-btn edit" onclick="window.editSubscription('${sub.id}')" title="Edit Subscription">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </button>
@@ -2663,17 +2932,280 @@
         });
       }
 
-      // --- Off Day Calendar Modal ---
+      // --- Customer-Specific Off Day Calendar Logic ---
       const offDayModal = document.getElementById('offDayModal');
-      const openOffDayBtn = document.getElementById('openOffDayModal');
       const closeOffDayBtn = document.getElementById('closeOffDayBtn');
+      const calCustomerSelect = document.getElementById('offDayCustomerSelect');
+      const calQuickChangeOffDay = document.getElementById('calQuickChangeOffDay');
+      const calPrevMonthBtn = document.getElementById('calPrevMonth');
+      const calNextMonthBtn = document.getElementById('calNextMonth');
 
-      if (openOffDayBtn && offDayModal) {
-        openOffDayBtn.addEventListener('click', () => offDayModal.classList.add('open'));
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      let currentCalSubId = 'SUB-1001';
+      let currentCalYear = 2026;
+      let currentCalMonth = 10; // November (0-indexed)
+
+      function checkDayOff(dayIndex, offDaysString) {
+        if (!offDaysString || offDaysString.toLowerCase() === 'none') return false;
+        const p = offDaysString.toLowerCase().split(',').map(s => s.trim());
+        const shortName = dayNamesShort[dayIndex].toLowerCase();
+        return p.some(x => x.includes(shortName) || shortName.includes(x));
       }
+
+      function populateCustomerDropdown(selectedSubId) {
+        if (!calCustomerSelect) return;
+        const selId = selectedSubId || currentCalSubId || (subscriptionsData[0] ? subscriptionsData[0].id : '');
+        calCustomerSelect.innerHTML = subscriptionsData.map(s => `
+          <option value="${s.id}" ${s.id === selId ? 'selected' : ''}>
+            ${s.customer} (${s.id}) • Plan: ${s.planType} • Off: ${s.offDays || 'None'}
+          </option>
+        `).join('');
+      }
+
+      function renderCustomerOffDayCalendar(subId, year = currentCalYear, month = currentCalMonth) {
+        const sub = subscriptionsData.find(s => s.id === subId) || subscriptionsData[0];
+        if (!sub) return;
+
+        currentCalSubId = sub.id;
+        currentCalYear = year;
+        currentCalMonth = month;
+
+        // Ensure custom override arrays exist on this subscription
+        if (!sub.customOffDates) sub.customOffDates = [];
+        if (!sub.customDeliveryDates) sub.customDeliveryDates = [];
+
+        // Update dropdown if not matching
+        if (calCustomerSelect && calCustomerSelect.value !== sub.id) {
+          calCustomerSelect.value = sub.id;
+        }
+
+        // Update Customer Summary Card in Modal
+        const nameEl = document.getElementById('calCustName');
+        const idEl = document.getElementById('calCustId');
+        const planEl = document.getElementById('calCustPlan');
+        const offRuleEl = document.getElementById('calCustOffRule');
+        const periodEl = document.getElementById('calCustPeriod');
+        const itemEl = document.getElementById('calCustItem');
+        const monthTitleEl = document.getElementById('calMonthTitle');
+
+        if (nameEl) nameEl.innerText = sub.customer;
+        if (idEl) idEl.innerText = sub.id;
+        if (planEl) {
+          planEl.innerText = sub.planType;
+          planEl.className = `plan-pill ${sub.planType.toLowerCase()}`;
+        }
+        if (offRuleEl) offRuleEl.innerText = sub.offDays || 'None';
+        if (periodEl) periodEl.innerText = `${sub.startDate} – ${sub.endDate}`;
+        if (itemEl) itemEl.innerText = `${sub.foodTitle} (${sub.foodCode})`;
+        if (monthTitleEl) monthTitleEl.innerText = `${monthNames[month]} ${year}`;
+
+        const modalTitleEl = document.getElementById('calModalTitle');
+        if (modalTitleEl) modalTitleEl.innerText = `${sub.customer}'s Off Day Calendar`;
+
+        if (calQuickChangeOffDay) {
+          calQuickChangeOffDay.value = sub.offDays || 'Sun';
+        }
+
+        // Parse customer active date window
+        const startDate = new Date(sub.startDate);
+        const endDate = new Date(sub.endDate);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+
+        // Days in active month & day of week for the 1st
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayIdx = new Date(year, month, 1).getDay();
+        const grid = document.getElementById('calendarWidgetGrid');
+        if (!grid) return;
+
+        let offCount = 0;
+        let deliveryCount = 0;
+        let inactiveCount = 0;
+
+        let html = '';
+
+        // Header cells
+        dayNamesShort.forEach(d => {
+          html += `<div class="cal-header-day">${d}</div>`;
+        });
+
+        // Previous month padding days
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = 0; i < firstDayIdx; i++) {
+          const padDay = prevMonthLastDay - firstDayIdx + 1 + i;
+          html += `<div class="cal-cell is-padding">${padDay}</div>`;
+        }
+
+        // Days of current month
+        for (let d = 1; d <= daysInMonth; d++) {
+          const currDate = new Date(year, month, d);
+          currDate.setHours(12, 0, 0, 0);
+          const dayOfWeek = currDate.getDay();
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+          const isBeforeStart = !isNaN(startDate.getTime()) && currDate < startDate;
+          const isAfterEnd = !isNaN(endDate.getTime()) && currDate > endDate;
+          const isOutside = isBeforeStart || isAfterEnd;
+
+          if (isOutside) {
+            inactiveCount++;
+            html += `
+              <div class="cal-cell is-inactive" title="Outside ${sub.customer}'s active subscription period (${sub.startDate} – ${sub.endDate})">
+                <span>${d}</span>
+                <span class="cal-cell-badge">Inactive</span>
+              </div>
+            `;
+          } else {
+            const isRegOff = checkDayOff(dayOfWeek, sub.offDays);
+            const isCustomOff = sub.customOffDates.includes(dateStr);
+            const isCustomDeliv = sub.customDeliveryDates.includes(dateStr);
+
+            const isOff = (isRegOff || isCustomOff) && !isCustomDeliv;
+
+            if (isOff) {
+              offCount++;
+              const reason = isCustomOff ? 'Ad-hoc custom pause' : `Scheduled ${dayNamesShort[dayOfWeek]} off`;
+              html += `
+                <div class="cal-cell is-offday" data-date="${dateStr}" onclick="window.toggleDateCustomOff('${sub.id}', '${dateStr}', ${d})" title="${sub.customer}: ${reason}. Click to switch to delivery day.">
+                  <span>${d}</span>
+                  <span class="cal-cell-badge">Off</span>
+                </div>
+              `;
+            } else {
+              deliveryCount++;
+              html += `
+                <div class="cal-cell is-delivery" data-date="${dateStr}" onclick="window.toggleDateCustomOff('${sub.id}', '${dateStr}', ${d})" title="${sub.customer}: Delivery Scheduled. Click to pause/mark as off-day.">
+                  <span>${d}</span>
+                  <span class="cal-cell-badge">Deliver</span>
+                </div>
+              `;
+            }
+          }
+        }
+
+        // Next month padding days to complete row of 7
+        const totalCellsSoFar = firstDayIdx + daysInMonth;
+        const remainder = totalCellsSoFar % 7;
+        if (remainder > 0) {
+          const nextMonthDaysToAdd = 7 - remainder;
+          for (let i = 1; i <= nextMonthDaysToAdd; i++) {
+            html += `<div class="cal-cell is-padding">${i}</div>`;
+          }
+        }
+
+        grid.innerHTML = html;
+
+        // Update stats badges
+        const countOffEl = document.getElementById('calCountOff');
+        const countDelivEl = document.getElementById('calCountDelivery');
+        const countInactiveEl = document.getElementById('calCountInactive');
+
+        if (countOffEl) countOffEl.innerText = offCount;
+        if (countDelivEl) countDelivEl.innerText = deliveryCount;
+        if (countInactiveEl) countInactiveEl.innerText = inactiveCount;
+      }
+
+      // Toggle custom ad-hoc off-day or delivery-day for a customer
+      window.toggleDateCustomOff = function(subId, dateStr, dayNum) {
+        const sub = subscriptionsData.find(s => s.id === subId);
+        if (!sub) return;
+
+        if (!sub.customOffDates) sub.customOffDates = [];
+        if (!sub.customDeliveryDates) sub.customDeliveryDates = [];
+
+        const dateParts = dateStr.split('-');
+        const dObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+        const dayOfWeek = dObj.getDay();
+        const isRegOff = checkDayOff(dayOfWeek, sub.offDays);
+        const isCustomOff = sub.customOffDates.includes(dateStr);
+        const isCustomDeliv = sub.customDeliveryDates.includes(dateStr);
+
+        const currentlyOff = (isRegOff || isCustomOff) && !isCustomDeliv;
+
+        if (currentlyOff) {
+          // Switch to Delivery Day
+          sub.customOffDates = sub.customOffDates.filter(d => d !== dateStr);
+          if (isRegOff && !sub.customDeliveryDates.includes(dateStr)) {
+            sub.customDeliveryDates.push(dateStr);
+          }
+          showToast(`${monthNames[currentCalMonth]} ${dayNum} set as DELIVERY for ${sub.customer}`);
+        } else {
+          // Switch to Off Day
+          sub.customDeliveryDates = sub.customDeliveryDates.filter(d => d !== dateStr);
+          if (!isRegOff && !sub.customOffDates.includes(dateStr)) {
+            sub.customOffDates.push(dateStr);
+          }
+          showToast(`${monthNames[currentCalMonth]} ${dayNum} set as OFF-DAY for ${sub.customer}`);
+        }
+
+        renderCustomerOffDayCalendar(sub.id, currentCalYear, currentCalMonth);
+      };
+
+      // Open Modal with specific customer pre-selected
+      window.openCustomerOffDayCalendar = function(subId) {
+        const targetId = subId || (subscriptionsData.length > 0 ? subscriptionsData[0].id : 'SUB-1001');
+        populateCustomerDropdown(targetId);
+        renderCustomerOffDayCalendar(targetId, currentCalYear, currentCalMonth);
+        if (offDayModal) offDayModal.classList.add('open');
+      };
+
       if (closeOffDayBtn && offDayModal) {
         closeOffDayBtn.addEventListener('click', () => offDayModal.classList.remove('open'));
       }
+
+      // Customer dropdown change listener
+      if (calCustomerSelect) {
+        calCustomerSelect.addEventListener('change', (e) => {
+          renderCustomerOffDayCalendar(e.target.value, currentCalYear, currentCalMonth);
+        });
+      }
+
+      // Quick change regular off-days rule from inside modal
+      if (calQuickChangeOffDay) {
+        calQuickChangeOffDay.addEventListener('change', (e) => {
+          const sub = subscriptionsData.find(s => s.id === currentCalSubId);
+          if (sub) {
+            sub.offDays = e.target.value;
+            sub.customOffDates = [];
+            sub.customDeliveryDates = [];
+            applyFilters();
+            populateCustomerDropdown(sub.id);
+            renderCustomerOffDayCalendar(sub.id, currentCalYear, currentCalMonth);
+            showToast(`${sub.customer}'s off-days updated to: ${sub.offDays}`);
+          }
+        });
+      }
+
+      // Month navigators
+      if (calPrevMonthBtn) {
+        calPrevMonthBtn.addEventListener('click', () => {
+          currentCalMonth--;
+          if (currentCalMonth < 0) {
+            currentCalMonth = 11;
+            currentCalYear--;
+          }
+          renderCustomerOffDayCalendar(currentCalSubId, currentCalYear, currentCalMonth);
+        });
+      }
+
+      if (calNextMonthBtn) {
+        calNextMonthBtn.addEventListener('click', () => {
+          currentCalMonth++;
+          if (currentCalMonth > 11) {
+            currentCalMonth = 0;
+            currentCalYear++;
+          }
+          renderCustomerOffDayCalendar(currentCalSubId, currentCalYear, currentCalMonth);
+        });
+      }
+
+      // Initial dropdown setup
+      populateCustomerDropdown(currentCalSubId);
 
       // --- Add Subscription Modal ---
       const addSubModal = document.getElementById('addSubscriptionModal');
@@ -2722,6 +3254,7 @@
 
           subscriptionsData.unshift(newSub);
           applyFilters();
+          populateCustomerDropdown(newSub.id);
           closeAddModal();
           addSubForm.reset();
           showToast(`Subscription #${newSub.id} created successfully!`);
@@ -2753,6 +3286,7 @@
             if (result.isConfirmed) {
               subscriptionsData = subscriptionsData.filter(s => s.id !== subId);
               applyFilters();
+              populateCustomerDropdown();
               Swal.fire({
                 icon: 'success',
                 title: 'Subscription Removed!',
@@ -2905,6 +3439,10 @@
               sub.offDays = updated.offDays;
 
               applyFilters();
+              populateCustomerDropdown(sub.id);
+              if (currentCalSubId === sub.id) {
+                renderCustomerOffDayCalendar(sub.id, currentCalYear, currentCalMonth);
+              }
 
               Swal.fire({
                 icon: 'success',
