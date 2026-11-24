@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rasoova - My Deliveries</title>
+  <link rel="icon" type="image/png" href="../assets/rasoova_logo_desktop.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- SweetAlert2 Library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* ==========================================================================
+       Rasoova Kitchen - Rider Panel: My Deliveries Stylesheet
+       ========================================================================== */
+
+    :root {
+      /* Brand Primary Palette */
+      --primary: #8b193d;
+      --primary-dark: #711230;
+      --primary-light: #a4234c;
+      --primary-subtle: #faeaee;
+      --primary-tint: #fff2f5;
+      --primary-text: #260711;
+
+      /* Neutral & Layout Backgrounds */
+      --bg-body: #fdf6f7;
+      --bg-card: #ffffff;
+      --border-card: #ebd5da;
+      --border-light: #f5e4e7;
+      --text-main: #200812;
+      --text-secondary: #745b63;
+      --text-muted: #9c838b;
+
+      /* Accent Status Colors */
+      --status-green-bg: #dcfce7;
+      --status-green-text: #15803d;
+      --status-green-dot: #16a34a;
+
+      --status-red-bg: #fee2e2;
+      --status-red-text: #b91c1c;
+      --status-red-dot: #dc2626;
+
+      --status-amber-bg: #fef3c7;
+      --status-amber-text: #b45309;
+      --status-amber-dot: #f59e0b;
+
+      --status-blue-bg: #dbeafe;
+      --status-blue-text: #1d4ed8;
+      --status-blue-dot: #3b82f6;
+
+      --status-gray-bg: #f1f5f9;
+      --status-gray-text: #64748b;
+      --status-gray-dot: #94a3b8;
+
+      /* Typography & Shadows */
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --shadow-sm: 0 2px 6px rgba(139, 25, 61, 0.04);
+      --shadow-card: 0 4px 20px rgba(139, 25, 61, 0.05);
+      --shadow-hover: 0 8px 26px rgba(139, 25, 61, 0.08);
+      --shadow-dropdown: 0 12px 32px rgba(139, 25, 61, 0.14);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-pill: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .dashboard-container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 16px 32px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ==========================================================================
+       Top Header Navbar
+       ========================================================================== */
+    .header-navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 4px 0 8px;
+    }
+
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-img {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-logo-fallback {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo-fallback .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    /* Centered Search Bar */
+    .header-search-container {
+      flex: 1;
+      max-width: 540px;
+      position: relative;
+    }
+
+    .header-search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 16px 0 44px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-card);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--text-main);
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .header-search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .header-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 25, 61, 0.1);
+    }
+
+    .header-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Header Actions: Notification & Rider Profile */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Notification Bell */
+    .notif-btn {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .notif-btn:hover {
+      background: var(--primary-tint);
+      transform: scale(1.05);
+    }
+
+    .notif-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Rider Profile Pill */
+    .rider-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      padding: 5px 14px 5px 6px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .rider-profile-btn:hover {
+      background: var(--primary-tint);
+      border-color: var(--border-card);
+    }
+
+    .rider-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .rider-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .rider-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .rider-role {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .chevron-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      margin-left: 2px;
+      transition: transform 0.2s ease;
+    }
+
+    /* Profile Dropdown Menu */
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dropdown);
+      padding: 8px 0;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .dropdown-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .dropdown-header-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .dropdown-header-id {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-item:hover {
+      background: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .dropdown-item.logout:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    /* ==========================================================================
+       Secondary Navigation - Tab Form
+       ========================================================================== */
+    .secondary-nav {
+      width: 100%;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .nav-tabs li {
+      flex: 1;
+      display: flex;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25);
+    }
+
+    /* ==========================================================================
+       Greeting Banner + Online/Offline Toggle
+       ========================================================================== */
+    .greeting-banner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 8px 4px;
+    }
+
+    .greeting-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Rider Scooter Graphic */
+    .rider-scooter-icon-wrap {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rider-scooter-icon-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .greeting-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .greeting-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+
+    .greeting-subtitle {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Online / Offline Switch Pill */
+    .online-toggle-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #16a34a;
+    }
+
+    .status-indicator.offline {
+      color: #9c838b;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .status-dot.offline {
+      background-color: #9c838b;
+      box-shadow: none;
+    }
+
+    /* iOS-Style Switch */
+    .switch-label {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 26px;
+      cursor: pointer;
+    }
+
+    .switch-label input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      border-radius: var(--radius-pill);
+      transition: background-color 0.25s ease;
+    }
+
+    .switch-slider::before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      transition: transform 0.25s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-label input:checked + .switch-slider {
+      background-color: var(--primary);
+    }
+
+    .switch-label input:checked + .switch-slider::before {
+      transform: translateX(20px);
+    }
+
+    /* ==========================================================================
+       Deliveries Filter Bar (Segmented Tabs in Light Card)
+       ========================================================================== */
+    .deliveries-filter-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 10px 14px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+    }
+
+    .filter-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .filter-tab-btn svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
+    .filter-tab-btn:hover {
+      color: var(--primary);
+      background-color: var(--primary-tint);
+    }
+
+    .filter-tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.22);
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 24px;
+      background-color: var(--border-card);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       Deliveries Table Card
+       ========================================================================== */
+    .deliveries-main-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .deliveries-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+
+    .deliveries-data-table th {
+      padding: 14px 18px;
+      background-color: #fff0f3;
+      color: var(--text-secondary);
+      font-weight: 700;
+      border: none;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .deliveries-data-table td {
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-main);
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .deliveries-data-table tbody tr {
+      transition: background-color 0.15s ease;
+    }
+
+    .deliveries-data-table tbody tr:hover {
+      background-color: #fff9fa;
+    }
+
+    .deliveries-data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Table Column Specific Styles */
+    .col-num {
+      width: 48px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .col-order-id {
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+    }
+
+    .col-customer {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .col-restaurant {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .col-amount {
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .col-time {
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    /* Status Pills */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
+
+    .status-badge svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .status-dot-sm {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    /* In Progress (Red/Pink) */
+    .status-badge.in-progress {
+      background-color: var(--status-red-bg);
+      color: var(--status-red-text);
+    }
+
+    .status-badge.in-progress .status-dot-sm {
+      background-color: var(--status-red-dot);
+    }
+
+    /* Delivered (Green) */
+    .status-badge.delivered {
+      background-color: var(--status-green-bg);
+      color: var(--status-green-text);
+    }
+
+    /* Picked Up (Amber) */
+    .status-badge.picked-up {
+      background-color: var(--status-amber-bg);
+      color: var(--status-amber-text);
+    }
+
+    .status-badge.picked-up .status-dot-sm {
+      background-color: var(--status-amber-dot);
+    }
+
+    /* On the Way (Blue) */
+    .status-badge.on-the-way {
+      background-color: var(--status-blue-bg);
+      color: var(--status-blue-text);
+    }
+
+    .status-badge.on-the-way .status-dot-sm {
+      background-color: var(--status-blue-dot);
+    }
+
+    /* Cancelled (Gray) */
+    .status-badge.cancelled {
+      background-color: var(--status-gray-bg);
+      color: var(--status-gray-text);
+    }
+
+    .status-badge.cancelled .status-dot-sm {
+      background-color: var(--status-gray-dot);
+    }
+
+    /* Action View Button */
+    .btn-action-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      background-color: #ffffff;
+      color: var(--primary);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(139, 25, 61, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-view svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .btn-action-view:hover {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(139, 25, 61, 0.2);
+    }
+
+    /* ==========================================================================
+       Table Footer & Pagination
+       ========================================================================== */
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border-light);
+      background-color: #ffffff;
+      font-size: 13px;
+    }
+
+    .table-counter-text {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-btn {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-card);
+      background-color: #ffffff;
+      color: var(--text-main);
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .page-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(139, 25, 61, 0.25);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       Responsive Breakpoints
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 12px 16px 36px;
+      }
+
+      .header-navbar {
+        flex-wrap: wrap;
+      }
+
+      .header-search-container {
+        order: 3;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .greeting-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .deliveries-filter-card {
+        padding: 8px;
+        gap: 6px;
+      }
+
+      .filter-tab-btn {
+        padding: 8px 14px;
+        font-size: 12.5px;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Container -->
+  <div class="dashboard-container">
+
+    <!-- ========================================================================
+         Top Header Navbar (Full Width)
+         ======================================================================== -->
+    <header class="header-navbar">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo-link" title="Rasoova Kitchen">
+        <img src="../assets/rasoova_logo_desktop.png" alt="Rasoova Logo" class="brand-logo-img"
+             onerror="if(this.src.indexOf('../')!==-1){this.src='assets/rasoova_logo_desktop.png';}else{this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';}">
+        <div id="logo-fallback" class="brand-logo-fallback" style="display: none;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b193d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 21a8 8 0 0 0-12 0"/>
+            <path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 4.5 3 5.5V17a3 3 0 0 0 6 0v-2.5c1.5-1 3-3 3-5.5a6 6 0 0 0-6-6z"/>
+          </svg>
+          <span class="logo-text">Rasoova</span>
+        </div>
+      </a>
+
+      <!-- Centered Search Bar -->
+      <div class="header-search-container">
+        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="header-search-input" id="globalOrderSearch" placeholder="Search orders..." autocomplete="off">
+      </div>
+
+      <!-- Header Actions: Notification & Rider Profile -->
+      <div class="header-actions">
+        <!-- Notification Bell with Badge '1' -->
+        <button type="button" class="notif-btn" id="notifBellBtn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge">1</span>
+        </button>
+
+        <!-- Rider Profile Pill -->
+        <div style="position: relative;">
+          <button type="button" class="rider-profile-btn" id="riderProfileBtn">
+            <div class="rider-avatar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="rider-info">
+              <span class="rider-name">Rohit Kumar</span>
+              <span class="rider-role">Delivery Rider</span>
+            </div>
+            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-header">
+              <div class="dropdown-header-name">Rohit Kumar</div>
+              <div class="dropdown-header-id">Rider ID: RDR-8842 • Odisha</div>
+            </div>
+            <button class="dropdown-item" onclick="window.location.href='profile.html';">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+              View Profile
+            </button>
+            <button class="dropdown-item logout" id="dropdownLogoutBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         Secondary Navigation - Horizontal Tab Form
+         ======================================================================== -->
+    <nav class="secondary-nav" aria-label="Rider Navigation Tabs">
+      <ul class="nav-tabs">
+        <li>
+          <a href="index.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-deliveries.html" class="tab-btn active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="15" cy="5" r="1"/>
+              <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+            </svg>
+            <span>My Deliveries</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Profile</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ========================================================================
+         Greeting Banner + Online/Offline Toggle
+         ======================================================================== -->
+    <section class="greeting-banner">
+      <div class="greeting-left">
+        <!-- Delivery Rider Scooter Illustration SVG -->
+        <div class="rider-scooter-icon-wrap">
+          <svg viewBox="0 0 64 64" fill="none">
+            <!-- Rider on Red Scooter -->
+            <!-- Back Box -->
+            <rect x="6" y="24" width="16" height="15" rx="3" fill="#be185d" stroke="#831843" stroke-width="1.5"/>
+            <text x="14" y="34" font-size="7" font-weight="800" fill="#ffffff" text-anchor="middle">R</text>
+            <!-- Rider Body -->
+            <circle cx="34" cy="14" r="6" fill="#fbcfe8"/>
+            <!-- Helmet/Cap -->
+            <path d="M28 14c0-3.5 2.5-6 6-6s6 2.5 6 6l-12 0z" fill="#dc2626"/>
+            <path d="M36 14h5v2h-5z" fill="#dc2626"/>
+            <!-- Jacket -->
+            <path d="M28 20c0-1 2-2 6-2s6 1 6 2l3 9h-6l-1 6h-6l1-6h-3z" fill="#dc2626"/>
+            <!-- Scooter Body -->
+            <path d="M18 42h28l6-10h-8l-4 10H22l-4-10h-6l6 10z" fill="#dc2626"/>
+            <path d="M44 32l3-10h4" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Handlebar & Headlight -->
+            <circle cx="51" cy="22" r="3" fill="#fef08a"/>
+            <!-- Wheels -->
+            <circle cx="16" cy="46" r="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+            <circle cx="16" cy="46" r="3" fill="#94a3b8"/>
+            <circle cx="48" cy="46" r="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+            <circle cx="48" cy="46" r="3" fill="#94a3b8"/>
+          </svg>
+        </div>
+
+        <div class="greeting-text">
+          <h1 class="greeting-title">Hello, Rohit Kumar!</h1>
+          <p class="greeting-subtitle">Here are your deliveries and their status.</p>
+        </div>
+      </div>
+
+      <!-- Online / Offline Toggle Switch Pill -->
+      <div class="online-toggle-pill">
+        <div class="status-indicator" id="onlineIndicator">
+          <span class="status-dot" id="onlineDot"></span>
+          <span id="onlineStatusText">Online</span>
+        </div>
+        <label class="switch-label" title="Toggle rider availability">
+          <input type="checkbox" id="riderOnlineToggle" checked>
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         Deliveries Filter Tabs (All, Ongoing, Delivered, Cancelled)
+         ======================================================================== -->
+    <section class="deliveries-filter-card" role="tablist">
+      <!-- Filter 1: All Deliveries -->
+      <button type="button" class="filter-tab-btn active" data-filter="all">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <span>All Deliveries (<span id="countAll">12</span>)</span>
+      </button>
+
+      <div class="filter-divider" aria-hidden="true"></div>
+
+      <!-- Filter 2: Ongoing -->
+      <button type="button" class="filter-tab-btn" data-filter="ongoing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Ongoing (<span id="countOngoing">1</span>)</span>
+      </button>
+
+      <div class="filter-divider" aria-hidden="true"></div>
+
+      <!-- Filter 3: Delivered -->
+      <button type="button" class="filter-tab-btn" data-filter="delivered">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <span>Delivered (<span id="countDelivered">9</span>)</span>
+      </button>
+
+      <div class="filter-divider" aria-hidden="true"></div>
+
+      <!-- Filter 4: Cancelled -->
+      <button type="button" class="filter-tab-btn" data-filter="cancelled">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        <span>Cancelled (<span id="countCancelled">2</span>)</span>
+      </button>
+    </section>
+
+    <!-- ========================================================================
+         Deliveries Table Card
+         ======================================================================== -->
+    <main class="deliveries-main-card">
+      <div class="table-container">
+        <table class="deliveries-data-table" id="deliveriesTable">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Restaurant</th>
+              <th>Amount</th>
+              <th>Order Time</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="deliveriesTableBody">
+            <!-- Table rows populated dynamically via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Footer with Counter and Pagination -->
+      <footer class="table-footer">
+        <div class="table-counter-text" id="tableCounterText">
+          Showing 1-8 of 12 deliveries
+        </div>
+        <div class="pagination-controls" id="paginationControls">
+          <!-- Page buttons generated via JS -->
+        </div>
+      </footer>
+    </main>
+
+  </div>
+
+  <!-- ==========================================================================
+       Interactive JavaScript Functionality
+       ========================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Complete Deliveries Dataset Matching Reference Image ---
+      const allDeliveries = [
+        {
+          id: 1,
+          orderId: 'ORD-1028',
+          customer: 'Priya Sharma',
+          phone: '+91 98765 12345',
+          restaurant: 'Veg Biryani Hub',
+          address: 'Plot 104, Satya Vihar, Bhubaneswar',
+          amount: '₹249',
+          orderTime: 'Today, 02:15 PM',
+          status: 'in-progress',
+          statusLabel: 'In Progress',
+          items: 'Special Veg Dum Biryani (1x), Extra Raita',
+          paymentMode: 'Online / UPI Paid',
+          category: 'ongoing'
+        },
+        {
+          id: 2,
+          orderId: 'ORD-1027',
+          customer: 'Amit Das',
+          phone: '+91 94370 88219',
+          restaurant: 'Pizza Corner',
+          address: 'Lane 3, Khandagiri Enclave, Bhubaneswar',
+          amount: '₹399',
+          orderTime: 'Today, 01:20 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Cheese Burst Farmhouse Pizza (1x), Garlic Bread',
+          paymentMode: 'Online / Card Paid',
+          category: 'delivered'
+        },
+        {
+          id: 3,
+          orderId: 'ORD-1026',
+          customer: 'Sneha Patel',
+          phone: '+91 99371 45678',
+          restaurant: 'Burger House',
+          address: 'A-22, Jaydev Vihar, Bhubaneswar',
+          amount: '₹299',
+          orderTime: 'Today, 12:45 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Crispy Veg Supreme Burger (2x), Peri-Peri Fries',
+          paymentMode: 'Cash on Delivery',
+          category: 'delivered'
+        },
+        {
+          id: 4,
+          orderId: 'ORD-1025',
+          customer: 'Rohan Mehta',
+          phone: '+91 82490 33412',
+          restaurant: 'Chinese Wok',
+          address: 'Flat 302, Royal Residency, Patia, Bhubaneswar',
+          amount: '₹349',
+          orderTime: 'Today, 12:10 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Veg Hakka Noodles, Manchurian Gravy, Spring Rolls',
+          paymentMode: 'Online / UPI Paid',
+          category: 'delivered'
+        },
+        {
+          id: 5,
+          orderId: 'ORD-1024',
+          customer: 'Neha Gupta',
+          phone: '+91 98610 77410',
+          restaurant: 'South Indian Delight',
+          address: 'Quarter 14, Unit-4, Bhubaneswar',
+          amount: '₹279',
+          orderTime: 'Today, 11:50 AM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Masala Dosa (2x), Idli Vada Combo with Filter Coffee',
+          paymentMode: 'Online / GPay',
+          category: 'delivered'
+        },
+        {
+          id: 6,
+          orderId: 'ORD-1023',
+          customer: 'Rahul Verma',
+          phone: '+91 70081 22934',
+          restaurant: 'Tasty Bites',
+          address: 'House 55, Master Canteen Area, Bhubaneswar',
+          amount: '₹199',
+          orderTime: 'Today, 11:20 AM',
+          status: 'picked-up',
+          statusLabel: 'Picked Up',
+          items: 'Paneer Butter Masala Roll, Cold Coffee',
+          paymentMode: 'Online / Paytm',
+          category: 'ongoing'
+        },
+        {
+          id: 7,
+          orderId: 'ORD-1022',
+          customer: 'Anjali Singh',
+          phone: '+91 97760 11982',
+          restaurant: "Domino's Pizza",
+          address: 'Plot 89, Chandrasekharpur, Bhubaneswar',
+          amount: '₹499',
+          orderTime: 'Today, 10:40 AM',
+          status: 'on-the-way',
+          statusLabel: 'On the Way',
+          items: 'Peppy Paneer Pizza (Large), Choco Lava Cake',
+          paymentMode: 'Online Paid',
+          category: 'ongoing'
+        },
+        {
+          id: 8,
+          orderId: 'ORD-1021',
+          customer: 'Vikash Yadav',
+          phone: '+91 91234 56780',
+          restaurant: 'KFC',
+          address: 'Sector 2, Saheed Nagar, Bhubaneswar',
+          amount: '₹449',
+          orderTime: 'Today, 09:55 AM',
+          status: 'cancelled',
+          statusLabel: 'Cancelled',
+          items: 'Veg Zinger Burger, Fries, Pepsi',
+          paymentMode: 'Refunded to UPI',
+          category: 'cancelled'
+        },
+        {
+          id: 9,
+          orderId: 'ORD-1020',
+          customer: 'Kavita Sahu',
+          phone: '+91 98532 10987',
+          restaurant: 'Rolls Mania',
+          address: 'Plot 66, Old Town, Bhubaneswar',
+          amount: '₹180',
+          orderTime: 'Yesterday, 08:30 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Double Paneer Roll, Lemon Mint Mojito',
+          paymentMode: 'Cash on Delivery',
+          category: 'delivered'
+        },
+        {
+          id: 10,
+          orderId: 'ORD-1019',
+          customer: 'Manoj Mishra',
+          phone: '+91 94371 67890',
+          restaurant: 'Biryani By Kilo',
+          address: 'Plot 12, Rasulgarh, Bhubaneswar',
+          amount: '₹550',
+          orderTime: 'Yesterday, 07:15 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Hyderabadi Veg Biryani (1kg Handi), Salan',
+          paymentMode: 'Online / Card Paid',
+          category: 'delivered'
+        },
+        {
+          id: 11,
+          orderId: 'ORD-1018',
+          customer: 'Deepak Mohapatra',
+          phone: '+91 99370 12344',
+          restaurant: 'Subway',
+          address: 'Info City Gate, Patia, Bhubaneswar',
+          amount: '₹320',
+          orderTime: 'Yesterday, 01:45 PM',
+          status: 'cancelled',
+          statusLabel: 'Cancelled',
+          items: 'Veggie Delite Sub 6-inch, Cookie',
+          paymentMode: 'Cancelled by Customer',
+          category: 'cancelled'
+        },
+        {
+          id: 12,
+          orderId: 'ORD-1017',
+          customer: 'Sunita Jena',
+          phone: '+91 82491 55670',
+          restaurant: 'Sweet Truth',
+          address: 'Plot 4, Baramunda, Bhubaneswar',
+          amount: '₹160',
+          orderTime: 'Yesterday, 12:10 PM',
+          status: 'delivered',
+          statusLabel: 'Delivered',
+          items: 'Gulab Jamun (4 pcs), Rasgulla (2 pcs)',
+          paymentMode: 'Online Paid',
+          category: 'delivered'
+        }
+      ];
+
+      // --- Pagination & Filter State ---
+      const PAGE_SIZE = 8;
+      let currentPage = 1;
+      let currentFilter = 'all';
+      let searchQuery = '';
+
+      const tableBody = document.getElementById('deliveriesTableBody');
+      const counterText = document.getElementById('tableCounterText');
+      const paginationContainer = document.getElementById('paginationControls');
+
+      // Update Filter Counts
+      function updateCounts() {
+        const total = allDeliveries.length;
+        const ongoing = allDeliveries.filter(d => d.category === 'ongoing').length;
+        const delivered = allDeliveries.filter(d => d.category === 'delivered').length;
+        const cancelled = allDeliveries.filter(d => d.category === 'cancelled').length;
+
+        document.getElementById('countAll').textContent = total;
+        document.getElementById('countOngoing').textContent = ongoing;
+        document.getElementById('countDelivered').textContent = delivered;
+        document.getElementById('countCancelled').textContent = cancelled;
+      }
+
+      // Filter & Search Logic
+      function getFilteredDeliveries() {
+        return allDeliveries.filter(item => {
+          // Category filter
+          let matchesFilter = true;
+          if (currentFilter === 'ongoing') {
+            matchesFilter = item.category === 'ongoing';
+          } else if (currentFilter === 'delivered') {
+            matchesFilter = item.category === 'delivered';
+          } else if (currentFilter === 'cancelled') {
+            matchesFilter = item.category === 'cancelled';
+          }
+
+          // Search filter
+          let matchesSearch = true;
+          if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            matchesSearch = item.orderId.toLowerCase().includes(query) ||
+                            item.customer.toLowerCase().includes(query) ||
+                            item.restaurant.toLowerCase().includes(query) ||
+                            item.statusLabel.toLowerCase().includes(query);
+          }
+
+          return matchesFilter && matchesSearch;
+        });
+      }
+
+      // Render Status Badge
+      function renderStatusBadge(status, label) {
+        if (status === 'delivered') {
+          return `
+            <span class="status-badge delivered">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              ${label}
+            </span>
+          `;
+        } else if (status === 'in-progress') {
+          return `
+            <span class="status-badge in-progress">
+              <span class="status-dot-sm"></span>
+              ${label}
+            </span>
+          `;
+        } else if (status === 'picked-up') {
+          return `
+            <span class="status-badge picked-up">
+              <span class="status-dot-sm"></span>
+              ${label}
+            </span>
+          `;
+        } else if (status === 'on-the-way') {
+          return `
+            <span class="status-badge on-the-way">
+              <span class="status-dot-sm"></span>
+              ${label}
+            </span>
+          `;
+        } else {
+          return `
+            <span class="status-badge cancelled">
+              <span class="status-dot-sm"></span>
+              ${label}
+            </span>
+          `;
+        }
+      }
+
+      // Render Table Data
+      function renderTable() {
+        const filtered = getFilteredDeliveries();
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
+
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = Math.min(startIndex + PAGE_SIZE, totalItems);
+        const currentData = filtered.slice(startIndex, endIndex);
+
+        // Populate Table Rows
+        if (currentData.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 48px 16px; color: var(--text-muted);">
+                <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+                <div style="font-weight: 700; font-size: 15px; color: var(--text-main);">No deliveries found</div>
+                <div style="font-size: 13px; margin-top: 4px;">Try searching with another keyword or change your tab filter.</div>
+              </td>
+            </tr>
+          `;
+        } else {
+          tableBody.innerHTML = currentData.map((item, index) => `
+            <tr data-order-id="${item.orderId}">
+              <td class="col-num">${startIndex + index + 1}</td>
+              <td class="col-order-id">${item.orderId}</td>
+              <td class="col-customer">${item.customer}</td>
+              <td class="col-restaurant">${item.restaurant}</td>
+              <td class="col-amount">${item.amount}</td>
+              <td class="col-time">${item.orderTime}</td>
+              <td>${renderStatusBadge(item.status, item.statusLabel)}</td>
+              <td>
+                <button type="button" class="btn-action-view" onclick="viewOrderDetails('${item.orderId}')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <span>View</span>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        // Update Counter Text
+        if (totalItems === 0) {
+          counterText.textContent = 'Showing 0 of 0 deliveries';
+        } else {
+          counterText.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalItems} deliveries`;
+        }
+
+        // Build Pagination Controls
+        renderPagination(totalPages);
+      }
+
+      // Build Pagination Buttons
+      function renderPagination(totalPages) {
+        paginationContainer.innerHTML = '';
+
+        if (totalPages <= 1) return;
+
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+          btn.textContent = i;
+          btn.addEventListener('click', () => {
+            currentPage = i;
+            renderTable();
+          });
+          paginationContainer.appendChild(btn);
+        }
+
+        // Next Arrow Button
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'page-btn';
+        nextBtn.innerHTML = '→';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.title = 'Next Page';
+        nextBtn.addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTable();
+          }
+        });
+        paginationContainer.appendChild(nextBtn);
+      }
+
+      // View Order Details Modal
+      window.viewOrderDetails = function(orderId) {
+        const order = allDeliveries.find(d => d.orderId === orderId);
+        if (!order) return;
+
+        Swal.fire({
+          title: `Delivery Details • ${order.orderId}`,
+          html: `
+            <div style="text-align: left; font-size: 13.5px; line-height: 1.6; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #fff2f5; border-radius: 8px;">
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: #9c838b; font-weight: 700;">Status</span>
+                  <div style="font-weight: 800; font-size: 14px; color: #8b193d;">${order.statusLabel}</div>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-size: 11px; text-transform: uppercase; color: #9c838b; font-weight: 700;">Order Amount</span>
+                  <div style="font-weight: 800; font-size: 16px; color: #15803d;">${order.amount}</div>
+                </div>
+              </div>
+
+              <div>
+                <strong style="color: #8b193d;">Customer:</strong> ${order.customer}<br>
+                <strong style="color: #8b193d;">Contact:</strong> ${order.phone}<br>
+                <strong style="color: #8b193d;">Drop Address:</strong> ${order.address}
+              </div>
+
+              <div style="padding-top: 6px; border-top: 1px solid #f3e4e7;">
+                <strong style="color: #8b193d;">Restaurant / Hub:</strong> ${order.restaurant}<br>
+                <strong style="color: #8b193d;">Ordered Items:</strong> ${order.items}<br>
+                <strong style="color: #8b193d;">Payment:</strong> ${order.paymentMode}<br>
+                <strong style="color: #8b193d;">Order Time:</strong> ${order.orderTime}
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Call Customer',
+          cancelButtonText: 'Close',
+          confirmButtonColor: '#16a34a',
+          cancelButtonColor: '#745b63'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              icon: 'info',
+              title: `Calling ${order.customer}`,
+              text: `Connecting via masked rider hotline to ${order.phone}...`,
+              timer: 2200,
+              showConfirmButton: false
+            });
+          }
+        });
+      };
+
+      // Filter Tabs Event Listeners
+      const filterButtons = document.querySelectorAll('.filter-tab-btn');
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          currentPage = 1;
+          renderTable();
+        });
+      });
+
+      // Global Search Input Event Listener
+      const searchInput = document.getElementById('globalOrderSearch');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value.trim();
+          currentPage = 1;
+          renderTable();
+        });
+      }
+
+      // Online / Offline Toggle
+      const onlineToggle = document.getElementById('riderOnlineToggle');
+      const onlineStatusText = document.getElementById('onlineStatusText');
+      const onlineDot = document.getElementById('onlineDot');
+      const onlineIndicator = document.getElementById('onlineIndicator');
+
+      if (onlineToggle) {
+        onlineToggle.addEventListener('change', (e) => {
+          const isOnline = e.target.checked;
+          if (isOnline) {
+            onlineStatusText.textContent = 'Online';
+            onlineIndicator.classList.remove('offline');
+            onlineDot.classList.remove('offline');
+            Swal.fire({
+              icon: 'success',
+              title: 'You are now Online! 🛵',
+              text: 'You can receive live delivery orders.',
+              timer: 2000,
+              showConfirmButton: false,
+              toast: true,
+              position: 'top-end'
+            });
+          } else {
+            onlineStatusText.textContent = 'Offline';
+            onlineIndicator.classList.add('offline');
+            onlineDot.classList.add('offline');
+            Swal.fire({
+              icon: 'info',
+              title: 'You are now Offline',
+              text: 'New deliveries are paused until you switch back online.',
+              timer: 2000,
+              showConfirmButton: false,
+              toast: true,
+              position: 'top-end'
+            });
+          }
+        });
+      }
+
+      // Notification Bell
+      const notifBellBtn = document.getElementById('notifBellBtn');
+      if (notifBellBtn) {
+        notifBellBtn.addEventListener('click', () => {
+          Swal.fire({
+            title: '🔔 New Order Assignment',
+            html: `
+              <div style="text-align: left; font-size: 13.5px; line-height: 1.6;">
+                <p><strong>Order ORD-1028</strong> is ready for pickup at <strong>Veg Biryani Hub</strong>.</p>
+                <p style="color: #666; margin-top: 6px;">Customer: <strong>Priya Sharma</strong> (Satya Vihar)</p>
+                <p style="color: #8b193d; font-weight: 700; margin-top: 4px;">Est. Delivery: 25 Mins</p>
+              </div>
+            `,
+            confirmButtonText: 'View Details',
+            confirmButtonColor: '#8b193d',
+            showCancelButton: true,
+            cancelButtonText: 'Dismiss'
+          }).then((res) => {
+            if (res.isConfirmed) {
+              viewOrderDetails('ORD-1028');
+            }
+          });
+        });
+      }
+
+      // Profile Dropdown Menu
+      const riderProfileBtn = document.getElementById('riderProfileBtn');
+      const profileDropdown = document.getElementById('profileDropdown');
+
+      if (riderProfileBtn && profileDropdown) {
+        riderProfileBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          profileDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!profileDropdown.contains(e.target) && !riderProfileBtn.contains(e.target)) {
+            profileDropdown.classList.remove('show');
+          }
+        });
+      }
+
+      // Profile View Action
+      function showProfileModal() {
+        Swal.fire({
+          title: 'Rider Profile',
+          html: `
+            <div style="text-align: left; font-size: 13.5px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+              <div style="text-align: center; padding-bottom: 10px; border-bottom: 1px solid #f3e4e7;">
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: #fee9ee; color: #8b193d; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; margin: 0 auto 6px;">RK</div>
+                <strong style="font-size: 16px; color: #200812;">Rohit Kumar</strong><br>
+                <span style="color: #745b63; font-size: 12px;">Fleet ID: RDR-8842 • Odisha Hub</span>
+              </div>
+              <p><strong>Vehicle:</strong> Honda Activa (OD-02-AB-1234)</p>
+              <p><strong>Contact:</strong> +91 98765 43210</p>
+              <p><strong>License:</strong> OD-02-2022-0098765</p>
+              <p><strong>Rating:</strong> ★ 4.9 (248 deliveries rated)</p>
+            </div>
+          `,
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#8b193d'
+        });
+      }
+
+      const dropdownProfileBtn = document.getElementById('dropdownProfileBtn');
+      if (dropdownProfileBtn) {
+        dropdownProfileBtn.addEventListener('click', () => {
+          if (profileDropdown) profileDropdown.classList.remove('show');
+          showProfileModal();
+        });
+      }
+
+      const navProfileTabBtn = document.getElementById('navProfileTabBtn');
+      if (navProfileTabBtn) {
+        navProfileTabBtn.addEventListener('click', showProfileModal);
+      }
+
+      // Sign Out Action
+      const dropdownLogoutBtn = document.getElementById('dropdownLogoutBtn');
+      if (dropdownLogoutBtn) {
+        dropdownLogoutBtn.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Sign Out?',
+            text: 'Are you sure you want to log out of your rider session?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: 'Yes, Sign Out',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              sessionStorage.removeItem('token');
+              sessionStorage.removeItem('adminToken');
+              sessionStorage.removeItem('riderToken');
+              sessionStorage.removeItem('user');
+              localStorage.removeItem('token');
+              localStorage.removeItem('adminToken');
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Signed Out Successfully',
+                text: 'Redirecting to login portal...',
+                timer: 1500,
+                showConfirmButton: false
+              });
+
+              setTimeout(() => {
+                window.location.href = 'login.html';
+              }, 1200);
+            }
+          });
+        });
+      }
+
+      // Initial Setup
+      updateCounts();
+      renderTable();
+
+    });
+  </script>
+</body>
+</html>

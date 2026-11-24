@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rasoova - Reports</title>
+  <link rel="icon" type="image/png" href="assets/rasoova_logo_desktop.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- SweetAlert2 Library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* ==========================================================================
+       Rasoova Kitchen - Reports Stylesheet (Full Width Single-File)
+       ========================================================================== */
+
+    :root {
+      /* Brand Primary Palette */
+      --primary: #8b193d;
+      --primary-dark: #741231;
+      --primary-light: #9d2248;
+      --primary-subtle: #faeaee;
+      --primary-tint: #fff2f5;
+      --primary-text: #260711;
+
+      /* Neutral & Layout Backgrounds */
+      --bg-body: #fdf7f7;
+      --bg-card: #ffffff;
+      --border-card: #f3e3e6;
+      --border-light: #f6e8ea;
+      --text-main: #200812;
+      --text-secondary: #745b63;
+      --text-muted: #9c838b;
+
+      /* Stat Card 1: Total Orders (Pink/Rose) */
+      --stat-rose-bg: #fff0f3;
+      --stat-rose-border: #fcd9e1;
+      --stat-rose-icon-bg: #ffffff;
+      --stat-rose-icon: #b81744;
+
+      /* Stat Card 2: Total Revenue (Amber) */
+      --stat-amber-bg: #fff8ec;
+      --stat-amber-border: #fdecd1;
+      --stat-amber-icon-bg: #ffffff;
+      --stat-amber-icon: #b45309;
+
+      /* Stat Card 3: Total Customers (Blue) */
+      --stat-blue-bg: #f0f8ff;
+      --stat-blue-border: #dbeafe;
+      --stat-blue-icon-bg: #ffffff;
+      --stat-blue-icon: #0284c7;
+
+      /* Stat Card 4: Active Subscriptions (Green) */
+      --stat-green-bg: #f0faf4;
+      --stat-green-border: #d7f4e4;
+      --stat-green-icon-bg: #ffffff;
+      --stat-green-icon: #15803d;
+
+      /* Stat Card 5: Delivered Orders (Purple) */
+      --stat-purple-bg: #f5f0ff;
+      --stat-purple-border: #e2d9f3;
+      --stat-purple-icon-bg: #ffffff;
+      --stat-purple-icon: #7c3aed;
+
+      /* Change Badges */
+      --badge-green-bg: #dcfce7;
+      --badge-green-text: #15803d;
+
+      /* Typography & Shadows */
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --shadow-sm: 0 2px 4px rgba(139, 25, 61, 0.03);
+      --shadow-card: 0 4px 16px rgba(139, 25, 61, 0.05);
+      --shadow-dropdown: 0 10px 30px rgba(139, 25, 61, 0.12);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-pill: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Full Width Container */
+    .dashboard-container {
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+      padding: 16px 36px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ==========================================================================
+       Top Header Navbar - Full Width
+       ========================================================================== */
+    .header-navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 6px 0;
+    }
+
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-logo-fallback {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo-fallback .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    /* Search Input in Top Header */
+    .header-search-container {
+      flex: 1;
+      max-width: 580px;
+      position: relative;
+    }
+
+    .header-search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 16px 0 46px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-card);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--text-main);
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .header-search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .header-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 25, 61, 0.1);
+    }
+
+    .header-search-icon {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Header Actions: Notification & Profile */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .notification-btn {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .notification-btn:hover {
+      background-color: var(--primary-tint);
+      transform: translateY(-1px);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      background-color: #ef4444;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+    }
+
+    .user-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: var(--radius-pill);
+      transition: background 0.2s ease;
+    }
+
+    .user-profile-btn:hover {
+      background: rgba(139, 25, 61, 0.04);
+    }
+
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(139, 25, 61, 0.2);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .user-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+
+    .profile-chevron {
+      width: 14px;
+      height: 14px;
+      color: var(--text-secondary);
+      transition: transform 0.2s ease;
+    }
+
+    /* Popover Menu */
+    .dropdown-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dropdown);
+      padding: 8px;
+      min-width: 200px;
+      z-index: 100;
+      display: none;
+    }
+
+    .dropdown-popover.active {
+      display: block;
+      animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .popover-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 4px;
+    }
+
+    .popover-list {
+      list-style: none;
+    }
+
+    .popover-item {
+      font-size: 12.5px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .popover-item:hover {
+      background: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       Secondary Navigation Tabs - Full Width
+       ========================================================================== */
+    .secondary-nav {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 6px 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      width: 100%;
+      gap: 6px;
+    }
+
+    .nav-tabs li {
+      flex: 1;
+      text-align: center;
+    }
+
+    .tab-btn {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.2;
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background-color: var(--primary-tint);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.28);
+    }
+
+    .tab-btn.active svg {
+      stroke: #ffffff;
+    }
+
+    /* ==========================================================================
+       Page Title Bar & Date Range Picker
+       ========================================================================== */
+    .page-title-section {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      gap: 16px;
+    }
+
+    .page-title-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Outlined Bar Chart Icon */
+    .title-chart-icon {
+      width: 32px;
+      height: 32px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .title-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary-text);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .title-text p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .date-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 18px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .date-filter-btn:hover {
+      border-color: var(--primary);
+      background-color: var(--primary-tint);
+    }
+
+    .date-filter-btn svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+    }
+
+    .date-filter-btn .chevron {
+      width: 14px;
+      height: 14px;
+      margin-left: 2px;
+    }
+
+    /* ==========================================================================
+       5 Stat Metric Cards Grid
+       ========================================================================== */
+    .stat-cards-5-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      margin-top: 4px;
+      width: 100%;
+    }
+
+    .stat-card-item {
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: default;
+    }
+
+    .stat-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .stat-card-item.card-rose {
+      background-color: var(--stat-rose-bg);
+      border-color: var(--stat-rose-border);
+    }
+
+    .stat-card-item.card-amber {
+      background-color: var(--stat-amber-bg);
+      border-color: var(--stat-amber-border);
+    }
+
+    .stat-card-item.card-blue {
+      background-color: var(--stat-blue-bg);
+      border-color: var(--stat-blue-border);
+    }
+
+    .stat-card-item.card-green {
+      background-color: var(--stat-green-bg);
+      border-color: var(--stat-green-border);
+    }
+
+    .stat-card-item.card-purple {
+      background-color: var(--stat-purple-bg);
+      border-color: var(--stat-purple-border);
+    }
+
+    .stat-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+    }
+
+    .card-rose .stat-icon-circle svg { color: var(--stat-rose-icon); stroke: var(--stat-rose-icon); }
+    .card-amber .stat-icon-circle svg, .card-amber .stat-icon-circle .currency-symbol { color: var(--stat-amber-icon); }
+    .card-blue .stat-icon-circle svg { color: var(--stat-blue-icon); stroke: var(--stat-blue-icon); }
+    .card-green .stat-icon-circle svg { color: var(--stat-green-icon); stroke: var(--stat-green-icon); }
+    .card-purple .stat-icon-circle svg { color: var(--stat-purple-icon); stroke: var(--stat-purple-icon); }
+
+    .currency-symbol {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-number {
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+    }
+
+    .stat-title {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+
+    /* ==========================================================================
+       Main 2-Column Content Grid: Report Sections (Left) & Summary Table (Right)
+       ========================================================================== */
+    .reports-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 22px;
+      width: 100%;
+      margin-top: 4px;
+      align-items: start;
+    }
+
+    .report-card-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 4px;
+    }
+
+    .panel-header svg {
+      width: 20px;
+      height: 20px;
+      color: var(--primary);
+      stroke: var(--primary);
+    }
+
+    .panel-header h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary-text);
+      letter-spacing: -0.2px;
+    }
+
+    /* ==========================================================================
+       Left Panel: Report Sections List
+       ========================================================================== */
+    .report-sections-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .report-section-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .report-section-item:hover {
+      background-color: var(--primary-tint);
+      border-color: var(--border-card);
+      transform: translateX(4px);
+    }
+
+    .section-left-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-icon-badge.icon-rose {
+      background-color: var(--primary-subtle);
+      color: var(--primary);
+    }
+
+    .section-icon-badge.icon-amber {
+      background-color: #fef3c7;
+      color: #b45309;
+    }
+
+    .section-icon-badge.icon-purple {
+      background-color: #f3e8ff;
+      color: #7c3aed;
+    }
+
+    .section-icon-badge svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
+    }
+
+    .section-icon-badge .rupee-icon {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .section-text-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .section-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--primary-text);
+      line-height: 1.25;
+    }
+
+    .section-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .section-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .report-section-item:hover .section-chevron {
+      color: var(--primary);
+      transform: translateX(3px);
+    }
+
+    /* ==========================================================================
+       Right Panel: Quick Report Summary Table
+       ========================================================================== */
+    .summary-table-container {
+      width: 100%;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .summary-table thead {
+      background-color: #fff0f3;
+    }
+
+    .summary-table th {
+      padding: 15px 20px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary-text);
+      letter-spacing: -0.1px;
+      border: none;
+    }
+
+    .summary-table th.col-total {
+      text-align: center;
+    }
+
+    .summary-table th.col-change {
+      text-align: right;
+    }
+
+    .summary-table tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background-color 0.15s ease;
+    }
+
+    .summary-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .summary-table tbody tr:hover {
+      background-color: #fdf5f7;
+    }
+
+    .summary-table td {
+      padding: 16px 20px;
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    .table-type-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-text);
+    }
+
+    .table-total-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    .table-change-cell {
+      text-align: right;
+    }
+
+    .change-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background-color: var(--badge-green-bg);
+      color: var(--badge-green-text);
+      font-size: 12.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       SweetAlert2 Custom Styling - Rasoova Theme
+       ========================================================================== */
+    .rasoova-swal-popup {
+      border-radius: 20px !important;
+      font-family: var(--font-sans) !important;
+      padding: 26px 22px !important;
+      box-shadow: 0 20px 50px rgba(71, 24, 34, 0.28) !important;
+      background: #ffffff !important;
+      border: 1px solid #ebd5da !important;
+      max-width: 520px !important;
+    }
+
+    .rasoova-swal-title {
+      color: #3b0f19 !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      padding: 0 0 10px 0 !important;
+    }
+
+    .swal-report-modal-body {
+      text-align: left;
+      font-size: 13.5px;
+      color: #471822;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .swal-stat-summary-box {
+      background: #fbf6f7;
+      border: 1px solid #f0e1e4;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .swal-mini-kpi {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .swal-mini-kpi-label {
+      font-size: 11.5px;
+      color: #7a6068;
+    }
+
+    .swal-mini-kpi-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: #2b1219;
+    }
+
+    .swal-date-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid #ebd5da;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #ffffff;
+      margin-bottom: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .swal-date-option:hover {
+      background: #fff8f9;
+      border-color: #c78b9b;
+    }
+
+    .swal-date-option.selected {
+      background: #fdf2f4;
+      border-color: #8b193d;
+      box-shadow: 0 0 0 2px rgba(139, 25, 61, 0.15);
+    }
+
+    .rasoova-swal-confirm-btn {
+      background-color: #8b193d !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      padding: 10px 24px !important;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .rasoova-swal-confirm-btn:hover {
+      background-color: #741231 !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .rasoova-swal-cancel-btn {
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      padding: 10px 20px !important;
+      background-color: #f3e8eb !important;
+      color: #664a52 !important;
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 9999;
+    }
+
+    .toast {
+      background: #2b1219;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      font-size: 13.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       Responsive Breakpoints
+       ========================================================================== */
+    @media (max-width: 1200px) {
+      .reports-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .stat-cards-5-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 14px 16px 36px;
+      }
+
+      .header-navbar {
+        flex-wrap: wrap;
+      }
+
+      .header-search-container {
+        order: 3;
+        max-width: 100%;
+        margin-top: 8px;
+      }
+
+      .secondary-nav {
+        overflow-x: auto;
+      }
+
+      .nav-tabs {
+        width: max-content;
+      }
+
+      .page-title-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stat-cards-5-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stat-cards-5-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- ====================================================================
+         Top Header Navbar - Full Width
+         ==================================================================== -->
+    <header class="header-navbar">
+      <!-- Left: Brand Logo -->
+      <a href="index.html" class="brand-logo-link">
+        <img 
+          src="assets/rasoova_logo_desktop.png" 
+          alt="Rasoova" 
+          class="brand-logo-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+        <div class="brand-logo-fallback" style="display: none;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b193d" stroke-width="2">
+            <path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/>
+            <path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/>
+          </svg>
+          <span class="logo-text">Rasoova</span>
+        </div>
+      </a>
+
+      <!-- Middle: Search Orders, Customers, Food Codes -->
+      <div class="header-search-container">
+        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input 
+          type="text" 
+          class="header-search-input" 
+          id="topSearchInput"
+          placeholder="Search orders, customers, food codes..."
+          aria-label="Search"
+        >
+      </div>
+
+      <!-- Right: Notification Bell & Super Admin Profile -->
+      <div class="header-actions">
+        <!-- Notification Bell -->
+        <div style="position: relative;">
+          <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="notification-badge"></span>
+          </button>
+
+          <div class="dropdown-popover" id="notifPopover">
+            <div class="popover-header">Notifications (3 New)</div>
+            <ul class="popover-list">
+              <li class="popover-item" onclick="showToast('Opened order ORD-1024')">
+                <span style="color: var(--primary);">●</span> New food order ORD-1024 received
+              </li>
+              <li class="popover-item" onclick="showToast('Opened subscription SUB-1004')">
+                <span style="color: #10b981;">●</span> Subscription SUB-1004 renewed
+              </li>
+              <li class="popover-item" onclick="showToast('Viewed daily report')">
+                <span style="color: #0284c7;">●</span> Daily Sales Report is ready
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Super Admin Profile Dropdown -->
+        <div style="position: relative;">
+          <button class="user-profile-btn" id="userProfileBtn">
+            <div class="user-avatar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+            <div class="user-info">
+              <span class="user-name">Admin</span>
+              <span class="user-role">Super Admin</span>
+            </div>
+            <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <div class="dropdown-popover" id="userPopover">
+            <div class="popover-header">Super Admin Account</div>
+            <ul class="popover-list">
+              <li class="popover-item" onclick="showToast('Opened Account Settings')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Account Settings</span>
+              </li>
+              <li class="popover-item" onclick="showToast('Activity Logs')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Activity Logs</span>
+              </li>
+              <li class="popover-item" id="signOutBtn" style="color: #dc2626; font-weight: 600;" onclick="handleSignOut()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Sign Out</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         Secondary Navigation Tabs - Full Width
+         ==================================================================== -->
+    <nav class="secondary-nav" aria-label="Main Navigation">
+      <ul class="nav-tabs">
+        <li>
+          <a href="index.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="food-order.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"/>
+              <circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span>Food Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href="subscription.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>Subscriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="food-item.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1"/>
+              <path d="M12 4v2"/>
+              <path d="M6 10a6 6 0 0 1 12 0"/>
+              <path d="M3 18h18"/>
+            </svg>
+            <span>Food Items</span>
+          </a>
+        </li>
+        <li>
+          <a href="customer.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>Customers</span>
+          </a>
+        </li>
+        <li>
+          <a href="report.html" class="tab-btn active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span>Reports</span>
+          </a>
+        </li>
+   
+      </ul>
+    </nav>
+
+    <!-- ====================================================================
+         Page Title & Date Range Filter Section
+         ==================================================================== -->
+    <section class="page-title-section">
+      <div class="page-title-content">
+        <!-- Prominent Red Outlined Bar Chart Icon -->
+        <svg class="title-chart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="4"/>
+          <line x1="12" y1="20" x2="12" y2="10"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+          <path d="M2 20h20"/>
+        </svg>
+        <div class="title-text">
+          <h1>Reports</h1>
+          <p>Get insights about your business performance.</p>
+        </div>
+      </div>
+
+      <!-- Date Range Selector Pill -->
+      <button class="date-filter-btn" id="openDateRangeFilter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span id="dateRangeText">Nov 1, 2026 – Nov 30, 2026</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+    </section>
+
+    <!-- ====================================================================
+         5 Stat Metric Cards Grid
+         ==================================================================== -->
+    <section class="stat-cards-5-grid">
+      <!-- Card 1: Total Orders (Pink/Rose) -->
+      <div class="stat-card-item card-rose" onclick="openReportDetail('orders')">
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number" id="kpiTotalOrders">1,248</span>
+          <span class="stat-title">Total Orders</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Revenue (Amber) -->
+      <div class="stat-card-item card-amber" onclick="openReportDetail('sales')">
+        <div class="stat-icon-circle">
+          <span class="currency-symbol">₹</span>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number" id="kpiTotalRevenue">₹2,15,750</span>
+          <span class="stat-title">Total Revenue</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Total Customers (Blue) -->
+      <div class="stat-card-item card-blue" onclick="openReportDetail('customers')">
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number" id="kpiTotalCustomers">1,892</span>
+          <span class="stat-title">Total Customers</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Active Subscriptions (Green) -->
+      <div class="stat-card-item card-green" onclick="openReportDetail('subscriptions')">
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number" id="kpiActiveSubs">562</span>
+          <span class="stat-title">Active Subscriptions</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Delivered Orders (Purple) -->
+      <div class="stat-card-item card-purple" onclick="openReportDetail('orders')">
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number" id="kpiDeliveredOrders">569</span>
+          <span class="stat-title">Delivered Orders</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Main 2-Column Section: Report Sections (Left) & Summary Table (Right)
+         ==================================================================== -->
+    <section class="reports-main-grid">
+
+      <!-- Left Column: Report Sections -->
+      <div class="report-card-panel">
+        <div class="panel-header">
+          <!-- Document / Report Icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <h2>Report Sections</h2>
+        </div>
+
+        <div class="report-sections-list">
+          <!-- Item 1: Orders Report -->
+          <div class="report-section-item" onclick="openReportDetail('orders')">
+            <div class="section-left-group">
+              <div class="section-icon-badge icon-rose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+              </div>
+              <div class="section-text-info">
+                <span class="section-title">Orders Report</span>
+                <span class="section-desc">View order reports and trends</span>
+              </div>
+            </div>
+            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+
+          <!-- Item 2: Sales Report -->
+          <div class="report-section-item" onclick="openReportDetail('sales')">
+            <div class="section-left-group">
+              <div class="section-icon-badge icon-amber">
+                <span class="rupee-icon">₹</span>
+              </div>
+              <div class="section-text-info">
+                <span class="section-title">Sales Report</span>
+                <span class="section-desc">Track your sales performance</span>
+              </div>
+            </div>
+            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+
+          <!-- Item 3: Subscription Report -->
+          <div class="report-section-item" onclick="openReportDetail('subscriptions')">
+            <div class="section-left-group">
+              <div class="section-icon-badge icon-rose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <div class="section-text-info">
+                <span class="section-title">Subscription Report</span>
+                <span class="section-desc">Subscription analytics and status</span>
+              </div>
+            </div>
+            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+
+          <!-- Item 4: Customer Report -->
+          <div class="report-section-item" onclick="openReportDetail('customers')">
+            <div class="section-left-group">
+              <div class="section-icon-badge icon-purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div class="section-text-info">
+                <span class="section-title">Customer Report</span>
+                <span class="section-desc">Customer growth and activity</span>
+              </div>
+            </div>
+            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+
+          <!-- Item 5: Food Item Report -->
+          <div class="report-section-item" onclick="openReportDetail('fooditems')">
+            <div class="section-left-group">
+              <div class="section-icon-badge icon-rose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1"/>
+                  <path d="M12 4v2"/>
+                  <path d="M6 10a6 6 0 0 1 12 0"/>
+                  <path d="M3 18h18"/>
+                </svg>
+              </div>
+              <div class="section-text-info">
+                <span class="section-title">Food Item Report</span>
+                <span class="section-desc">Top food items and performance</span>
+              </div>
+            </div>
+            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Quick Report Summary Table -->
+      <div class="report-card-panel">
+        <div class="panel-header">
+          <!-- Table / Spreadsheet Icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <line x1="15" y1="3" x2="15" y2="21"/>
+          </svg>
+          <h2>Quick Report Summary</h2>
+        </div>
+
+        <div class="summary-table-container">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th style="width: 44%;">Report Type</th>
+                <th class="col-total" style="width: 32%;">Total</th>
+                <th class="col-change" style="width: 24%;">Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1: Orders -->
+              <tr onclick="openReportDetail('orders')" style="cursor: pointer;">
+                <td>
+                  <span class="table-type-name">Orders</span>
+                </td>
+                <td class="table-total-val" id="sumOrders">1,248</td>
+                <td class="table-change-cell">
+                  <span class="change-pill">↑ +12%</span>
+                </td>
+              </tr>
+
+              <!-- Row 2: Revenue -->
+              <tr onclick="openReportDetail('sales')" style="cursor: pointer;">
+                <td>
+                  <span class="table-type-name">Revenue</span>
+                </td>
+                <td class="table-total-val" id="sumRevenue">₹2,15,750</td>
+                <td class="table-change-cell">
+                  <span class="change-pill">↑ +18%</span>
+                </td>
+              </tr>
+
+              <!-- Row 3: Customers -->
+              <tr onclick="openReportDetail('customers')" style="cursor: pointer;">
+                <td>
+                  <span class="table-type-name">Customers</span>
+                </td>
+                <td class="table-total-val" id="sumCustomers">1,892</td>
+                <td class="table-change-cell">
+                  <span class="change-pill">↑ +14%</span>
+                </td>
+              </tr>
+
+              <!-- Row 4: Subscriptions -->
+              <tr onclick="openReportDetail('subscriptions')" style="cursor: pointer;">
+                <td>
+                  <span class="table-type-name">Subscriptions</span>
+                </td>
+                <td class="table-total-val" id="sumSubscriptions">562</td>
+                <td class="table-change-cell">
+                  <span class="change-pill">↑ +20%</span>
+                </td>
+              </tr>
+
+              <!-- Row 5: Delivered Orders -->
+              <tr onclick="openReportDetail('orders')" style="cursor: pointer;">
+                <td>
+                  <span class="table-type-name">Delivered Orders</span>
+                </td>
+                <td class="table-total-val" id="sumDelivered">569</td>
+                <td class="table-change-cell">
+                  <span class="change-pill">↑ +16%</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ====================================================================
+       Embedded JavaScript Logic
+       ==================================================================== -->
+  <script>
+    /**
+     * Rasoova Kitchen - Reports JavaScript
+     * Full-width interactivity, Dropdown toggles, SweetAlert Detail Views,
+     * Date filtering, and Sign Out authentication handling.
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Notification & Profile Dropdowns ---
+      const notifBtn = document.getElementById('notificationBtn');
+      const notifPopover = document.getElementById('notifPopover');
+      const userBtn = document.getElementById('userProfileBtn');
+      const userPopover = document.getElementById('userPopover');
+
+      if (notifBtn && notifPopover) {
+        notifBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          notifPopover.classList.toggle('active');
+          if (userPopover) userPopover.classList.remove('active');
+        });
+      }
+
+      if (userBtn && userPopover) {
+        userBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          userPopover.classList.toggle('active');
+          if (notifPopover) notifPopover.classList.remove('active');
+        });
+      }
+
+      document.addEventListener('click', () => {
+        if (notifPopover) notifPopover.classList.remove('active');
+        if (userPopover) userPopover.classList.remove('active');
+      });
+
+      // --- Sign Out Functionality ---
+      function handleSignOut() {
+        // Remove token from sessionStorage (and any other admin keys)
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('adminToken');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('userToken');
+        sessionStorage.clear();
+
+        // Clean localStorage if stored
+        localStorage.removeItem('token');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('authToken');
+
+        if (typeof showToast === 'function') {
+          showToast('Signed out successfully! Redirecting...');
+        }
+
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 500);
+      }
+      window.handleSignOut = handleSignOut;
+      window.signOut = handleSignOut;
+
+      const signOutBtn = document.getElementById('signOutBtn');
+      if (signOutBtn) {
+        signOutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSignOut();
+        });
+      }
+
+      // --- Date Range Filter Popup ---
+      const openDateBtn = document.getElementById('openDateRangeFilter');
+      const dateRangeText = document.getElementById('dateRangeText');
+
+      if (openDateBtn) {
+        openDateBtn.addEventListener('click', () => {
+          const dateOptions = [
+            { text: 'Nov 1, 2026 – Nov 30, 2026', label: 'This Month (November 2026)', orders: '1,248', rev: '₹2,15,750', cust: '1,892', subs: '562', del: '569' },
+            { text: 'Oct 1, 2026 – Oct 31, 2026', label: 'Last Month (October 2026)', orders: '1,114', rev: '₹1,82,800', cust: '1,650', subs: '470', del: '490' },
+            { text: 'Q4 2026 (Oct – Dec 2026)', label: 'This Quarter (Q4 2026)', orders: '3,540', rev: '₹5,90,400', cust: '2,420', subs: '680', del: '1,820' },
+            { text: 'Jan 1, 2026 – Nov 30, 2026', label: 'Year to Date (2026)', orders: '12,850', rev: '₹22,40,000', cust: '4,100', subs: '850', del: '11,900' }
+          ];
+
+          const optionsHtml = dateOptions.map((opt, idx) => `
+            <label class="swal-date-option ${idx === 0 ? 'selected' : ''}" data-idx="${idx}">
+              <input type="radio" name="swalDateRadio" value="${idx}" ${idx === 0 ? 'checked' : ''} style="accent-color: #8b193d; width: 16px; height: 16px;">
+              <div style="display: flex; flex-direction: column; text-align: left;">
+                <span style="font-size: 13.5px; font-weight: 700; color: #2b1219;">${opt.label}</span>
+                <span style="font-size: 11.5px; color: #7a6068;">${opt.text}</span>
+              </div>
+            </label>
+          `).join('');
+
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              title: 'Filter Date Range',
+              html: `
+                <div style="text-align: left; font-size: 13px; color: #7a6068; margin-bottom: 12px;">
+                  Select period to aggregate orders, revenue, customers and subscriptions:
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                  ${optionsHtml}
+                </div>
+              `,
+              showCancelButton: true,
+              confirmButtonText: 'Apply Range',
+              cancelButtonText: 'Cancel',
+              confirmButtonColor: '#8b193d',
+              cancelButtonColor: '#6c757d',
+              customClass: {
+                popup: 'rasoova-swal-popup',
+                title: 'rasoova-swal-title',
+                confirmButton: 'rasoova-swal-confirm-btn',
+                cancelButton: 'rasoova-swal-cancel-btn'
+              },
+              didOpen: () => {
+                const popup = Swal.getPopup();
+                const labels = popup.querySelectorAll('.swal-date-option');
+                labels.forEach(lbl => {
+                  lbl.addEventListener('click', () => {
+                    labels.forEach(l => l.classList.remove('selected'));
+                    lbl.classList.add('selected');
+                    const radio = lbl.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+                  });
+                });
+              },
+              preConfirm: () => {
+                const selected = document.querySelector('input[name="swalDateRadio"]:checked');
+                return selected ? selected.value : '0';
+              }
+            }).then((result) => {
+              if (result.isConfirmed) {
+                const opt = dateOptions[parseInt(result.value, 10)] || dateOptions[0];
+                if (dateRangeText) dateRangeText.innerText = opt.text;
+
+                // Update KPI Cards
+                document.getElementById('kpiTotalOrders').innerText = opt.orders;
+                document.getElementById('kpiTotalRevenue').innerText = opt.rev;
+                document.getElementById('kpiTotalCustomers').innerText = opt.cust;
+                document.getElementById('kpiActiveSubs').innerText = opt.subs;
+                document.getElementById('kpiDeliveredOrders').innerText = opt.del;
+
+                // Update Summary Table
+                document.getElementById('sumOrders').innerText = opt.orders;
+                document.getElementById('sumRevenue').innerText = opt.rev;
+                document.getElementById('sumCustomers').innerText = opt.cust;
+                document.getElementById('sumSubscriptions').innerText = opt.subs;
+                document.getElementById('sumDelivered').innerText = opt.del;
+
+                showToast(`Filtered report data for: ${opt.label}`);
+              }
+            });
+          } else {
+            showToast('Date range selected: Nov 1, 2026 – Nov 30, 2026');
+          }
+        });
+      }
+
+      // --- Interactive Report Detail Views (SweetAlert) ---
+      window.openReportDetail = function(reportType) {
+        const reportsConfig = {
+          orders: {
+            title: 'Orders Report & Trends',
+            icon: '🛒',
+            desc: 'Detailed breakdown of customer food orders and fulfillment metrics.',
+            stats: [
+              { label: 'Total Orders', val: '1,248' },
+              { label: 'Dispatched', val: '562' },
+              { label: 'Delivered', val: '569' },
+              { label: 'Pending / Prep', val: '117' }
+            ],
+            highlights: 'Order volume surged by +12% compared to last month. Peak ordering hours: 12:30 PM and 8:30 PM.'
+          },
+          sales: {
+            title: 'Sales & Revenue Performance',
+            icon: '₹',
+            desc: 'Comprehensive financial report including cash, UPI, and subscription revenue.',
+            stats: [
+              { label: 'Gross Revenue', val: '₹2,15,750' },
+              { label: 'Average Order Value', val: '₹348' },
+              { label: 'Online UPI Orders', val: '74%' },
+              { label: 'Net Profit Margin', val: '31.4%' }
+            ],
+            highlights: 'Revenue increased +18% MoM. Bihari Thali and Chicken Biryani generated 58% of total menu income.'
+          },
+          subscriptions: {
+            title: 'Subscriptions Growth & Off-Days',
+            icon: '📅',
+            desc: 'Analytics for weekly and monthly recurring meal subscriptions.',
+            stats: [
+              { label: 'Total Subscribers', val: '260' },
+              { label: 'Active Plans', val: '562' },
+              { label: 'Weekly Plans', val: '186' },
+              { label: 'Monthly Plans', val: '74' }
+            ],
+            highlights: 'Retention rate stands at 89.2%. Most requested off-days: Sunday (64%) and Saturday (28%).'
+          },
+          customers: {
+            title: 'Customer Growth & Retention',
+            icon: '👥',
+            desc: 'User acquisition, registered customer profiles, and location distribution.',
+            stats: [
+              { label: 'Total Customers', val: '1,892' },
+              { label: 'Active Monthly', val: '982' },
+              { label: 'Subscribed Users', val: '216' },
+              { label: 'Repeat Customers', val: '76%' }
+            ],
+            highlights: 'Bhubaneswar regions with highest demand: Satya Vihar, Khandagiri, and Patia.'
+          },
+          fooditems: {
+            title: 'Top Food Items & Kitchen Velocity',
+            icon: '🍲',
+            desc: 'Menu popularity metrics, preparation times, and dish ranking.',
+            stats: [
+              { label: 'Top Item', val: 'Bihari Thali' },
+              { label: 'Runner Up', val: 'Chicken Biryani' },
+              { label: 'Available Dishes', val: '40 / 48' },
+              { label: 'Avg Prep Time', val: '14 Mins' }
+            ],
+            highlights: 'Bihari Special accounts for 34% of all orders, followed by Chicken Biryani at 28%.'
+          }
+        };
+
+        const config = reportsConfig[reportType] || reportsConfig.orders;
+
+        const statsHtml = config.stats.map(s => `
+          <div class="swal-mini-kpi">
+            <span class="swal-mini-kpi-label">${s.label}</span>
+            <span class="swal-mini-kpi-val">${s.val}</span>
+          </div>
+        `).join('');
+
+        const modalHtml = `
+          <div class="swal-report-modal-body">
+            <div style="font-size: 13px; color: #7a6068; line-height: 1.4;">
+              ${config.desc}
+            </div>
+
+            <div class="swal-stat-summary-box">
+              ${statsHtml}
+            </div>
+
+            <div style="background: #fdf2f4; border: 1px dashed #c78b9b; border-radius: 10px; padding: 12px; font-size: 12px; color: #471822; line-height: 1.45;">
+              💡 <strong>Key Insight:</strong> ${config.highlights}
+            </div>
+          </div>
+        `;
+
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: `${config.icon} ${config.title}`,
+            html: modalHtml,
+            showCancelButton: true,
+            confirmButtonText: '📥 Export PDF / CSV',
+            cancelButtonText: 'Close',
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#6c757d',
+            customClass: {
+              popup: 'rasoova-swal-popup',
+              title: 'rasoova-swal-title',
+              confirmButton: 'rasoova-swal-confirm-btn',
+              cancelButton: 'rasoova-swal-cancel-btn'
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              showToast(`Exporting ${config.title} as CSV/PDF...`);
+            }
+          });
+        } else {
+          showToast(`Opened ${config.title}`);
+        }
+      };
+
+      // --- Toast Notification Helper ---
+      window.showToast = function(msg) {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toastContainer';
+          container.className = 'toast-container';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>${msg}</span>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          toast.style.transition = 'all 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 2800);
+      };
+    });
+  </script>
+</body>
+</html>

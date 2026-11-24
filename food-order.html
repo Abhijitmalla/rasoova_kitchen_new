@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rasoova - Food Orders</title>
+  <link rel="icon" type="image/png" href="assets/rasoova_logo_desktop.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- SweetAlert2 Library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* ==========================================================================
+       Rasoova Kitchen - Food Orders Stylesheet (Full Width Single-File)
+       ========================================================================== */
+
+    :root {
+      /* Brand Primary Palette */
+      --primary: #8b193d;
+      --primary-dark: #741231;
+      --primary-light: #9d2248;
+      --primary-subtle: #faeaee;
+      --primary-tint: #fff2f5;
+      --primary-text: #260711;
+
+      /* Neutral & Layout Backgrounds */
+      --bg-body: #fdf7f7;
+      --bg-card: #ffffff;
+      --border-card: #f3e3e6;
+      --border-light: #f6e8ea;
+      --text-main: #200812;
+      --text-secondary: #745b63;
+      --text-muted: #9c838b;
+
+      /* Stat Card 1: Total Orders (Pink/Rose) */
+      --stat-rose-bg: #fff0f3;
+      --stat-rose-border: #fcd9e1;
+      --stat-rose-icon-bg: #ffdbe3;
+      --stat-rose-icon: #b81744;
+
+      /* Stat Card 2: Pending Orders (Amber) */
+      --stat-amber-bg: #fff8ec;
+      --stat-amber-border: #fdecd1;
+      --stat-amber-icon-bg: #fde8cc;
+      --stat-amber-icon: #c26e08;
+
+      /* Stat Card 3: Preparing (Cyan/Blue) */
+      --stat-blue-bg: #f0f8ff;
+      --stat-blue-border: #dbeafe;
+      --stat-blue-icon-bg: #e0f0fe;
+      --stat-blue-icon: #0284c7;
+
+      /* Stat Card 4: Dispatched (Mint Green) */
+      --stat-green-bg: #f0faf4;
+      --stat-green-border: #d7f4e4;
+      --stat-green-icon-bg: #d4f4e1;
+      --stat-green-icon: #15803d;
+
+      /* Stat Card 5: Delivered (Lavender/Purple) */
+      --stat-purple-bg: #faf5ff;
+      --stat-purple-border: #f3e8ff;
+      --stat-purple-icon-bg: #ede9fe;
+      --stat-purple-icon: #7c3aed;
+
+      /* Status Badges */
+      --status-dispatched-bg: #e0f2fe;
+      --status-dispatched-text: #0284c7;
+      --status-delivered-bg: #dcfce7;
+      --status-delivered-text: #16a34a;
+      --status-preparing-bg: #ffedd5;
+      --status-preparing-text: #ea580c;
+      --status-pending-bg: #fef3c7;
+      --status-pending-text: #d97706;
+
+      /* Spacings & Shadows */
+      --radius-xs: 6px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+
+      --shadow-subtle: 0 1px 3px rgba(139, 25, 61, 0.04);
+      --shadow-card: 0 4px 16px rgba(139, 25, 61, 0.04);
+      --shadow-dropdown: 0 12px 30px rgba(139, 25, 61, 0.12);
+      --shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+    }
+
+    /* Reset & Global */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    input, button, select, textarea {
+      font-family: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Full Width Container */
+    .dashboard-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 16px 32px 40px;
+    }
+
+    /* ==========================================================================
+       Header Navbar
+       ========================================================================== */
+    .header-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 6px 0 16px;
+      width: 100%;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      height: 52px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .admin-title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+      font-size: 15.5px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .admin-title-badge svg {
+      color: var(--text-main);
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Search Bar */
+    .search-container {
+      flex: 1;
+      max-width: 520px;
+      position: relative;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      width: 17px;
+      height: 17px;
+      color: #9f8890;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 20px 0 46px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      color: var(--text-main);
+      outline: none;
+      box-shadow: 0 1px 3px rgba(139, 25, 61, 0.03);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .search-input::placeholder {
+      color: #a48f96;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 25, 61, 0.12);
+    }
+
+    /* Header Right Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .notification-btn {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--primary);
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .notification-btn:hover {
+      background-color: var(--primary-subtle);
+      transform: translateY(-1px);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      background-color: #e11d48;
+      border: 1.5px solid #ffffff;
+      border-radius: 50%;
+    }
+
+    .user-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast);
+    }
+
+    .user-profile-btn:hover {
+      background-color: rgba(139, 25, 61, 0.04);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .user-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-chevron {
+      color: var(--text-muted);
+      width: 15px;
+      height: 15px;
+    }
+
+    /* ==========================================================================
+       Secondary Navigation Bar (Tabs) - Full Width
+       ========================================================================== */
+    .secondary-nav {
+      margin-bottom: 22px;
+      width: 100%;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      background-color: #ffffff;
+      padding: 6px 8px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-subtle);
+      gap: 6px;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .nav-tabs li {
+      flex: 1;
+      display: flex;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+
+    .tab-btn svg {
+      width: 17px;
+      height: 17px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(139, 25, 61, 0.25);
+    }
+
+    .tab-btn.active svg {
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       Title & Add Order Section
+       ========================================================================== */
+    .page-title-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .page-title-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .title-cart-icon {
+      color: var(--primary);
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    .title-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .title-text p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .btn-add-manual {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--primary);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(139, 25, 61, 0.2);
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-add-manual:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       5 Stat Cards Grid - Full Width
+       ========================================================================== */
+    .stat-cards-5-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+      width: 100%;
+    }
+
+    .stat-card-item {
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: var(--shadow-subtle);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .stat-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .stat-card-item.card-rose {
+      background-color: var(--stat-rose-bg);
+      border-color: var(--stat-rose-border);
+    }
+
+    .stat-card-item.card-amber {
+      background-color: var(--stat-amber-bg);
+      border-color: var(--stat-amber-border);
+    }
+
+    .stat-card-item.card-blue {
+      background-color: var(--stat-blue-bg);
+      border-color: var(--stat-blue-border);
+    }
+
+    .stat-card-item.card-green {
+      background-color: var(--stat-green-bg);
+      border-color: var(--stat-green-border);
+    }
+
+    .stat-card-item.card-purple {
+      background-color: var(--stat-purple-bg);
+      border-color: var(--stat-purple-border);
+    }
+
+    .stat-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-rose .stat-icon-circle { background-color: var(--stat-rose-icon-bg); color: var(--stat-rose-icon); }
+    .card-amber .stat-icon-circle { background-color: var(--stat-amber-icon-bg); color: var(--stat-amber-icon); }
+    .card-blue .stat-icon-circle { background-color: var(--stat-blue-icon-bg); color: var(--stat-blue-icon); }
+    .card-green .stat-icon-circle { background-color: var(--stat-green-icon-bg); color: var(--stat-green-icon); }
+    .card-purple .stat-icon-circle { background-color: var(--stat-purple-icon-bg); color: var(--stat-purple-icon); }
+
+    .stat-icon-circle svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .stat-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-number {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #3b1923;
+      margin-top: 3px;
+    }
+
+    /* ==========================================================================
+       Filter & Controls Toolbar
+       ========================================================================== */
+    .filters-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .filters-left-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .table-search-box {
+      position: relative;
+      flex: 1;
+      min-width: 280px;
+      max-width: 380px;
+    }
+
+    .table-search-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: #9f8890;
+      pointer-events: none;
+    }
+
+    .table-search-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 16px 0 40px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      box-shadow: var(--shadow-subtle);
+      transition: border-color var(--transition-fast);
+    }
+
+    .table-search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .filter-select-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .filter-select-wrapper svg.prefix-icon {
+      position: absolute;
+      left: 12px;
+      width: 15px;
+      height: 15px;
+      color: #dc2626;
+      pointer-events: none;
+    }
+
+    .filter-select {
+      height: 40px;
+      padding: 0 32px 0 14px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-subtle);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .filter-select.has-prefix {
+      padding-left: 34px;
+    }
+
+    .filter-select-wrapper svg.chevron-icon {
+      position: absolute;
+      right: 12px;
+      width: 13px;
+      height: 13px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-date-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 16px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-subtle);
+      transition: all var(--transition-fast);
+    }
+
+    .filter-date-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .filter-date-btn svg {
+      width: 15px;
+      height: 15px;
+      color: var(--primary);
+    }
+
+    .filter-date-btn .chevron-icon {
+      width: 13px;
+      height: 13px;
+      color: var(--text-muted);
+    }
+
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 20px;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(139, 25, 61, 0.2);
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-export:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-export svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ==========================================================================
+       Full Width Orders Table
+       ========================================================================== */
+    .table-container-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-subtle);
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .food-orders-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .food-orders-table thead tr th {
+      background-color: var(--primary);
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 14px 16px;
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+      border: none;
+    }
+
+    .food-orders-table thead tr th input[type="checkbox"],
+    .food-orders-table tbody tr td input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .food-orders-table tbody tr {
+      transition: background-color var(--transition-fast);
+    }
+
+    .food-orders-table tbody tr:hover {
+      background-color: #fff9fa;
+    }
+
+    .food-orders-table tbody tr td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-main);
+      font-size: 12.5px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .food-orders-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Food Item Column */
+    .food-item-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .food-thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      border: 1.5px solid #ffffff;
+      background-color: #fcebee;
+      flex-shrink: 0;
+    }
+
+    .food-item-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Code & Amount Highlights */
+    .food-code-badge {
+      color: #b81744;
+      font-weight: 700;
+    }
+
+    .amount-cell {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Contact Phone */
+    .phone-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+    }
+
+    .phone-cell svg {
+      width: 14px;
+      height: 14px;
+      color: #b81744;
+    }
+
+    /* Location Address */
+    .location-cell {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .location-cell svg {
+      width: 15px;
+      height: 15px;
+      color: #dc2626;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .address-lines {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+
+    .address-line1 {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .address-line2 {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Date & Time */
+    .datetime-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .datetime-cell svg {
+      width: 14px;
+      height: 14px;
+      color: #b81744;
+    }
+
+    /* Status Pills */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-pill.dispatched { background-color: var(--status-dispatched-bg); color: var(--status-dispatched-text); }
+    .status-pill.delivered { background-color: var(--status-delivered-bg); color: var(--status-delivered-text); }
+    .status-pill.preparing { background-color: var(--status-preparing-bg); color: var(--status-preparing-text); }
+    .status-pill.pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+
+    .status-pill svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* Actions */
+    .actions-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .action-btn.edit {
+      color: #b81744;
+    }
+
+    .action-btn.edit:hover {
+      background-color: var(--primary-tint);
+      transform: scale(1.1);
+    }
+
+    .action-btn.delete {
+      color: #dc2626;
+    }
+
+    .action-btn.delete:hover {
+      background-color: #fee2e2;
+      transform: scale(1.1);
+    }
+
+    .action-btn svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* ==========================================================================
+       Table Footer: Pagination & Counts
+       ========================================================================== */
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 4px;
+      flex-wrap: wrap;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .pagination-count {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-card);
+      background-color: #ffffff;
+      color: var(--text-main);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .page-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .page-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(139, 25, 61, 0.2);
+    }
+
+    /* ==========================================================================
+       Modal: Add Manual Order
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(32, 8, 18, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 520px;
+      box-shadow: var(--shadow-modal);
+      border: 1px solid var(--border-card);
+      overflow: hidden;
+      transform: scale(0.95);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-overlay.open .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      background: var(--bg-body);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 9px 14px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      background: var(--bg-body);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      padding: 8px 16px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      padding: 8px 18px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #200812;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideInToast {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Dropdown Popovers */
+    .dropdown-popover {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dropdown);
+      width: 280px;
+      padding: 12px;
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-popover.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .popover-header {
+      font-size: 13px;
+      font-weight: 700;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .popover-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .popover-item {
+      font-size: 12px;
+      padding: 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-body);
+      color: var(--text-secondary);
+    }
+
+    .popover-item strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1200px) {
+      .stat-cards-5-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .stat-cards-5-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-card-item:last-child {
+        grid-column: 1 / -1;
+        width: calc((100% - 18px) / 2);
+        justify-self: center;
+      }
+
+      .filters-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .table-search-box {
+        max-width: 100%;
+      }
+
+      .nav-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        overflow: visible;
+      }
+
+      .nav-tabs li {
+        min-width: 0;
+      }
+
+      .tab-btn {
+        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+        padding: 9px 8px;
+        gap: 6px;
+        font-size: 11px;
+        white-space: normal;
+      }
+
+      .table-responsive {
+        overflow: visible;
+      }
+
+      .food-orders-table {
+        display: block;
+        min-width: 0;
+      }
+
+      .food-orders-table thead {
+        display: none;
+      }
+
+      .food-orders-table tbody {
+        display: grid;
+        gap: 10px;
+      }
+
+      .food-orders-table tbody tr {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 6px;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        background: #ffffff;
+      }
+
+      .food-orders-table tbody tr:hover {
+        background: #ffffff;
+      }
+
+      .food-orders-table tbody tr td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        min-width: 0;
+        padding: 8px;
+        border-bottom: none;
+        overflow-wrap: anywhere;
+        white-space: normal;
+      }
+
+      .food-orders-table tbody tr td::before {
+        color: var(--text-muted);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .food-orders-table tbody tr td:nth-child(1) {
+        grid-column: 1 / -1;
+        align-items: flex-end;
+        padding: 2px 6px;
+      }
+
+      .food-orders-table tbody tr td:nth-child(2)::before { content: "Order ID"; }
+      .food-orders-table tbody tr td:nth-child(3)::before { content: "Food Code"; }
+      .food-orders-table tbody tr td:nth-child(4)::before { content: "Food Item"; }
+      .food-orders-table tbody tr td:nth-child(5)::before { content: "Customer"; }
+      .food-orders-table tbody tr td:nth-child(6)::before { content: "Phone"; }
+      .food-orders-table tbody tr td:nth-child(7)::before { content: "Location"; }
+      .food-orders-table tbody tr td:nth-child(8)::before { content: "Order Date"; }
+      .food-orders-table tbody tr td:nth-child(9)::before { content: "Amount"; }
+      .food-orders-table tbody tr td:nth-child(10)::before { content: "Status"; }
+      .food-orders-table tbody tr td:nth-child(11)::before { content: "Actions"; }
+
+      .food-orders-table tbody tr td[colspan] {
+        display: block;
+        grid-column: 1 / -1;
+      }
+
+      .food-orders-table tbody tr td[colspan]::before {
+        content: none;
+      }
+
+      .food-orders-table .food-item-cell,
+      .food-orders-table .location-cell,
+      .food-orders-table .datetime-cell,
+      .food-orders-table .phone-cell {
+        align-items: flex-start;
+        white-space: normal;
+      }
+
+      .table-footer {
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .pagination-controls {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stat-cards-5-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .header-navbar {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-bottom: 14px;
+      }
+
+      .brand-section {
+        gap: 12px;
+      }
+
+      .search-container {
+        order: 3;
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+
+      .header-actions {
+        gap: 8px;
+      }
+
+      .dashboard-container {
+        padding: 12px 16px 30px;
+      }
+
+      .page-title-section {
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .page-title-content {
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .title-cart-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .title-text h1 {
+        font-size: 20px;
+      }
+
+      .title-text p {
+        font-size: 12px;
+      }
+
+      .btn-add-manual,
+      .btn-export {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .filters-left-group {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        width: 100%;
+      }
+
+      .table-search-box,
+      .filter-date-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+      }
+
+      .filter-select-wrapper {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .filter-select {
+        width: 100%;
+        min-width: 0;
+        font-size: 12px;
+      }
+
+      .filter-date-btn {
+        height: auto;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .filter-date-btn span {
+        min-width: 0;
+      }
+
+      .table-container-card {
+        padding: 8px;
+      }
+
+      .modal-container {
+        width: calc(100% - 24px);
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .toast-container {
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+      }
+
+      .toast {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-container {
+        padding: 10px 12px 24px;
+      }
+
+      .brand-logo {
+        height: 40px;
+      }
+
+      .header-actions {
+        gap: 6px;
+      }
+
+      .notification-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .user-profile-btn {
+        padding: 2px;
+      }
+
+      .user-info,
+      .profile-chevron {
+        display: none;
+      }
+
+      .stat-card-item {
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .stat-icon-circle {
+        width: 40px;
+        height: 40px;
+      }
+
+      .stat-icon-circle svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .stat-number {
+        font-size: 22px;
+      }
+
+      .stat-title {
+        font-size: 11px;
+      }
+
+      .table-search-box {
+        min-width: 0;
+      }
+
+      .modal-header,
+      .modal-body {
+        padding-right: 18px;
+        padding-left: 18px;
+      }
+
+      .modal-footer {
+        padding: 14px 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .filters-left-group {
+        grid-template-columns: 1fr;
+      }
+
+      .table-search-box,
+      .filter-date-btn {
+        grid-column: 1;
+      }
+    }
+
+    /* ==========================================================================
+       SweetAlert2 Custom Styling - Rasoova Kitchen Theme
+       ========================================================================== */
+    .rasoova-swal-popup {
+      border-radius: 20px !important;
+      font-family: var(--font-sans) !important;
+      padding: 24px 22px !important;
+      box-shadow: 0 20px 50px rgba(71, 24, 34, 0.28) !important;
+      background: #ffffff !important;
+      border: 1px solid #ebd5da !important;
+      max-width: 480px !important;
+    }
+
+    .rasoova-swal-title {
+      color: #3b0f19 !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      padding: 0 0 10px 0 !important;
+    }
+
+    .swal-order-summary {
+      background: #fbf6f7;
+      border: 1px solid #f0e1e4;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .swal-order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swal-order-label {
+      color: #7a6068;
+      font-size: 12px;
+    }
+
+    .swal-order-val {
+      color: #2b1219;
+    }
+
+    .swal-status-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      width: 100%;
+    }
+
+    .swal-status-choice {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #ebd5da;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      position: relative;
+      text-align: left;
+    }
+
+    .swal-status-choice input[type="radio"] {
+      margin-right: 12px;
+      accent-color: #8b193d;
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+    }
+
+    .status-choice-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .status-choice-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .status-choice-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .status-choice-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .status-choice-desc {
+      font-size: 11.5px;
+      color: #806870;
+      line-height: 1.2;
+    }
+
+    /* Distinctive status colors */
+    .choice-dispatched .status-choice-icon { background: #e0f2fe; color: #0369a1; }
+    .choice-dispatched .status-choice-title { color: #0369a1; }
+
+    .choice-delivered .status-choice-icon { background: #dcfce7; color: #15803d; }
+    .choice-delivered .status-choice-title { color: #15803d; }
+
+    .choice-preparing .status-choice-icon { background: #ffedd5; color: #c2410c; }
+    .choice-preparing .status-choice-title { color: #c2410c; }
+
+    .choice-pending .status-choice-icon { background: #fef3c7; color: #b45309; }
+    .choice-pending .status-choice-title { color: #b45309; }
+
+    .swal-status-choice:hover {
+      background: #fff8f9;
+      border-color: #c78b9b;
+      transform: translateY(-1px);
+    }
+
+    .swal-status-choice.selected {
+      border-color: #8b193d;
+      background: #fdf2f4;
+      box-shadow: 0 0 0 2px rgba(139, 25, 61, 0.15);
+    }
+
+    .rasoova-swal-confirm-btn {
+      background-color: #8b193d !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      padding: 10px 24px !important;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .rasoova-swal-confirm-btn:hover {
+      background-color: #741231 !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .rasoova-swal-cancel-btn {
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      padding: 10px 20px !important;
+      background-color: #f3e8eb !important;
+      color: #664a52 !important;
+    }
+
+    .rasoova-swal-cancel-btn:hover {
+      background-color: #e5d5d9 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- ====================================================================
+         Top Header Navigation
+         ==================================================================== -->
+    <header class="header-navbar">
+      <!-- Brand & Admin Title -->
+      <div class="brand-section">
+        <a href="index.html" class="brand-logo-link">
+          <img 
+            src="assets/rasoova_logo_desktop.png" 
+            alt="Rasoova Kitchen Logo" 
+            class="brand-logo"
+            onerror="this.onerror=null; this.src='D:/rasoova-kitchen/assets/rasoova_logo_desktop.png';"
+          >
+        </a>
+     
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            id="topSearchInput" 
+            class="search-input" 
+            placeholder="Search orders, customers, food codes..."
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <!-- Header Actions: Notifications & User Profile -->
+      <div class="header-actions">
+        <!-- Notification Button & Popover -->
+        <div style="position: relative;">
+          <button class="notification-btn" id="notificationBtn" title="Notifications" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="notification-badge"></span>
+          </button>
+          
+          <div class="dropdown-popover" id="notifPopover">
+            <div class="popover-header">Notifications (3 new)</div>
+            <ul class="popover-list">
+              <li class="popover-item">
+                <strong>New Order #ORD-1024</strong>
+                Bihari Thali placed by Anita Das.
+              </li>
+              <li class="popover-item">
+                <strong>Delivery Dispatched</strong>
+                Order #ORD-1024 out for delivery.
+              </li>
+              <li class="popover-item">
+                <strong>Status Update</strong>
+                Paneer Curry #ORD-1022 now Preparing.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div style="position: relative;">
+          <button class="user-profile-btn" id="userProfileBtn">
+            <div class="user-avatar">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+            <div class="user-info">
+              <span class="user-name">Admin</span>
+              <span class="user-role">Super Admin</span>
+            </div>
+            <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <div class="dropdown-popover" id="userPopover">
+            <div class="popover-header">Super Admin Account</div>
+            <ul class="popover-list">
+              <li class="popover-item" style="cursor: pointer;" onclick="showToast('Opened Account Settings')">Account Settings</li>
+              <li class="popover-item" style="cursor: pointer;" onclick="showToast('Activity Logs')">Activity Logs</li>
+              <li class="popover-item" id="signOutBtn" style="cursor: pointer; color: #dc2626; display: flex; align-items: center; gap: 8px; font-weight: 600;" onclick="handleSignOut()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Sign Out</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         Secondary Navigation Tabs - Full Width
+         ==================================================================== -->
+    <nav class="secondary-nav" aria-label="Main Navigation">
+      <ul class="nav-tabs">
+        <li>
+          <a href="index.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="food-order.html" class="tab-btn active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"/>
+              <circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span>Food Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href="subscription.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>Subscriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="food-item.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1"/>
+              <path d="M12 4v2"/>
+              <path d="M6 10a6 6 0 0 1 12 0"/>
+              <path d="M3 18h18"/>
+            </svg>
+            <span>Food Items</span>
+          </a>
+        </li>
+        <li>
+          <a href="customer.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>Customers</span>
+          </a>
+        </li>
+        <li>
+          <a href="report.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span>Reports</span>
+          </a>
+        </li>
+     
+      </ul>
+    </nav>
+
+    <!-- ====================================================================
+         Title & Add Order Section
+         ==================================================================== -->
+    <section class="page-title-section">
+      <div class="page-title-content">
+        <!-- Prominent Shopping Cart Icon -->
+        <svg class="title-cart-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+        <div class="title-text">
+          <h1>Food Orders</h1>
+          <p>Manage and track all food orders, from preparation to delivery.</p>
+        </div>
+      </div>
+
+      <button class="btn-add-manual" id="openAddOrderModal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        <span>+ Add Manual Order</span>
+      </button>
+    </section>
+
+    <!-- ====================================================================
+         5 Stat Metric Cards Grid
+         ==================================================================== -->
+    <section class="stat-cards-5-grid">
+      <!-- Card 1: Total Orders -->
+      <div class="stat-card-item card-rose">
+        <div class="stat-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number">1,248</span>
+          <span class="stat-title">Total Orders</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Pending -->
+      <div class="stat-card-item card-amber">
+        <div class="stat-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number">117</span>
+          <span class="stat-title">Pending</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Preparing -->
+      <div class="stat-card-item card-blue">
+        <div class="stat-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/>
+            <path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number">92</span>
+          <span class="stat-title">Preparing</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Dispatched -->
+      <div class="stat-card-item card-green">
+        <div class="stat-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"/>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/>
+            <circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number">562</span>
+          <span class="stat-title">Dispatched</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Delivered -->
+      <div class="stat-card-item card-purple">
+        <div class="stat-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-texts">
+          <span class="stat-number">569</span>
+          <span class="stat-title">Delivered</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Filter & Controls Toolbar
+         ==================================================================== -->
+    <section class="filters-toolbar">
+      <div class="filters-left-group">
+        <!-- Search Field -->
+        <div class="table-search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            id="orderTableSearch" 
+            class="table-search-input" 
+            placeholder="Search by Order ID, Food Code, Customer, Phone..."
+            autocomplete="off"
+          >
+        </div>
+
+        <!-- Status Filter Dropdown -->
+        <div class="filter-select-wrapper">
+          <select id="statusFilter" class="filter-select">
+            <option value="All">All Status</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Pending">Pending</option>
+          </select>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+
+        <!-- Locations Filter Dropdown -->
+        <div class="filter-select-wrapper">
+          <svg class="prefix-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <select id="locationFilter" class="filter-select has-prefix">
+            <option value="All">All Locations</option>
+            <option value="Satya Vihar">Satya Vihar</option>
+            <option value="Khandagiri">Khandagiri</option>
+            <option value="Jaydev Vihar">Jaydev Vihar</option>
+            <option value="Patia">Patia</option>
+            <option value="Chandrasekharpur">Chandrasekharpur</option>
+          </select>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+
+        <!-- Date Range Filter Pill -->
+        <button class="filter-date-btn" id="orderDateFilterBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Nov 1, 2026 – Nov 30, 2026</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Export Button -->
+      <button class="btn-export" id="exportOrdersBtn" title="Export Orders Data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Export</span>
+      </button>
+    </section>
+
+    <!-- ====================================================================
+         Full Width Orders Table
+         ==================================================================== -->
+    <div class="table-container-card">
+      <div class="table-responsive">
+        <table class="food-orders-table">
+          <thead>
+            <tr>
+              <th style="width: 44px; text-align: center;">
+                <input type="checkbox" id="selectAllCheckbox" title="Select All">
+              </th>
+              <th>Order ID</th>
+              <th>Food Code</th>
+              <th>Food Item</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Location (Delivery Address)</th>
+              <th>Order Date & Time</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <!-- Dynamically populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         Table Footer: Pagination & Counts
+         ==================================================================== -->
+    <div class="table-footer">
+      <div class="pagination-count" id="paginationCountText">
+        Showing 1 – 5 of 1,248 orders
+      </div>
+
+      <div class="pagination-controls">
+        <button class="page-btn" onclick="showToast('Previous Page')">«</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn" onclick="showToast('Page 2')">2</button>
+        <button class="page-btn" onclick="showToast('Page 3')">3</button>
+        <button class="page-btn" onclick="showToast('Page 4')">4</button>
+        <button class="page-btn" onclick="showToast('Page 5')">5</button>
+        <button class="page-btn" onclick="showToast('Next Page')">»</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ====================================================================
+       Modal: Add Manual Order
+       ==================================================================== -->
+  <div class="modal-overlay" id="addOrderModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>+ Add Manual Food Order</h3>
+        <button class="modal-close-btn" id="closeAddOrderBtn">&times;</button>
+      </div>
+      <form id="addOrderForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="orderCustomer">Customer Name</label>
+            <input type="text" id="orderCustomer" placeholder="e.g. Ramesh Chandra" required>
+          </div>
+          <div class="form-group">
+            <label for="orderPhone">Phone Number</label>
+            <input type="text" id="orderPhone" placeholder="e.g. +91 98765 00000" required>
+          </div>
+          <div class="form-group">
+            <label for="orderItem">Food Item & Quantity</label>
+            <input type="text" id="orderItem" placeholder="e.g. Bihari Thali ×1" required>
+          </div>
+          <div class="form-group">
+            <label for="orderAddress">Delivery Address & Pin Code</label>
+            <input type="text" id="orderAddress" placeholder="e.g. Nayapalli, Bhubaneswar, Pin - 751012" required>
+          </div>
+          <div class="form-group">
+            <label for="orderAmount">Amount (₹)</label>
+            <input type="text" id="orderAmount" placeholder="e.g. ₹299" required>
+          </div>
+          <div class="form-group">
+            <label for="orderStatus">Initial Status</label>
+            <select id="orderStatus">
+              <option value="Preparing" selected>Preparing</option>
+              <option value="Pending">Pending</option>
+              <option value="Dispatched">Dispatched</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="cancelAddOrderBtn">Cancel</button>
+          <button type="submit" class="btn-primary">Create Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ====================================================================
+       Embedded JavaScript Logic
+       ==================================================================== -->
+  <script>
+    /**
+     * Rasoova Kitchen - Food Orders JavaScript
+     * Full-width interactivity, filtering, row selection, editing, adding orders, export
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Food Orders Data Store ---
+      let ordersData = [
+        {
+          id: 'ORD-1024',
+          code: 'FD-001',
+          item: 'Bihari Thali ×1',
+          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
+          customer: 'Anita Das',
+          phone: '+91 98765 43210',
+          address1: 'Satya Vihar, Bhubaneswar',
+          address2: 'Pin - 751007',
+          dateTime: 'Nov 30, 2026, 11:20 AM',
+          amount: '₹299',
+          status: 'Dispatched',
+          statusClass: 'dispatched',
+          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`
+        },
+        {
+          id: 'ORD-1023',
+          code: 'FD-005',
+          item: 'Chicken Biryani ×2',
+          thumb: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=120&q=80',
+          customer: 'Rahul Sen',
+          phone: '+91 87654 32109',
+          address1: 'Khandagiri, Bhubaneswar',
+          address2: 'Pin - 751030',
+          dateTime: 'Nov 30, 2026, 10:45 AM',
+          amount: '₹598',
+          status: 'Delivered',
+          statusClass: 'delivered',
+          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+        },
+        {
+          id: 'ORD-1022',
+          code: 'FD-002',
+          item: 'Paneer Curry ×1',
+          thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=120&q=80',
+          customer: 'Sumi Patnaik',
+          phone: '+91 76543 21098',
+          address1: 'Jaydev Vihar, Bhubaneswar',
+          address2: 'Pin - 751013',
+          dateTime: 'Nov 30, 2026, 10:10 AM',
+          amount: '₹249',
+          status: 'Preparing',
+          statusClass: 'preparing',
+          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`
+        },
+        {
+          id: 'ORD-1021',
+          code: 'FD-004',
+          item: 'Veg Thali ×1',
+          thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
+          customer: 'Vikram Sahu',
+          phone: '+91 65432 10987',
+          address1: 'Patia, Bhubaneswar',
+          address2: 'Pin - 751024',
+          dateTime: 'Nov 30, 2026, 09:55 AM',
+          amount: '₹199',
+          status: 'Pending',
+          statusClass: 'pending',
+          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`
+        },
+        {
+          id: 'ORD-1020',
+          code: 'FD-003',
+          item: 'Mutton Thali ×1',
+          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
+          customer: 'Priya Mohanty',
+          phone: '+91 94321 09876',
+          address1: 'Chandrasekharpur, Bhubaneswar',
+          address2: 'Pin - 751016',
+          dateTime: 'Nov 30, 2026, 09:30 AM',
+          amount: '₹399',
+          status: 'Delivered',
+          statusClass: 'delivered',
+          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+        }
+      ];
+
+      const tbody = document.getElementById('ordersTableBody');
+      const tableSearch = document.getElementById('orderTableSearch');
+      const topSearch = document.getElementById('topSearchInput');
+      const statusFilter = document.getElementById('statusFilter');
+      const locationFilter = document.getElementById('locationFilter');
+      const selectAll = document.getElementById('selectAllCheckbox');
+      const paginationText = document.getElementById('paginationCountText');
+
+      // --- Render Table Rows ---
+      function renderOrders(data = ordersData) {
+        if (!tbody) return;
+
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">No matching food orders found.</td></tr>`;
+          if (paginationText) paginationText.innerText = 'Showing 0 orders';
+          return;
+        }
+
+        tbody.innerHTML = data.map(order => `
+          <tr data-id="${order.id}">
+            <td style="text-align: center;">
+              <input type="checkbox" class="row-checkbox" value="${order.id}">
+            </td>
+            <td><strong>${order.id}</strong></td>
+            <td><span class="food-code-badge">${order.code}</span></td>
+            <td>
+              <div class="food-item-cell">
+                <img 
+                  src="${order.thumb}" 
+                  alt="${order.item}" 
+                  class="food-thumb"
+                  onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'38\\' height=\\'38\\' viewBox=\\'0 0 24 24\\' fill=\\'%23fcd2dc\\'><circle cx=\\'12\\' cy=\\'12\\' r=\\'10\\'/></svg>';"
+                >
+                <span class="food-item-name">${order.item}</span>
+              </div>
+            </td>
+            <td>${order.customer}</td>
+            <td>
+              <span class="phone-cell">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                ${order.phone}
+              </span>
+            </td>
+            <td>
+              <div class="location-cell">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div class="address-lines">
+                  <span class="address-line1">${order.address1}</span>
+                  <span class="address-line2">${order.address2}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="datetime-cell">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                ${order.dateTime}
+              </span>
+            </td>
+            <td><span class="amount-cell">${order.amount}</span></td>
+            <td>
+              <span class="status-pill ${order.statusClass}">
+                ${order.statusIcon}
+                ${order.status}
+              </span>
+            </td>
+            <td style="text-align: center;">
+              <div class="actions-cell">
+                <button class="action-btn edit" onclick="window.editOrder('${order.id}')" title="Edit Order">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="action-btn delete" onclick="window.deleteOrder('${order.id}')" title="Delete Order">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+
+        if (paginationText) {
+          paginationText.innerText = `Showing 1 – ${data.length} of 1,248 orders`;
+        }
+      }
+
+      // Initial Table Render
+      renderOrders();
+
+      // --- Filter Logic ---
+      function applyFilters() {
+        const query = (tableSearch ? tableSearch.value : (topSearch ? topSearch.value : '')).toLowerCase().trim();
+        const selectedStatus = statusFilter ? statusFilter.value : 'All';
+        const selectedLocation = locationFilter ? locationFilter.value : 'All';
+
+        const filtered = ordersData.filter(o => {
+          const matchQuery = 
+            o.id.toLowerCase().includes(query) ||
+            o.code.toLowerCase().includes(query) ||
+            o.customer.toLowerCase().includes(query) ||
+            o.item.toLowerCase().includes(query) ||
+            o.phone.toLowerCase().includes(query) ||
+            o.address1.toLowerCase().includes(query);
+
+          const matchStatus = (selectedStatus === 'All') || (o.status.toLowerCase() === selectedStatus.toLowerCase());
+          const matchLoc = (selectedLocation === 'All') || (o.address1.toLowerCase().includes(selectedLocation.toLowerCase()));
+
+          return matchQuery && matchStatus && matchLoc;
+        });
+
+        renderOrders(filtered);
+      }
+
+      if (tableSearch) tableSearch.addEventListener('input', applyFilters);
+      if (topSearch) topSearch.addEventListener('input', (e) => {
+        if (tableSearch) tableSearch.value = e.target.value;
+        applyFilters();
+      });
+      if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+      if (locationFilter) locationFilter.addEventListener('change', applyFilters);
+
+      // --- Select All Checkbox ---
+      if (selectAll) {
+        selectAll.addEventListener('change', (e) => {
+          const isChecked = e.target.checked;
+          document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = isChecked;
+          });
+        });
+      }
+
+      // --- Date Filter Button ---
+      const dateFilterBtn = document.getElementById('orderDateFilterBtn');
+      if (dateFilterBtn) {
+        dateFilterBtn.addEventListener('click', () => {
+          showToast('Date range active: Nov 1, 2026 – Nov 30, 2026');
+        });
+      }
+
+      // --- Export Orders ---
+      const exportBtn = document.getElementById('exportOrdersBtn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+          let csv = 'Order ID,Food Code,Food Item,Customer,Phone,Address,Date,Amount,Status\n';
+          ordersData.forEach(o => {
+            csv += `"${o.id}","${o.code}","${o.item}","${o.customer}","${o.phone}","${o.address1} ${o.address2}","${o.dateTime}","${o.amount}","${o.status}"\n`;
+          });
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `rasoova_orders_${Date.now()}.csv`;
+          a.click();
+          showToast('Food Orders exported to CSV successfully!');
+        });
+      }
+
+      // --- Add Manual Order Modal ---
+      const addModal = document.getElementById('addOrderModal');
+      const openAddBtn = document.getElementById('openAddOrderModal');
+      const closeAddBtn = document.getElementById('closeAddOrderBtn');
+      const cancelAddBtn = document.getElementById('cancelAddOrderBtn');
+      const addOrderForm = document.getElementById('addOrderForm');
+
+      function openModal() { if (addModal) addModal.classList.add('open'); }
+      function closeModal() { if (addModal) addModal.classList.remove('open'); }
+
+      if (openAddBtn) openAddBtn.addEventListener('click', openModal);
+      if (closeAddBtn) closeAddBtn.addEventListener('click', closeModal);
+      if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeModal);
+
+      if (addOrderForm) {
+        addOrderForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const customer = document.getElementById('orderCustomer').value;
+          const phone = document.getElementById('orderPhone').value;
+          const item = document.getElementById('orderItem').value;
+          const address = document.getElementById('orderAddress').value;
+          const amount = document.getElementById('orderAmount').value;
+          const status = document.getElementById('orderStatus').value;
+
+          const newIdNum = 1025 + ordersData.length;
+          const newCodeNum = String(ordersData.length + 1).padStart(3, '0');
+
+          let icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+          if (status === 'Dispatched') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`;
+          else if (status === 'Preparing') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`;
+          else if (status === 'Pending') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
+
+          const newOrder = {
+            id: `ORD-${newIdNum}`,
+            code: `FD-${newCodeNum}`,
+            item: item,
+            thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
+            customer: customer,
+            phone: phone,
+            address1: address.split(',')[0] || address,
+            address2: address.split(',')[1] || 'Bhubaneswar',
+            dateTime: 'Nov 30, 2026, Just now',
+            amount: amount.startsWith('₹') ? amount : `₹${amount}`,
+            status: status,
+            statusClass: status.toLowerCase(),
+            statusIcon: icon
+          };
+
+          ordersData.unshift(newOrder);
+          renderOrders();
+          closeModal();
+          addOrderForm.reset();
+          showToast(`Order #${newOrder.id} added successfully!`);
+        });
+      }
+
+      // Helper function to return SVG icon for status
+      function getStatusSvg(status) {
+        switch (status) {
+          case 'Dispatched':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`;
+          case 'Delivered':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+          case 'Preparing':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`;
+          case 'Pending':
+          default:
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
+        }
+      }
+
+      // --- Global Edit & Delete Handlers with SweetAlert2 ---
+      window.deleteOrder = function(orderId) {
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Delete Order?',
+            html: `Are you sure you want to delete order <strong style="color: #8b193d;">${orderId}</strong>?<br><span style="font-size: 12px; color: #888;">This order will be permanently removed from the system.</span>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6c757d',
+            customClass: {
+              popup: 'rasoova-swal-popup',
+              title: 'rasoova-swal-title',
+              confirmButton: 'rasoova-swal-confirm-btn',
+              cancelButton: 'rasoova-swal-cancel-btn'
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              ordersData = ordersData.filter(o => o.id !== orderId);
+              renderOrders();
+              Swal.fire({
+                icon: 'success',
+                title: 'Order Deleted!',
+                text: `Order ${orderId} has been removed.`,
+                timer: 1800,
+                showConfirmButton: false,
+                customClass: { popup: 'rasoova-swal-popup' }
+              });
+            }
+          });
+        } else {
+          if (confirm(`Are you sure you want to delete order ${orderId}?`)) {
+            ordersData = ordersData.filter(o => o.id !== orderId);
+            renderOrders();
+            showToast(`Order ${orderId} deleted successfully.`);
+          }
+        }
+      };
+
+      window.editOrder = function(orderId) {
+        const order = ordersData.find(o => o.id === orderId);
+        if (!order) return;
+
+        const currentStatus = order.status;
+
+        // Custom SweetAlert content with status options: Dispatched, Delivered, Preparing, Pending
+        const statusHtml = `
+          <div class="swal-order-summary">
+            <div class="swal-order-row">
+              <span class="swal-order-label">Order ID:</span>
+              <span class="swal-order-val" style="color: #8b193d; font-weight: 700;">${order.id}</span>
+            </div>
+            <div class="swal-order-row">
+              <span class="swal-order-label">Customer:</span>
+              <span class="swal-order-val"><strong>${order.customer}</strong> (${order.phone})</span>
+            </div>
+            <div class="swal-order-row">
+              <span class="swal-order-label">Food Item:</span>
+              <span class="swal-order-val">${order.item} &bull; <strong>${order.amount}</strong></span>
+            </div>
+            <div class="swal-order-row">
+              <span class="swal-order-label">Current Status:</span>
+              <span class="status-pill ${order.statusClass}" style="display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;">
+                ${order.statusIcon}
+                ${order.status}
+              </span>
+            </div>
+          </div>
+
+          <div style="text-align: left; margin: 16px 0 8px 2px; font-size: 13px; font-weight: 700; color: #471822;">
+            Select New Status:
+          </div>
+
+          <div class="swal-status-options">
+            <label class="swal-status-choice ${currentStatus === 'Dispatched' ? 'selected' : ''}" data-status="Dispatched">
+              <input type="radio" name="orderStatusRadio" value="Dispatched" ${currentStatus === 'Dispatched' ? 'checked' : ''}>
+              <div class="status-choice-content choice-dispatched">
+                <div class="status-choice-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="status-choice-info">
+                  <span class="status-choice-title">Dispatched</span>
+                  <span class="status-choice-desc">On the way with delivery rider</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="swal-status-choice ${currentStatus === 'Delivered' ? 'selected' : ''}" data-status="Delivered">
+              <input type="radio" name="orderStatusRadio" value="Delivered" ${currentStatus === 'Delivered' ? 'checked' : ''}>
+              <div class="status-choice-content choice-delivered">
+                <div class="status-choice-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="status-choice-info">
+                  <span class="status-choice-title">Delivered</span>
+                  <span class="status-choice-desc">Successfully received by customer</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="swal-status-choice ${currentStatus === 'Preparing' ? 'selected' : ''}" data-status="Preparing">
+              <input type="radio" name="orderStatusRadio" value="Preparing" ${currentStatus === 'Preparing' ? 'checked' : ''}>
+              <div class="status-choice-content choice-preparing">
+                <div class="status-choice-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>
+                </div>
+                <div class="status-choice-info">
+                  <span class="status-choice-title">Preparing</span>
+                  <span class="status-choice-desc">Cooking in kitchen</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="swal-status-choice ${currentStatus === 'Pending' ? 'selected' : ''}" data-status="Pending">
+              <input type="radio" name="orderStatusRadio" value="Pending" ${currentStatus === 'Pending' ? 'checked' : ''}>
+              <div class="status-choice-content choice-pending">
+                <div class="status-choice-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                </div>
+                <div class="status-choice-info">
+                  <span class="status-choice-title">Pending</span>
+                  <span class="status-choice-desc">Awaiting kitchen confirmation</span>
+                </div>
+              </div>
+            </label>
+          </div>
+        `;
+
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Update Order Status',
+            html: statusHtml,
+            showCancelButton: true,
+            confirmButtonText: 'Update Status',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#6c757d',
+            customClass: {
+              popup: 'rasoova-swal-popup',
+              title: 'rasoova-swal-title',
+              confirmButton: 'rasoova-swal-confirm-btn',
+              cancelButton: 'rasoova-swal-cancel-btn'
+            },
+            didOpen: () => {
+              const popup = Swal.getPopup();
+              const choices = popup.querySelectorAll('.swal-status-choice');
+              choices.forEach(choice => {
+                choice.addEventListener('click', () => {
+                  choices.forEach(c => c.classList.remove('selected'));
+                  choice.classList.add('selected');
+                  const radio = choice.querySelector('input[type="radio"]');
+                  if (radio) radio.checked = true;
+                });
+              });
+            },
+            preConfirm: () => {
+              const selectedRadio = document.querySelector('input[name="orderStatusRadio"]:checked');
+              if (!selectedRadio) {
+                Swal.showValidationMessage('Please select a status option');
+                return false;
+              }
+              return selectedRadio.value;
+            }
+          }).then((result) => {
+            if (result.isConfirmed && result.value) {
+              const newStatus = result.value;
+              order.status = newStatus;
+              order.statusClass = newStatus.toLowerCase();
+              order.statusIcon = getStatusSvg(newStatus);
+
+              renderOrders();
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Status Updated!',
+                html: `Order <strong>${order.id}</strong> is now marked as <strong style="color: #8b193d;">${newStatus}</strong>.`,
+                timer: 2000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                customClass: { popup: 'rasoova-swal-popup' }
+              });
+            }
+          });
+        } else {
+          // Native fallback if SweetAlert is unavailable
+          const newStatus = prompt(`Update status for ${order.id} (${order.customer}):\nOptions: Dispatched, Delivered, Preparing, Pending`, order.status);
+          if (newStatus && ['Dispatched', 'Delivered', 'Preparing', 'Pending'].includes(newStatus)) {
+            order.status = newStatus;
+            order.statusClass = newStatus.toLowerCase();
+            order.statusIcon = getStatusSvg(newStatus);
+            renderOrders();
+            showToast(`Order ${order.id} status updated to ${newStatus}.`);
+          }
+        }
+      };
+
+      // --- Toast Function ---
+      window.showToast = function(msg) {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toastContainer';
+          container.className = 'toast-container';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>${msg}</span>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          toast.style.transition = 'all 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 2800);
+      };
+
+      // --- Notification & Profile Dropdowns ---
+      const notifBtn = document.getElementById('notificationBtn');
+      const notifPopover = document.getElementById('notifPopover');
+      const userBtn = document.getElementById('userProfileBtn');
+      const userPopover = document.getElementById('userPopover');
+
+      if (notifBtn && notifPopover) {
+        notifBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          notifPopover.classList.toggle('active');
+          if (userPopover) userPopover.classList.remove('active');
+        });
+      }
+
+      if (userBtn && userPopover) {
+        userBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          userPopover.classList.toggle('active');
+          if (notifPopover) notifPopover.classList.remove('active');
+        });
+      }
+
+      document.addEventListener('click', () => {
+        if (notifPopover) notifPopover.classList.remove('active');
+        if (userPopover) userPopover.classList.remove('active');
+      });
+
+      // --- Sign Out Functionality ---
+      function handleSignOut() {
+        // Remove token from sessionStorage (and any other tokens)
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('adminToken');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('userToken');
+        sessionStorage.clear();
+
+        // Also clean localStorage if any token was saved
+        localStorage.removeItem('token');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('authToken');
+
+        if (typeof showToast === 'function') {
+          showToast('Signed out successfully! Redirecting...');
+        }
+
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 500);
+      }
+      window.handleSignOut = handleSignOut;
+      window.signOut = handleSignOut;
+
+      const signOutBtn = document.getElementById('signOutBtn');
+      if (signOutBtn) {
+        signOutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSignOut();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

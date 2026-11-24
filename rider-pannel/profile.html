@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rasoova - Rider Profile</title>
+  <link rel="icon" type="image/png" href="../assets/rasoova_logo_desktop.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- SweetAlert2 Library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* ==========================================================================
+       Rasoova Kitchen - Rider Panel: Profile Stylesheet
+       ========================================================================== */
+
+    :root {
+      /* Brand Primary Palette */
+      --primary: #8b193d;
+      --primary-dark: #711230;
+      --primary-light: #a4234c;
+      --primary-subtle: #faeaee;
+      --primary-tint: #fff2f5;
+      --primary-text: #260711;
+
+      /* Neutral & Layout Backgrounds */
+      --bg-body: #fdf6f7;
+      --bg-card: #ffffff;
+      --border-card: #ebd5da;
+      --border-light: #f5e4e7;
+      --text-main: #200812;
+      --text-secondary: #745b63;
+      --text-muted: #9c838b;
+
+      /* Accent Status Colors */
+      --status-green-bg: #dcfce7;
+      --status-green-text: #15803d;
+      --status-green-dot: #16a34a;
+
+      /* Typography & Shadows */
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --shadow-sm: 0 2px 6px rgba(139, 25, 61, 0.04);
+      --shadow-card: 0 4px 20px rgba(139, 25, 61, 0.05);
+      --shadow-hover: 0 8px 26px rgba(139, 25, 61, 0.08);
+      --shadow-dropdown: 0 12px 32px rgba(139, 25, 61, 0.14);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-pill: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .dashboard-container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 16px 32px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ==========================================================================
+       Top Header Navbar
+       ========================================================================== */
+    .header-navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 4px 0 8px;
+    }
+
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-img {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-logo-fallback {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo-fallback .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    /* Centered Search Bar */
+    .header-search-container {
+      flex: 1;
+      max-width: 540px;
+      position: relative;
+    }
+
+    .header-search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 16px 0 44px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-card);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--text-main);
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .header-search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .header-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 25, 61, 0.1);
+    }
+
+    .header-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Header Actions: Notification & Rider Profile */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Notification Bell */
+    .notif-btn {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .notif-btn:hover {
+      background: var(--primary-tint);
+      transform: scale(1.05);
+    }
+
+    .notif-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Rider Profile Pill */
+    .rider-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      padding: 5px 14px 5px 6px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .rider-profile-btn:hover {
+      background: var(--primary-tint);
+      border-color: var(--border-card);
+    }
+
+    .rider-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .rider-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .rider-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .rider-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .rider-role {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .chevron-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      margin-left: 2px;
+      transition: transform 0.2s ease;
+    }
+
+    /* Profile Dropdown Menu */
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dropdown);
+      padding: 8px 0;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .dropdown-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .dropdown-header-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .dropdown-header-id {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-item:hover {
+      background: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .dropdown-item.logout:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    /* ==========================================================================
+       Secondary Navigation - Tab Form
+       ========================================================================== */
+    .secondary-nav {
+      width: 100%;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .nav-tabs li {
+      flex: 1;
+      display: flex;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25);
+    }
+
+    /* ==========================================================================
+       Main Profile Grid Layout (Left Profile + Right Details)
+       ========================================================================== */
+    .profile-main-grid {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 20px;
+      width: 100%;
+      align-items: start;
+    }
+
+    /* ==========================================================================
+       LEFT COLUMN: Rider Profile Card + Documents Card
+       ========================================================================== */
+    .profile-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Left Card 1: Rider Profile Card */
+    .rider-main-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 20px 20px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Portrait Image with Camera Badge */
+    .avatar-wrapper {
+      position: relative;
+      width: 136px;
+      height: 136px;
+      margin-bottom: 14px;
+    }
+
+    .profile-portrait-img {
+      width: 136px;
+      height: 136px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffffff;
+      box-shadow: 0 6px 18px rgba(139, 25, 61, 0.14);
+      background-color: #faeaee;
+      display: block;
+    }
+
+    .btn-camera-upload {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .btn-camera-upload:hover {
+      transform: scale(1.1);
+      background-color: var(--primary-dark);
+    }
+
+    .btn-camera-upload svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Rider Identity */
+    .rider-card-name-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .rider-card-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+
+    .verified-badge-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .rider-card-role {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* Online Status Dropdown Pill */
+    .online-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background-color: #e8fdf0;
+      color: var(--status-green-text);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid #bbf7d0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 16px;
+    }
+
+    .online-status-pill:hover {
+      background-color: #dcfce7;
+    }
+
+    .online-status-pill.offline {
+      background-color: #f1f5f9;
+      color: #64748b;
+      border-color: #cbd5e1;
+    }
+
+    .status-dot-sm {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--status-green-dot);
+    }
+
+    .online-status-pill.offline .status-dot-sm {
+      background-color: #94a3b8;
+    }
+
+    /* Stats Row (Deliveries + Rating) */
+    .rider-quick-stats {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 12px 6px;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 14px;
+    }
+
+    .quick-stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .quick-stat-icon {
+      width: 22px;
+      height: 22px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .quick-stat-icon.star {
+      color: var(--primary);
+    }
+
+    .quick-stat-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .quick-stat-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .quick-stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .quick-stat-divider {
+      width: 1px;
+      height: 28px;
+      background-color: var(--border-light);
+    }
+
+    /* Motto / Quote Card */
+    .rider-quote-card {
+      width: 100%;
+      background-color: #fff4f6;
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-style: italic;
+      color: #9b2847;
+      font-weight: 600;
+      text-align: center;
+      border: 1px dashed #f5cbd4;
+    }
+
+    /* Left Card 2: Documents Card */
+    .documents-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .documents-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .documents-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .documents-title-group svg {
+      width: 18px;
+      height: 18px;
+      color: var(--primary);
+    }
+
+    .verified-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background-color: var(--status-green-bg);
+      color: var(--status-green-text);
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .documents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .document-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+
+    .doc-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .doc-icon-wrap {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background-color: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .doc-icon-wrap svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .doc-status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      background-color: #dcfce7;
+      color: #15803d;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       RIGHT COLUMN: Personal Info + Performance + (Vehicle & Settings)
+       ========================================================================== */
+    .profile-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Right Card 1: Personal Information Card */
+    .personal-info-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card-top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .section-title-wrap svg {
+      width: 19px;
+      height: 19px;
+      color: var(--primary);
+    }
+
+    .btn-edit-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-pill);
+      background-color: #ffffff;
+      color: var(--primary);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit-outline:hover {
+      background-color: var(--primary-tint);
+    }
+
+    .btn-edit-outline svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Personal Info Body Grid (Left Contacts + Right Keys) */
+    .personal-info-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .info-list-left {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .info-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .info-item-left svg {
+      width: 17px;
+      height: 17px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .info-keys-right {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border-left: 1px solid var(--border-light);
+      padding-left: 24px;
+    }
+
+    .key-val-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13.5px;
+    }
+
+    .key-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .key-value {
+      color: var(--text-main);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    /* Right Card 2: Performance Overview */
+    .performance-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .date-filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      background-color: #ffffff;
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .date-filter-pill:hover {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .performance-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .perf-kpi-card {
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .perf-kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Card 1: Deliveries */
+    .perf-kpi-card.kpi-1 {
+      background: #fff3f5;
+    }
+
+    /* Card 2: Earnings */
+    .perf-kpi-card.kpi-2 {
+      background: #fff8ef;
+    }
+
+    /* Card 3: Rating */
+    .perf-kpi-card.kpi-3 {
+      background: #f7f1ff;
+    }
+
+    /* Card 4: On-time */
+    .perf-kpi-card.kpi-4 {
+      background: #fff5f5;
+    }
+
+    .perf-kpi-icon-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .kpi-1 .perf-kpi-icon-wrap {
+      background: #fee2e7;
+      color: var(--primary);
+    }
+
+    .kpi-2 .perf-kpi-icon-wrap {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .kpi-3 .perf-kpi-icon-wrap {
+      background: #ede7fa;
+      color: #7c3aed;
+    }
+
+    .kpi-4 .perf-kpi-icon-wrap {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .perf-kpi-icon-wrap svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .perf-kpi-val {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.3px;
+    }
+
+    .perf-kpi-lbl {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Right Bottom Row: Vehicle Details & Settings Grid */
+    .bottom-two-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* Bottom Card A: Vehicle Details */
+    .vehicle-details-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .vehicle-body {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .vehicle-graphic-wrap {
+      width: 100px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .vehicle-graphic-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .vehicle-info-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .vehicle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .vehicle-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .vehicle-val {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Bottom Card B: Settings */
+    .settings-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .setting-item-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background-color 0.15s ease;
+    }
+
+    .setting-item-btn:hover {
+      background-color: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .setting-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .setting-left svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+    }
+
+    .setting-item-btn:hover .setting-left svg {
+      color: var(--primary);
+    }
+
+    .setting-chevron {
+      color: var(--text-muted);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ==========================================================================
+       Responsive Breakpoints
+       ========================================================================== */
+    @media (max-width: 1080px) {
+      .profile-main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .personal-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-keys-right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border-light);
+        padding-top: 16px;
+      }
+
+      .performance-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .bottom-two-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 12px 16px 36px;
+      }
+
+      .header-navbar {
+        flex-wrap: wrap;
+      }
+
+      .header-search-container {
+        order: 3;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .performance-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Container -->
+  <div class="dashboard-container">
+
+    <!-- ========================================================================
+         Top Header Navbar (Full Width)
+         ======================================================================== -->
+    <header class="header-navbar">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo-link" title="Rasoova Kitchen">
+        <img src="../assets/rasoova_logo_desktop.png" alt="Rasoova Logo" class="brand-logo-img"
+             onerror="if(this.src.indexOf('../')!==-1){this.src='assets/rasoova_logo_desktop.png';}else{this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';}">
+        <div id="logo-fallback" class="brand-logo-fallback" style="display: none;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b193d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 21a8 8 0 0 0-12 0"/>
+            <path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 4.5 3 5.5V17a3 3 0 0 0 6 0v-2.5c1.5-1 3-3 3-5.5a6 6 0 0 0-6-6z"/>
+          </svg>
+          <span class="logo-text">Rasoova</span>
+        </div>
+      </a>
+
+      <!-- Centered Search Bar -->
+      <div class="header-search-container">
+        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="header-search-input" id="globalOrderSearch" placeholder="Search orders..." autocomplete="off">
+      </div>
+
+      <!-- Header Actions: Notification & Rider Profile -->
+      <div class="header-actions">
+        <!-- Notification Bell with Badge '1' -->
+        <button type="button" class="notif-btn" id="notifBellBtn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge">1</span>
+        </button>
+
+        <!-- Rider Profile Pill -->
+        <div style="position: relative;">
+          <button type="button" class="rider-profile-btn" id="riderProfileBtn">
+            <div class="rider-avatar">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" 
+                   alt="Rohit Kumar"
+                   onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80';">
+            </div>
+            <div class="rider-info">
+              <span class="rider-name">Rohit Kumar</span>
+              <span class="rider-role">Delivery Rider</span>
+            </div>
+            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-header">
+              <div class="dropdown-header-name">Rohit Kumar</div>
+              <div class="dropdown-header-id">Rider ID: RID-1024 • Odisha</div>
+            </div>
+            <button class="dropdown-item" id="dropdownProfileBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+              View Profile
+            </button>
+            <button class="dropdown-item logout" id="dropdownLogoutBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         Secondary Navigation - Horizontal Tab Form
+         ======================================================================== -->
+    <nav class="secondary-nav" aria-label="Rider Navigation Tabs">
+      <ul class="nav-tabs">
+        <li>
+          <a href="index.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-deliveries.html" class="tab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="15" cy="5" r="1"/>
+              <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+            </svg>
+            <span>My Deliveries</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html" class="tab-btn active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Profile</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ========================================================================
+         Main Content Grid (Left Profile Column + Right Info Column)
+         ======================================================================== -->
+    <main class="profile-main-grid">
+
+      <!-- ======================================================================
+           LEFT COLUMN
+           ====================================================================== -->
+      <aside class="profile-left-col">
+
+        <!-- Left Card 1: Rider Identity & Quick Stats Card -->
+        <div class="rider-main-card">
+          <!-- Portrait Avatar with Camera Badge -->
+          <div class="avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" 
+                 alt="Rohit Kumar - Rasoova Delivery Rider" 
+                 class="profile-portrait-img"
+                 id="mainPortraitImg"
+                 onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80';">
+            
+            <button type="button" class="btn-camera-upload" id="btnUploadPhoto" title="Change Profile Picture">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Name & Verified Badge -->
+          <div class="rider-card-name-row">
+            <h2 class="rider-card-name" id="profileNameVal">Rohit Kumar</h2>
+            <!-- Verified Maroon Checkmark Badge -->
+            <svg class="verified-badge-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+
+          <p class="rider-card-role" id="profileRoleVal">Delivery Rider</p>
+
+          <!-- Online Status Dropdown Pill -->
+          <button type="button" class="online-status-pill" id="profileOnlineStatusBtn">
+            <span class="status-dot-sm"></span>
+            <span id="profileOnlineStatusText">Online</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <!-- Quick Stats Row (Deliveries + Rating) -->
+          <div class="rider-quick-stats">
+            <!-- Stat 1: Deliveries -->
+            <div class="quick-stat-item">
+              <svg class="quick-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18.5" cy="17.5" r="3.5"/>
+                <circle cx="5.5" cy="17.5" r="3.5"/>
+                <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+              </svg>
+              <div class="quick-stat-text">
+                <span class="quick-stat-val">248</span>
+                <span class="quick-stat-lbl">Total Deliveries</span>
+              </div>
+            </div>
+
+            <div class="quick-stat-divider" aria-hidden="true"></div>
+
+            <!-- Stat 2: Rating -->
+            <div class="quick-stat-item">
+              <svg class="quick-stat-icon star" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              <div class="quick-stat-text">
+                <span class="quick-stat-val">4.9</span>
+                <span class="quick-stat-lbl">Rider Rating</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Motto / Quote Box -->
+          <div class="rider-quote-card" id="profileQuoteVal">
+            "Delivering happiness,<br>one order at a time 🚀"
+          </div>
+        </div>
+
+        <!-- Left Card 2: Documents Card -->
+        <div class="documents-card">
+          <div class="documents-header">
+            <div class="documents-title-group">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              <span>Documents</span>
+            </div>
+            <span class="verified-tag-pill">Verified ✓</span>
+          </div>
+
+          <div class="documents-list">
+            <!-- Doc 1: Aadhaar -->
+            <div class="document-item">
+              <div class="doc-left">
+                <div class="doc-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="16" rx="2"/>
+                    <circle cx="9" cy="10" r="2"/>
+                    <line x1="15" y1="8" x2="17" y2="8"/>
+                    <line x1="15" y1="12" x2="17" y2="12"/>
+                  </svg>
+                </div>
+                <span>Aadhaar Card</span>
+              </div>
+              <span class="doc-status-badge">Verified</span>
+            </div>
+
+            <!-- Doc 2: Driving License -->
+            <div class="document-item">
+              <div class="doc-left">
+                <div class="doc-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                    <line x1="2" y1="10" x2="22" y2="10"/>
+                  </svg>
+                </div>
+                <span>Driving License</span>
+              </div>
+              <span class="doc-status-badge">Verified</span>
+            </div>
+
+            <!-- Doc 3: Bank Account -->
+            <div class="document-item">
+              <div class="doc-left">
+                <div class="doc-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="21" x2="21" y2="21"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <polyline points="5 6 12 3 19 6"/>
+                    <line x1="6" y1="10" x2="6" y2="21"/>
+                    <line x1="10" y1="10" x2="10" y2="21"/>
+                    <line x1="14" y1="10" x2="14" y2="21"/>
+                    <line x1="18" y1="10" x2="18" y2="21"/>
+                  </svg>
+                </div>
+                <span>Bank Account</span>
+              </div>
+              <span class="doc-status-badge">Verified</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ======================================================================
+           RIGHT COLUMN
+           ====================================================================== -->
+      <section class="profile-right-col">
+
+        <!-- Right Card 1: Personal Information -->
+        <div class="personal-info-card">
+          <div class="card-top-header">
+            <div class="section-title-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Personal Information</span>
+            </div>
+            <button type="button" class="btn-edit-outline" id="btnEditProfile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              <span>Edit Profile</span>
+            </button>
+          </div>
+
+          <div class="personal-info-grid">
+            <!-- Left Info Items -->
+            <div class="info-list-left">
+              <!-- Phone -->
+              <div class="info-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                <span id="profilePhoneVal">+91 98765 43210</span>
+              </div>
+
+              <!-- Email -->
+              <div class="info-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span id="profileEmailVal">rohit.kumar@gmail.com</span>
+              </div>
+
+              <!-- DOB -->
+              <div class="info-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span id="profileDobVal">Jan 15, 2000 (25 Years)</span>
+              </div>
+
+              <!-- Location -->
+              <div class="info-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span id="profileLocationVal">Bhubaneswar, Odisha</span>
+              </div>
+            </div>
+
+            <!-- Right Info Key-Value Items -->
+            <div class="info-keys-right">
+              <div class="key-val-row">
+                <span class="key-label">Rider ID</span>
+                <span class="key-value" id="profileRiderIdVal">RID-1024</span>
+              </div>
+              <div class="key-val-row">
+                <span class="key-label">Joined On</span>
+                <span class="key-value" id="profileJoinedVal">Nov 20, 2024</span>
+              </div>
+              <div class="key-val-row">
+                <span class="key-label">Language</span>
+                <span class="key-value" id="profileLanguageVal">English, Hindi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Card 2: Performance Overview -->
+        <div class="performance-card">
+          <div class="card-top-header">
+            <div class="section-title-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+              <span>Performance Overview</span>
+            </div>
+            <button type="button" class="date-filter-pill" id="btnDateFilter">
+              <span id="performanceFilterLabel">Last 30 Days</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+
+          <!-- 4 KPI Cards in a Row -->
+          <div class="performance-kpi-grid">
+            <!-- KPI 1: Deliveries -->
+            <div class="perf-kpi-card kpi-1">
+              <div class="perf-kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18.5" cy="17.5" r="3.5"/>
+                  <circle cx="5.5" cy="17.5" r="3.5"/>
+                  <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+                </svg>
+              </div>
+              <span class="perf-kpi-val" id="perfDeliveriesVal">124</span>
+              <span class="perf-kpi-lbl">Deliveries</span>
+            </div>
+
+            <!-- KPI 2: Total Earnings -->
+            <div class="perf-kpi-card kpi-2">
+              <div class="perf-kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <span class="perf-kpi-val" id="perfEarningsVal">₹28,450</span>
+              <span class="perf-kpi-lbl">Total Earnings</span>
+            </div>
+
+            <!-- KPI 3: Rating -->
+            <div class="perf-kpi-card kpi-3">
+              <div class="perf-kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
+              <span class="perf-kpi-val" id="perfRatingVal">4.9</span>
+              <span class="perf-kpi-lbl">Rating</span>
+            </div>
+
+            <!-- KPI 4: On-Time Delivery -->
+            <div class="perf-kpi-card kpi-4">
+              <div class="perf-kpi-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <span class="perf-kpi-val" id="perfOnTimeVal">98%</span>
+              <span class="perf-kpi-lbl">On-Time Delivery</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Bottom Row: Vehicle Details & Settings (Two Cards Side by Side) -->
+        <div class="bottom-two-cards-grid">
+
+          <!-- Bottom Card A: Vehicle Details -->
+          <div class="vehicle-details-card">
+            <div class="card-top-header">
+              <div class="section-title-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18.5" cy="17.5" r="3.5"/>
+                  <circle cx="5.5" cy="17.5" r="3.5"/>
+                  <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+                </svg>
+                <span>Vehicle Details</span>
+              </div>
+              <button type="button" class="btn-edit-outline" id="btnEditVehicle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18.5" cy="17.5" r="3.5"/>
+                  <circle cx="5.5" cy="17.5" r="3.5"/>
+                  <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+                </svg>
+                <span>Edit</span>
+              </button>
+            </div>
+
+            <div class="vehicle-body">
+              <!-- Red Scooter Graphic -->
+              <div class="vehicle-graphic-wrap">
+                <svg viewBox="0 0 100 70" fill="none">
+                  <!-- Red Scooter Vector -->
+                  <!-- Thermal Delivery Box -->
+                  <rect x="10" y="24" width="22" height="20" rx="3" fill="#be185d" stroke="#831843" stroke-width="1.5"/>
+                  <rect x="14" y="28" width="14" height="12" rx="1" fill="#9d174d"/>
+                  <text x="21" y="37" font-size="8" font-weight="800" fill="#ffffff" text-anchor="middle">R</text>
+
+                  <!-- Scooter Chassis -->
+                  <path d="M30 46h38l8-15h-10l-6 15H35l-5-15h-8l8 15z" fill="#dc2626"/>
+                  <path d="M68 31l4-14h6" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+                  <!-- Headlight -->
+                  <circle cx="78" cy="17" r="3.5" fill="#fde047" stroke="#eab308" stroke-width="1"/>
+                  <!-- Mirrors -->
+                  <circle cx="74" cy="12" r="2" fill="#64748b"/>
+                  <!-- Seat -->
+                  <path d="M32 30c0-2 4-4 12-4s10 2 10 4l-2 3H34z" fill="#1e293b"/>
+                  <!-- Rear Wheel -->
+                  <circle cx="22" cy="52" r="10" fill="#0f172a" stroke="#cbd5e1" stroke-width="2.5"/>
+                  <circle cx="22" cy="52" r="4" fill="#64748b"/>
+                  <!-- Front Wheel -->
+                  <circle cx="72" cy="52" r="10" fill="#0f172a" stroke="#cbd5e1" stroke-width="2.5"/>
+                  <circle cx="72" cy="52" r="4" fill="#64748b"/>
+                </svg>
+              </div>
+
+              <!-- Vehicle Key Values -->
+              <div class="vehicle-info-rows">
+                <div class="vehicle-row">
+                  <span class="vehicle-label">Vehicle Type</span>
+                  <span class="vehicle-val" id="vehicleTypeVal">Bike</span>
+                </div>
+                <div class="vehicle-row">
+                  <span class="vehicle-label">Vehicle Number</span>
+                  <span class="vehicle-val" id="vehicleNumberVal">OD-02-AB-1234</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card B: Settings -->
+          <div class="settings-card">
+            <div class="card-top-header">
+              <div class="section-title-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>Settings</span>
+              </div>
+            </div>
+
+            <div class="settings-list">
+              <!-- Item 1: Notifications -->
+              <button type="button" class="setting-item-btn" id="btnSettingNotif">
+                <div class="setting-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                  <span>Notification Settings</span>
+                </div>
+                <svg class="setting-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+
+              <!-- Item 2: Language -->
+              <button type="button" class="setting-item-btn" id="btnSettingLang">
+                <div class="setting-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                  </svg>
+                  <span>Language Preference</span>
+                </div>
+                <svg class="setting-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+
+              <!-- Item 3: Change Password -->
+              <button type="button" class="setting-item-btn" id="btnSettingPass">
+                <div class="setting-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span>Change Password</span>
+                </div>
+                <svg class="setting-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+
+              <!-- Item 4: Help & Support -->
+              <button type="button" class="setting-item-btn" id="btnSettingHelp">
+                <div class="setting-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                  </svg>
+                  <span>Help & Support</span>
+                </div>
+                <svg class="setting-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ==========================================================================
+       Interactive JavaScript Functionality
+       ========================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // State Object with Full Profile Data
+      const riderData = {
+        name: 'Rohit Kumar',
+        role: 'Delivery Rider',
+        phone: '+91 98765 43210',
+        email: 'rohit.kumar@gmail.com',
+        dob: 'Jan 15, 2000 (25 Years)',
+        location: 'Bhubaneswar, Odisha',
+        riderId: 'RID-1024',
+        joined: 'Nov 20, 2024',
+        language: 'English, Hindi',
+        quote: '"Delivering happiness,\none order at a time 🚀"',
+        vehicleType: 'Bike',
+        vehicleNumber: 'OD-02-AB-1234',
+        photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+        isOnline: true
+      };
+
+      // Update DOM with Current State
+      function updateDOM() {
+        if (document.getElementById('profileNameVal')) document.getElementById('profileNameVal').textContent = riderData.name;
+        document.querySelectorAll('.rider-name').forEach(el => el.textContent = riderData.name);
+        if (document.querySelector('.dropdown-header-name')) document.querySelector('.dropdown-header-name').textContent = riderData.name;
+
+        if (document.getElementById('profileRoleVal')) document.getElementById('profileRoleVal').textContent = riderData.role;
+        document.querySelectorAll('.rider-role').forEach(el => el.textContent = riderData.role);
+
+        if (document.getElementById('profilePhoneVal')) document.getElementById('profilePhoneVal').textContent = riderData.phone;
+        if (document.getElementById('profileEmailVal')) document.getElementById('profileEmailVal').textContent = riderData.email;
+        if (document.getElementById('profileDobVal')) document.getElementById('profileDobVal').textContent = riderData.dob;
+        if (document.getElementById('profileLocationVal')) document.getElementById('profileLocationVal').textContent = riderData.location;
+
+        if (document.getElementById('profileRiderIdVal')) document.getElementById('profileRiderIdVal').textContent = riderData.riderId;
+        if (document.querySelector('.dropdown-header-id')) document.querySelector('.dropdown-header-id').textContent = `Rider ID: ${riderData.riderId} • Odisha`;
+
+        if (document.getElementById('profileJoinedVal')) document.getElementById('profileJoinedVal').textContent = riderData.joined;
+        if (document.getElementById('profileLanguageVal')) document.getElementById('profileLanguageVal').textContent = riderData.language;
+
+        if (document.getElementById('profileQuoteVal')) {
+          document.getElementById('profileQuoteVal').innerHTML = riderData.quote.replace(/\n/g, '<br>');
+        }
+
+        if (document.getElementById('vehicleTypeVal')) document.getElementById('vehicleTypeVal').textContent = riderData.vehicleType;
+        if (document.getElementById('vehicleNumberVal')) document.getElementById('vehicleNumberVal').textContent = riderData.vehicleNumber;
+
+        if (riderData.photoUrl) {
+          if (document.getElementById('mainPortraitImg')) document.getElementById('mainPortraitImg').src = riderData.photoUrl;
+          document.querySelectorAll('.rider-avatar img').forEach(img => img.src = riderData.photoUrl);
+        }
+      }
+
+      // Save Data to LocalStorage & Refresh UI
+      function saveRiderData() {
+        try {
+          localStorage.setItem('rasoova_rider_profile', JSON.stringify(riderData));
+        } catch (e) {}
+        updateDOM();
+      }
+
+      // Load Stored Profile on Start
+      try {
+        const stored = localStorage.getItem('rasoova_rider_profile');
+        if (stored) {
+          Object.assign(riderData, JSON.parse(stored));
+        }
+      } catch (e) {}
+      updateDOM();
+
+      // --- Online Status Dropdown / Toggle ---
+      const profileOnlineStatusBtn = document.getElementById('profileOnlineStatusBtn');
+      const profileOnlineStatusText = document.getElementById('profileOnlineStatusText');
+
+      if (profileOnlineStatusBtn) {
+        profileOnlineStatusBtn.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Change Duty Status',
+            text: `You are currently ${riderData.isOnline ? 'Online' : 'Offline'}. Do you want to switch your duty status?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: riderData.isOnline ? 'Go Offline' : 'Go Online'
+          }).then((res) => {
+            if (res.isConfirmed) {
+              riderData.isOnline = !riderData.isOnline;
+              if (riderData.isOnline) {
+                profileOnlineStatusBtn.classList.remove('offline');
+                profileOnlineStatusText.textContent = 'Online';
+                Swal.fire({
+                  icon: 'success',
+                  title: 'You are now Online! 🛵',
+                  text: 'Ready to receive order assignments.',
+                  timer: 1800,
+                  showConfirmButton: false,
+                  toast: true,
+                  position: 'top-end'
+                });
+              } else {
+                profileOnlineStatusBtn.classList.add('offline');
+                profileOnlineStatusText.textContent = 'Offline';
+                Swal.fire({
+                  icon: 'info',
+                  title: 'You are now Offline',
+                  text: 'You will not receive new order dispatches.',
+                  timer: 1800,
+                  showConfirmButton: false,
+                  toast: true,
+                  position: 'top-end'
+                });
+              }
+              saveRiderData();
+            }
+          });
+        });
+      }
+
+      // --- Edit Profile Modal (Edits ALL Rider Profile Data) ---
+      const btnEditProfile = document.getElementById('btnEditProfile');
+      if (btnEditProfile) {
+        btnEditProfile.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Edit Rider Profile',
+            width: '740px',
+            html: `
+              <div style="text-align: left; font-size: 13px; max-height: 72vh; overflow-y: auto; padding: 4px 8px;">
+                <!-- Section 1: Basic Identity -->
+                <div style="font-weight: 800; color: #8b193d; font-size: 13.5px; border-bottom: 2px solid #fee9ee; padding-bottom: 5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span>👤</span> Basic Rider Information
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Full Name *</label>
+                    <input id="swalName" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.name}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Designation / Role *</label>
+                    <input id="swalRole" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.role}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Phone Number *</label>
+                    <input id="swalPhone" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.phone}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Email Address *</label>
+                    <input id="swalEmail" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.email}">
+                  </div>
+                </div>
+
+                <!-- Section 2: Fleet & Personal Details -->
+                <div style="font-weight: 800; color: #8b193d; font-size: 13.5px; border-bottom: 2px solid #fee9ee; padding-bottom: 5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span>📋</span> Personal & Fleet Records
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Date of Birth / Age</label>
+                    <input id="swalDob" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.dob}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Current City / Address</label>
+                    <input id="swalLocation" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.location}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Rider ID</label>
+                    <input id="swalRiderId" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.riderId}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Joined On</label>
+                    <input id="swalJoined" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.joined}">
+                  </div>
+                </div>
+
+                <!-- Section 3: Preferences & Vehicle -->
+                <div style="font-weight: 800; color: #8b193d; font-size: 13.5px; border-bottom: 2px solid #fee9ee; padding-bottom: 5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span>🛵</span> Vehicle Details & Languages
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Languages Known</label>
+                    <input id="swalLanguage" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.language}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Vehicle Type</label>
+                    <select id="swalVehType" class="swal2-select" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px; border-radius: 8px; border: 1px solid #d1d5db; padding: 0 10px;">
+                      <option value="Bike" ${riderData.vehicleType === 'Bike' ? 'selected' : ''}>Bike / Motorcycle</option>
+                      <option value="Scooter" ${riderData.vehicleType === 'Scooter' ? 'selected' : ''}>Scooter (Activa / Jupiter)</option>
+                      <option value="Electric Scooter" ${riderData.vehicleType === 'Electric Scooter' ? 'selected' : ''}>Electric Scooter (EV)</option>
+                      <option value="Bicycle" ${riderData.vehicleType === 'Bicycle' ? 'selected' : ''}>Bicycle</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Vehicle Number</label>
+                    <input id="swalVehNum" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.vehicleNumber}">
+                  </div>
+                  <div>
+                    <label style="font-weight: 700; color: #374151; display: block; margin-bottom: 4px;">Profile Photo Image URL</label>
+                    <input id="swalPhoto" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.photoUrl}">
+                  </div>
+                </div>
+
+                <!-- Section 4: Motto / Delivery Quote -->
+                <div style="font-weight: 800; color: #8b193d; font-size: 13.5px; border-bottom: 2px solid #fee9ee; padding-bottom: 5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span>💬</span> Delivery Motto / Bio
+                </div>
+                <div>
+                  <textarea id="swalQuote" class="swal2-textarea" style="width: 100%; margin: 0; height: 60px; font-size: 13px; resize: vertical; border-radius: 8px; border: 1px solid #d1d5db; padding: 8px 12px;">${riderData.quote}</textarea>
+                </div>
+              </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: 'Save All Changes',
+            cancelButtonText: 'Cancel',
+            preConfirm: () => {
+              const name = document.getElementById('swalName').value.trim();
+              const role = document.getElementById('swalRole').value.trim();
+              const phone = document.getElementById('swalPhone').value.trim();
+              const email = document.getElementById('swalEmail').value.trim();
+              const dob = document.getElementById('swalDob').value.trim();
+              const location = document.getElementById('swalLocation').value.trim();
+              const riderId = document.getElementById('swalRiderId').value.trim();
+              const joined = document.getElementById('swalJoined').value.trim();
+              const language = document.getElementById('swalLanguage').value.trim();
+              const vehicleType = document.getElementById('swalVehType').value;
+              const vehicleNumber = document.getElementById('swalVehNum').value.trim();
+              const photoUrl = document.getElementById('swalPhoto').value.trim();
+              const quote = document.getElementById('swalQuote').value.trim();
+
+              if (!name || !phone || !email || !location) {
+                Swal.showValidationMessage('Please fill all mandatory fields (Name, Phone, Email, Location)');
+                return false;
+              }
+
+              return {
+                name,
+                role,
+                phone,
+                email,
+                dob,
+                location,
+                riderId,
+                joined,
+                language,
+                vehicleType,
+                vehicleNumber,
+                photoUrl,
+                quote
+              };
+            }
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              // Update all fields
+              Object.assign(riderData, res.value);
+              saveRiderData();
+
+              Swal.fire({
+                icon: 'success',
+                title: 'All Data Updated Successfully! 🎉',
+                text: 'Your complete rider profile has been saved.',
+                timer: 2000,
+                showConfirmButton: false
+              });
+            }
+          });
+        });
+      }
+
+      // --- Edit Vehicle Details Modal ---
+      const btnEditVehicle = document.getElementById('btnEditVehicle');
+      if (btnEditVehicle) {
+        btnEditVehicle.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Edit Vehicle Details',
+            html: `
+              <div style="text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                <div>
+                  <label style="font-weight: 700; color: #444; display: block; margin-bottom: 4px;">Vehicle Type</label>
+                  <select id="swalVehTypeOnly" class="swal2-select" style="width: 100%; margin: 0; height: 40px; font-size: 13.5px; border-radius: 8px;">
+                    <option value="Bike" ${riderData.vehicleType === 'Bike' ? 'selected' : ''}>Bike / Motorcycle</option>
+                    <option value="Scooter" ${riderData.vehicleType === 'Scooter' ? 'selected' : ''}>Scooter (Activa / Jupiter)</option>
+                    <option value="Electric Scooter" ${riderData.vehicleType === 'Electric Scooter' ? 'selected' : ''}>Electric Scooter (EV)</option>
+                    <option value="Bicycle" ${riderData.vehicleType === 'Bicycle' ? 'selected' : ''}>Bicycle</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-weight: 700; color: #444; display: block; margin-bottom: 4px;">Registration Number</label>
+                  <input id="swalVehNumOnly" class="swal2-input" style="width: 100%; margin: 0; height: 38px; font-size: 13.5px;" value="${riderData.vehicleNumber}">
+                </div>
+              </div>
+            `,
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: 'Save Vehicle',
+            preConfirm: () => {
+              const type = document.getElementById('swalVehTypeOnly').value;
+              const num = document.getElementById('swalVehNumOnly').value.trim();
+              if (!num) {
+                Swal.showValidationMessage('Please provide vehicle registration number');
+                return false;
+              }
+              return { type, num };
+            }
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              riderData.vehicleType = res.value.type;
+              riderData.vehicleNumber = res.value.num;
+              saveRiderData();
+              Swal.fire({
+                icon: 'success',
+                title: 'Vehicle Updated',
+                text: 'Your registered vehicle has been updated.',
+                timer: 1800,
+                showConfirmButton: false
+              });
+            }
+          });
+        });
+      }
+
+      // --- Change Profile Photo Action ---
+      const btnUploadPhoto = document.getElementById('btnUploadPhoto');
+      if (btnUploadPhoto) {
+        btnUploadPhoto.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Update Profile Photo',
+            text: 'Enter a valid image URL for your profile picture.',
+            input: 'url',
+            inputPlaceholder: 'Enter image URL',
+            inputValue: riderData.photoUrl,
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: 'Update Picture'
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              riderData.photoUrl = res.value;
+              saveRiderData();
+              Swal.fire({
+                icon: 'success',
+                title: 'Photo Updated!',
+                timer: 1500,
+                showConfirmButton: false
+              });
+            }
+          });
+        });
+      }
+
+      // --- Date Filter in Performance Card ---
+      const btnDateFilter = document.getElementById('btnDateFilter');
+      const performanceFilterLabel = document.getElementById('performanceFilterLabel');
+      if (btnDateFilter) {
+        btnDateFilter.addEventListener('click', () => {
+          Swal.fire({
+            title: 'Select Performance Period',
+            input: 'select',
+            inputOptions: {
+              'Today': 'Today',
+              'This Week': 'This Week',
+              'Last 30 Days': 'Last 30 Days',
+              'Last 3 Months': 'Last 3 Months',
+              'This Year': 'This Year'
+            },
+            inputValue: performanceFilterLabel.textContent,
+            showCancelButton: true,
+            confirmButtonColor: '#8b193d',
+            cancelButtonColor: '#9c838b',
+            confirmButtonText: 'Apply Filter'
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              performanceFilterLabel.textContent = res.value;
+              Swal.fire({
+                icon: 'success',
+                title: `Filtered: ${res.value}`,
+                timer: 1500,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+              });
+            }
+          });
+        });
+      }
+
+      // --- Settings Links Actions ---
+      // 1. Notifications
+      document.getElementById('btnSettingNotif').addEventListener('click', () => {
+        Swal.fire({
+          title: 'Notification Settings',
+          html: `
+            <div style="text-align: left; font-size: 13.5px; line-height: 2;">
+              <label><input type="checkbox" checked> Order Assignment Alerts (Sound + Vibrate)</label><br>
+              <label><input type="checkbox" checked> Delivery Earnings & Incentive Notifications</label><br>
+              <label><input type="checkbox" checked> Customer Call & Chat Push Notifications</label><br>
+              <label><input type="checkbox"> Weekly Performance Digest</label>
+            </div>
+          `,
+          confirmButtonColor: '#8b193d',
+          confirmButtonText: 'Save Preferences'
+        });
+      });
+
+      // 2. Language Preference
+      document.getElementById('btnSettingLang').addEventListener('click', () => {
+        Swal.fire({
+          title: 'Language Preference',
+          input: 'radio',
+          inputOptions: {
+            'en': 'English',
+            'hi': 'Hindi (हिंदी)',
+            'or': 'Odia (ଓଡ଼ିଆ)'
+          },
+          inputValue: 'en',
+          confirmButtonColor: '#8b193d',
+          confirmButtonText: 'Save Language'
+        }).then((res) => {
+          if (res.isConfirmed) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Language Preference Saved',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          }
+        });
+      });
+
+      // 3. Change Password
+      document.getElementById('btnSettingPass').addEventListener('click', () => {
+        Swal.fire({
+          title: 'Change Password',
+          html: `
+            <div style="text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
+              <input type="password" id="oldPass" class="swal2-input" placeholder="Current Password" style="width: 100%; margin: 0; height: 38px;">
+              <input type="password" id="newPass" class="swal2-input" placeholder="New Password" style="width: 100%; margin: 0; height: 38px;">
+              <input type="password" id="confirmPass" class="swal2-input" placeholder="Confirm New Password" style="width: 100%; margin: 0; height: 38px;">
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonColor: '#8b193d',
+          confirmButtonText: 'Update Password',
+          preConfirm: () => {
+            const oldP = document.getElementById('oldPass').value;
+            const newP = document.getElementById('newPass').value;
+            const confP = document.getElementById('confirmPass').value;
+            if (!oldP || !newP || !confP) {
+              Swal.showValidationMessage('Please fill all fields');
+              return false;
+            }
+            if (newP !== confP) {
+              Swal.showValidationMessage('New passwords do not match');
+              return false;
+            }
+            return true;
+          }
+        }).then((res) => {
+          if (res.isConfirmed) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Password Updated Successfully',
+              timer: 1800,
+              showConfirmButton: false
+            });
+          }
+        });
+      });
+
+      // 4. Help & Support
+      document.getElementById('btnSettingHelp').addEventListener('click', () => {
+        Swal.fire({
+          title: 'Rider Help & Support',
+          html: `
+            <div style="text-align: left; font-size: 13.5px; line-height: 1.6;">
+              <p>Need assistance during a delivery?</p>
+              <div style="margin-top: 10px; padding: 12px; background: #fff2f5; border-radius: 8px;">
+                <strong style="color: #8b193d;">Rider Hotline:</strong> +91 1800 233 4455 (Toll Free)<br>
+                <strong style="color: #8b193d;">Emergency Hub:</strong> Rasoova Kitchen Satya Vihar<br>
+                <strong style="color: #8b193d;">Support Email:</strong> rider.support@rasoova.com
+              </div>
+            </div>
+          `,
+          confirmButtonColor: '#8b193d',
+          confirmButtonText: 'Close'
+        });
+      });
+
+      // --- Profile Dropdown Toggle ---
+      const riderProfileBtn = document.getElementById('riderProfileBtn');
+      const profileDropdown = document.getElementById('profileDropdown');
+
+      if (riderProfileBtn && profileDropdown) {
+        riderProfileBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          profileDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!profileDropdown.contains(e.target) && !riderProfileBtn.contains(e.target)) {
+            profileDropdown.classList.remove('show');
+          }
+        });
+      }
+
+      document.getElementById('dropdownProfileBtn').addEventListener('click', () => {
+        if (profileDropdown) profileDropdown.classList.remove('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // --- Sign Out Functionality ---
+      document.getElementById('dropdownLogoutBtn').addEventListener('click', () => {
+        Swal.fire({
+          title: 'Sign Out?',
+          text: 'Are you sure you want to log out of your rider session?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#8b193d',
+          cancelButtonColor: '#9c838b',
+          confirmButtonText: 'Yes, Sign Out',
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('adminToken');
+            sessionStorage.removeItem('riderToken');
+            sessionStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('adminToken');
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Signed Out Successfully',
+              text: 'Redirecting to login portal...',
+              timer: 1500,
+              showConfirmButton: false
+            });
+
+            setTimeout(() => {
+              window.location.href = 'login.html';
+            }, 1200);
+          }
+        });
+      });
+
+      // --- Notification Bell ---
+      document.getElementById('notifBellBtn').addEventListener('click', () => {
+        Swal.fire({
+          title: '🔔 Rider Notification',
+          text: 'All documents verified. Your active fleet rating is 4.9 stars!',
+          icon: 'info',
+          confirmButtonColor: '#8b193d'
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>
