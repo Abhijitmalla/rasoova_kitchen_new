@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="riceGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="50%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
+    <filter id="biryaniShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#471822" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="160" height="160" rx="16" fill="#fff5f7"/>
+
+  <g filter="url(#biryaniShadow)">
+    <!-- Traditional Clay/Brass Handi Bowl -->
+    <ellipse cx="80" cy="85" rx="58" ry="46" fill="#b45309" stroke="#78350f" stroke-width="2.5"/>
+    <ellipse cx="80" cy="80" rx="55" ry="42" fill="#d97706"/>
+    <ellipse cx="80" cy="76" rx="51" ry="38" fill="url(#riceGrad)"/>
+
+    <!-- Long Grain Saffron Rice Textures -->
+    <path d="M50 72c6-3 14-2 20 1M75 65c8 2 16 1 24-2M55 85c7 2 14-1 22 2M82 82c9-1 18 3 26 0" stroke="#b45309" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path d="M62 68c5 1 11-1 16 2M88 74c6-2 13 1 18-1" stroke="#ea580c" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+    <!-- Roasted Chicken Drumstick -->
+    <path d="M68 62c-8-6-16-4-20 2-4 6-2 14 6 18l18 10c4 2 8 0 10-4l2-4c2-4 0-8-4-10L68 62z" fill="#991b1b" stroke="#7f1d1d" stroke-width="1.5"/>
+    <ellipse cx="56" cy="68" rx="8" ry="6" fill="#b91c1c"/>
+    <!-- Drumstick Bone -->
+    <path d="M42 60l-10-8c-2-2-5-1-6 1s-1 5 1 6l10 8" stroke="#fef3c7" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+    <!-- Boiled Egg Slice -->
+    <ellipse cx="106" cy="82" rx="12" ry="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <circle cx="106" cy="83" r="6.5" fill="#facc15"/>
+
+    <!-- Brown Fried Onions (Birista) & Mint Leaves -->
+    <path d="M72 88c4-1 8 1 12-1M64 78c3 2 7 1 10 3" stroke="#451a03" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M90 64c3-4 8-3 10 0-2 4-7 4-10 0z" fill="#16a34a"/>
+    <path d="M74 94c2-3 6-2 8 0-2 3-6 3-8 0z" fill="#15803d"/>
+  </g>
+</svg>

@@ -1211,6 +1211,10 @@
       animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    .toast.error {
+      background: #7f1d1d;
+    }
+
     @keyframes slideInToast {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -2088,73 +2092,7 @@
      */
     document.addEventListener('DOMContentLoaded', () => {
       // --- Customers Data Store ---
-      let customersData = [
-        {
-          id: 'CUST-1001',
-          name: 'Anita Das',
-          initial: 'A',
-          avatarClass: 'avatar-rose',
-          phone: '+91 98765 43210',
-          location: 'Satya Vihar, Bhubaneswar',
-          pin: '751007',
-          orders: 24,
-          plan: 'Weekly',
-          subscription: 'Active',
-          status: 'Active'
-        },
-        {
-          id: 'CUST-1002',
-          name: 'Rahul Sen',
-          initial: 'R',
-          avatarClass: 'avatar-maroon',
-          phone: '+91 87654 32109',
-          location: 'Khandagiri, Bhubaneswar',
-          pin: '751030',
-          orders: 18,
-          plan: 'Monthly',
-          subscription: 'Active',
-          status: 'Active'
-        },
-        {
-          id: 'CUST-1003',
-          name: 'Sumi Patnaik',
-          initial: 'S',
-          avatarClass: 'avatar-salmon',
-          phone: '+91 76543 21098',
-          location: 'Jaydev Vihar, Bhubaneswar',
-          pin: '751013',
-          orders: 12,
-          plan: '—',
-          subscription: '—',
-          status: 'Active'
-        },
-        {
-          id: 'CUST-1004',
-          name: 'Vikram Sahu',
-          initial: 'V',
-          avatarClass: 'avatar-amber',
-          phone: '+91 65432 10987',
-          location: 'Patia, Bhubaneswar',
-          pin: '751024',
-          orders: 36,
-          plan: 'Weekly',
-          subscription: 'Active',
-          status: 'Active'
-        },
-        {
-          id: 'CUST-1005',
-          name: 'Priya Mohanty',
-          initial: 'P',
-          avatarClass: 'avatar-orange',
-          phone: '+91 94321 09876',
-          location: 'Chandrasekharpur, Bhubaneswar',
-          pin: '751016',
-          orders: 28,
-          plan: 'Monthly',
-          subscription: 'Paused',
-          status: 'Active'
-        }
-      ];
+      let customersData = [];
 
       const tbody = document.getElementById('customersTableBody');
       const tableSearch = document.getElementById('custTableSearch');
@@ -2166,44 +2104,52 @@
       const selectAll = document.getElementById('selectAllCheckbox');
       const paginationText = document.getElementById('paginationCountText');
 
+      const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
+
       // --- Render Table Function ---
       function renderCustomers(data = customersData) {
         if (!tbody) return;
 
         if (data.length === 0) {
           tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">No matching customers found.</td></tr>`;
-          if (paginationText) paginationText.innerText = 'Showing 0 customers';
+          if (paginationText) paginationText.innerText = `Showing 0 of ${customersData.length} customers`;
           return;
         }
 
         tbody.innerHTML = data.map(c => `
-          <tr data-id="${c.id}">
+          <tr data-id="${escapeHtml(c.id)}">
             <td style="text-align: center;">
-              <input type="checkbox" class="row-checkbox" value="${c.id}">
+              <input type="checkbox" class="row-checkbox" value="${escapeHtml(c.id)}">
             </td>
-            <td><span class="cust-id-badge">${c.id}</span></td>
+            <td><span class="cust-id-badge">${escapeHtml(c.id)}</span></td>
             <td>
               <div class="customer-name-cell">
-                <div class="cust-avatar-badge ${c.avatarClass}">${c.initial}</div>
-                <span class="cust-full-name">${c.name}</span>
+                <div class="cust-avatar-badge ${c.avatarClass}">${escapeHtml(c.initial)}</div>
+                <span class="cust-full-name">${escapeHtml(c.name)}</span>
               </div>
             </td>
             <td>
               <span class="phone-cell">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                ${c.phone}
+                ${escapeHtml(c.phone)}
               </span>
             </td>
             <td>
               <div class="location-cell">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 <div class="address-lines">
-                  <span class="address-line1">${c.location}</span>
-                  <span class="address-line2">PIN - ${c.pin}</span>
+                  <span class="address-line1">${escapeHtml(c.location)}</span>
+                  <span class="address-line2">PIN - ${escapeHtml(c.pin)}</span>
                 </div>
               </div>
             </td>
-            <td><strong class="orders-count-cell">${c.orders}</strong></td>
+            <td><strong class="orders-count-cell">${escapeHtml(c.orders)}</strong></td>
             <td>
               ${c.plan === 'Weekly' ? `
                 <span class="plan-pill weekly">
@@ -2233,18 +2179,18 @@
             <td>
               <span class="status-badge ${c.status === 'Active' ? 'active' : 'blocked'}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-                ${c.status}
+                ${escapeHtml(c.status)}
               </span>
             </td>
             <td style="text-align: center;">
               <div class="actions-cell">
-                <button class="action-btn view" onclick="window.viewCustomer('${c.id}')" title="View Profile">
+                <button class="action-btn view" data-customer-id="${escapeHtml(c.id)}" onclick="window.viewCustomer(this.dataset.customerId)" title="View Profile">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
-                <button class="action-btn edit" onclick="window.editCustomer('${c.id}')" title="Edit Customer">
+                <button class="action-btn edit" data-customer-id="${escapeHtml(c.id)}" onclick="window.editCustomer(this.dataset.customerId)" title="Edit Customer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </button>
-                <button class="action-btn delete" onclick="window.deleteCustomer('${c.id}')" title="Delete Customer">
+                <button class="action-btn delete" data-customer-id="${escapeHtml(c.id)}" onclick="window.deleteCustomer(this.dataset.customerId)" title="Delete Customer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                 </button>
               </div>
@@ -2253,12 +2199,15 @@
         `).join('');
 
         if (paginationText) {
-          paginationText.innerText = `Showing 1 – ${data.length} of 1,248 customers`;
+          paginationText.innerText = `Showing 1 – ${data.length} of ${customersData.length} customers`;
         }
       }
 
       // Initial Render
-      renderCustomers();
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">Loading customers...</td></tr>`;
+      }
+      if (paginationText) paginationText.innerText = 'Loading customers...';
 
       // --- Filter Logic ---
       function applyFilters() {
@@ -2301,6 +2250,49 @@
       if (custStatusFilter) custStatusFilter.addEventListener('change', applyFilters);
       if (subStatusFilter) subStatusFilter.addEventListener('change', applyFilters);
       if (locationFilter) locationFilter.addEventListener('change', applyFilters);
+
+      async function loadCustomers() {
+        try {
+          const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+          const headers = { 'Accept': 'application/json' };
+          if (token) headers.Authorization = `Bearer ${token}`;
+
+          const response = await fetch('http://localhost:5000/api/customers', { headers });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result || !result.success || !Array.isArray(result.customers)) {
+            throw new Error((result && result.message) || `Server responded with status ${response.status}`);
+          }
+
+          const avatarClasses = ['avatar-rose', 'avatar-maroon', 'avatar-salmon', 'avatar-amber', 'avatar-orange'];
+          customersData = result.customers.map((customer, index) => {
+            const name = String(customer.name || '');
+            const plan = String(customer.plan || 'None');
+            const subscription = String(customer.subscription || 'None');
+
+            return {
+              id: String(customer.customer_code || customer.id),
+              name,
+              initial: name.charAt(0).toUpperCase(),
+              avatarClass: avatarClasses[index % avatarClasses.length],
+              phone: String(customer.phone || ''),
+              location: String(customer.location || ''),
+              pin: String(customer.pin || ''),
+              orders: Number(customer.total_orders) || 0,
+              plan: plan === 'None' ? '—' : plan,
+              subscription: subscription === 'None' ? '—' : subscription,
+              status: String(customer.status || 'Active')
+            };
+          });
+          applyFilters();
+        } catch (error) {
+          console.error('Get Customers Error:', error);
+          if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">Could not load customers.</td></tr>`;
+          }
+          if (paginationText) paginationText.innerText = 'Unable to load customers';
+          showToast(error.message || 'Failed to load customers', true);
+        }
+      }
 
       // --- Reset Button ---
       if (resetBtn) {
@@ -2390,13 +2382,13 @@
       };
 
       if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
           const isEdit = editIdInput.value !== '';
-          const name = document.getElementById('formCustName').value;
-          const phone = document.getElementById('formCustPhone').value;
-          const location = document.getElementById('formCustLocation').value;
-          const pin = document.getElementById('formCustPin').value;
+          const name = document.getElementById('formCustName').value.trim();
+          const phone = document.getElementById('formCustPhone').value.trim();
+          const location = document.getElementById('formCustLocation').value.trim();
+          const pin = document.getElementById('formCustPin').value.trim();
           const planVal = document.getElementById('formCustPlan').value;
           const subVal = document.getElementById('formCustSubStatus').value;
           const status = document.getElementById('formCustStatus').value;
@@ -2422,22 +2414,70 @@
               showToast(`Customer #${c.id} updated!`);
             }
           } else {
-            const newId = `CUST-${1006 + customersData.length}`;
-            const newCust = {
-              id: newId,
-              name,
-              initial,
-              avatarClass,
-              phone,
-              location,
-              pin,
-              orders: 1,
-              plan,
-              subscription,
-              status
-            };
-            customersData.unshift(newCust);
-            showToast(`New customer #${newId} created!`);
+            const saveButton = document.getElementById('saveCustModalBtn');
+            const originalButtonText = saveButton ? saveButton.innerText : 'Save Customer';
+            if (saveButton) {
+              saveButton.disabled = true;
+              saveButton.innerText = 'Saving...';
+            }
+
+            try {
+              const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+              const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              };
+              if (token) headers.Authorization = `Bearer ${token}`;
+
+              const response = await fetch('http://localhost:5000/api/customers', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                  name,
+                  phone,
+                  location,
+                  pin,
+                  plan: planVal,
+                  subscription: subVal,
+                  status
+                })
+              });
+              const result = await response.json().catch(() => ({}));
+              if (!response.ok || !result || !result.success || !result.customer) {
+                throw new Error((result && result.message) || `Server responded with status ${response.status}`);
+              }
+
+              const created = result.customer;
+              const customerId = created.customer_code || created.id;
+              if (!customerId) throw new Error('API response did not include a customer ID');
+              const createdName = created.name || name;
+              const createdPlan = created.plan || planVal;
+              const createdSubscription = created.subscription || subVal;
+              const newCust = {
+                id: String(customerId),
+                name: createdName,
+                initial: createdName.charAt(0).toUpperCase(),
+                avatarClass,
+                phone: created.phone || phone,
+                location: created.location || location,
+                pin: created.pin || pin,
+                orders: Number(created.total_orders) || 0,
+                plan: createdPlan === 'None' ? '—' : createdPlan,
+                subscription: createdSubscription === 'None' ? '—' : createdSubscription,
+                status: created.status || status
+              };
+              customersData.unshift(newCust);
+              showToast(`New customer #${newCust.id} created!`);
+            } catch (error) {
+              console.error('Create Customer Error:', error);
+              showToast(error.message || 'Failed to create customer', true);
+              return;
+            } finally {
+              if (saveButton) {
+                saveButton.disabled = false;
+                saveButton.innerText = originalButtonText;
+              }
+            }
           }
 
           applyFilters();
@@ -2471,35 +2511,35 @@
         viewContainer.innerHTML = `
           <div class="cust-detail-row">
             <span>Customer ID:</span>
-            <span>${c.id}</span>
+            <span>${escapeHtml(c.id)}</span>
           </div>
           <div class="cust-detail-row">
             <span>Full Name:</span>
-            <span>${c.name}</span>
+            <span>${escapeHtml(c.name)}</span>
           </div>
           <div class="cust-detail-row">
             <span>Phone Number:</span>
-            <span>${c.phone}</span>
+            <span>${escapeHtml(c.phone)}</span>
           </div>
           <div class="cust-detail-row">
             <span>Delivery Address:</span>
-            <span>${c.location} (PIN: ${c.pin})</span>
+            <span>${escapeHtml(c.location)} (PIN: ${escapeHtml(c.pin)})</span>
           </div>
           <div class="cust-detail-row">
             <span>Total Food Orders:</span>
-            <span>${c.orders} orders placed</span>
+            <span>${escapeHtml(c.orders)} orders placed</span>
           </div>
           <div class="cust-detail-row">
             <span>Subscription Plan:</span>
-            <span>${c.plan}</span>
+            <span>${escapeHtml(c.plan)}</span>
           </div>
           <div class="cust-detail-row">
             <span>Subscription Status:</span>
-            <span>${c.subscription}</span>
+            <span>${escapeHtml(c.subscription)}</span>
           </div>
           <div class="cust-detail-row">
             <span>Account Status:</span>
-            <span>${c.status}</span>
+            <span>${escapeHtml(c.status)}</span>
           </div>
         `;
 
@@ -2507,7 +2547,7 @@
       };
 
       // --- Toast Function ---
-      window.showToast = function(msg) {
+      window.showToast = function(msg, isError = false) {
         let container = document.getElementById('toastContainer');
         if (!container) {
           container = document.createElement('div');
@@ -2516,13 +2556,16 @@
           document.body.appendChild(container);
         }
         const toast = document.createElement('div');
-        toast.className = 'toast';
+        toast.className = isError ? 'toast error' : 'toast';
+        const icon = isError
+          ? '<path d="M18 6 6 18M6 6l12 12"/>'
+          : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>';
         toast.innerHTML = `
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span>${msg}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${isError ? '#fca5a5' : '#4ade80'}" stroke-width="2">
+            ${icon}
+          </svg><span></span>
         `;
+        toast.querySelector('span').textContent = msg;
         container.appendChild(toast);
         setTimeout(() => {
           toast.style.opacity = '0';
@@ -2531,6 +2574,8 @@
           setTimeout(() => toast.remove(), 300);
         }, 2800);
       };
+
+      loadCustomers();
 
       // --- Notification & Profile Dropdowns ---
       const notifBtn = document.getElementById('notificationBtn');

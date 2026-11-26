@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="vegGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#84cc16"/>
+      <stop offset="60%" stop-color="#4d7c0f"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </radialGradient>
+    <filter id="vegShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#471822" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="160" height="160" rx="16" fill="#fff5f7"/>
+
+  <g filter="url(#vegShadow)">
+    <!-- Stainless Steel Platter -->
+    <ellipse cx="80" cy="85" rx="58" ry="46" fill="#94a3b8" stroke="#64748b" stroke-width="2"/>
+    <ellipse cx="80" cy="80" rx="54" ry="42" fill="#cbd5e1"/>
+    <ellipse cx="80" cy="76" rx="48" ry="36" fill="url(#vegGrad)"/>
+
+    <!-- Fresh Broccoli / Green Florets -->
+    <circle cx="68" cy="68" r="8" fill="#15803d"/>
+    <circle cx="64" cy="74" r="7" fill="#166534"/>
+    <circle cx="72" cy="75" r="7" fill="#15803d"/>
+
+    <!-- Sweet Corn & Peas -->
+    <circle cx="94" cy="66" r="3.5" fill="#facc15"/>
+    <circle cx="102" cy="70" r="3" fill="#facc15"/>
+    <circle cx="98" cy="76" r="3.2" fill="#22c55e"/>
+    <circle cx="88" cy="72" r="3.5" fill="#16a34a"/>
+    <circle cx="86" cy="82" r="3.2" fill="#facc15"/>
+
+    <!-- Sliced Carrots & Tomatoes -->
+    <ellipse cx="78" cy="88" rx="8" ry="5" fill="#ea580c"/>
+    <ellipse cx="94" cy="86" rx="7" ry="4.5" fill="#dc2626"/>
+
+    <!-- Fragrant Herb Garnish -->
+    <path d="M78 60c4-4 10-3 12 0-3 4-9 4-12 0z" fill="#4ade80"/>
+  </g>
+</svg>

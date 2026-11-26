@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="thaliPlatter" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#fdfbf7"/>
+      <stop offset="88%" stop-color="#e8d8b8"/>
+      <stop offset="100%" stop-color="#c9b082"/>
+    </radialGradient>
+    <filter id="thaliShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#471822" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="160" height="160" rx="16" fill="#fff5f7"/>
+
+  <g filter="url(#thaliShadow)">
+    <!-- Main Big Thali Platter -->
+    <circle cx="80" cy="80" r="66" fill="url(#thaliPlatter)" stroke="#c9b082" stroke-width="3"/>
+    <circle cx="80" cy="80" r="58" fill="none" stroke="#dfcb9f" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+    <!-- Center: Fragrant Rice & Ghee -->
+    <circle cx="80" cy="80" r="22" fill="#fffdfa" stroke="#eddcc1" stroke-width="1.5"/>
+    <circle cx="80" cy="80" r="7" fill="#facc15" opacity="0.8"/>
+    <circle cx="82" cy="79" r="2" fill="#ea580c"/>
+
+    <!-- Katori 1 (Top Left): Dal Makhani / Tadka -->
+    <circle cx="50" cy="46" r="14" fill="#d97706" stroke="#b45309" stroke-width="1.5"/>
+    <path d="M46 44c2-2 6-2 8 0" stroke="#fef3c7" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+    <!-- Katori 2 (Top Right): Paneer Sabzi -->
+    <circle cx="110" cy="46" r="14" fill="#ea580c" stroke="#c2410c" stroke-width="1.5"/>
+    <rect x="106" y="42" width="6" height="6" rx="1" fill="#fffbeb"/>
+    <rect x="109" y="46" width="5" height="5" rx="1" fill="#fffbeb"/>
+
+    <!-- Katori 3 (Right): Sweet Gulab Jamun -->
+    <circle cx="124" cy="80" r="13" fill="#fffdfa" stroke="#d5b880" stroke-width="1.5"/>
+    <circle cx="124" cy="80" r="8" fill="#78350f"/>
+    <circle cx="122" cy="78" r="2" fill="#b45309"/>
+
+    <!-- Katori 4 (Bottom Right): Curd / Raita -->
+    <circle cx="110" cy="114" r="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <circle cx="110" cy="114" r="5" fill="#f1f5f9"/>
+    <circle cx="108" cy="112" r="1.5" fill="#16a34a"/>
+    <circle cx="112" cy="115" r="1.5" fill="#dc2626"/>
+
+    <!-- Katori 5 (Bottom Left): Bihari Chokha / Bhujia -->
+    <circle cx="50" cy="114" r="14" fill="#b45309" stroke="#92400e" stroke-width="1.5"/>
+    <circle cx="50" cy="114" r="8" fill="#d97706" opacity="0.6"/>
+
+    <!-- Fresh Roti / Naan (Left) -->
+    <ellipse cx="36" cy="80" rx="14" ry="12" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+    <circle cx="34" cy="78" r="1.5" fill="#a16207"/>
+    <circle cx="38" cy="82" r="1" fill="#a16207"/>
+  </g>
+</svg>

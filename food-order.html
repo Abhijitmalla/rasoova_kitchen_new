@@ -1083,6 +1083,25 @@
       border-color: var(--primary);
     }
 
+    .form-row-item-qty {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .form-row-item-qty,
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .modal-footer {
       padding: 16px 24px;
       background: var(--bg-body);
@@ -1874,7 +1893,7 @@
           <line x1="12" y1="5" x2="12" y2="19"/>
           <line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
-        <span>+ Add Manual Order</span>
+        <span>Add Manual Order</span>
       </button>
     </section>
 
@@ -1892,7 +1911,7 @@
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number">1,248</span>
+          <span class="stat-number" id="statTotalOrders">0</span>
           <span class="stat-title">Total Orders</span>
         </div>
       </div>
@@ -1905,7 +1924,7 @@
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number">117</span>
+          <span class="stat-number" id="statPendingOrders">0</span>
           <span class="stat-title">Pending</span>
         </div>
       </div>
@@ -1919,7 +1938,7 @@
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number">92</span>
+          <span class="stat-number" id="statPreparingOrders">0</span>
           <span class="stat-title">Preparing</span>
         </div>
       </div>
@@ -1935,7 +1954,7 @@
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number">562</span>
+          <span class="stat-number" id="statDispatchedOrders">0</span>
           <span class="stat-title">Dispatched</span>
         </div>
       </div>
@@ -1949,7 +1968,7 @@
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number">569</span>
+          <span class="stat-number" id="statDeliveredOrders">0</span>
           <span class="stat-title">Delivered</span>
         </div>
       </div>
@@ -2058,7 +2077,11 @@
             </tr>
           </thead>
           <tbody id="ordersTableBody">
-            <!-- Dynamically populated by JavaScript -->
+            <tr>
+              <td colspan="11" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">
+                Loading food orders...
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -2069,7 +2092,7 @@
          ==================================================================== -->
     <div class="table-footer">
       <div class="pagination-count" id="paginationCountText">
-        Showing 1 – 5 of 1,248 orders
+        Showing 0 orders
       </div>
 
       <div class="pagination-controls">
@@ -2098,36 +2121,48 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="orderCustomer">Customer Name</label>
-            <input type="text" id="orderCustomer" placeholder="e.g. Ramesh Chandra" required>
+            <select id="orderCustomer" required>
+              <option value="">-- Select Customer --</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="orderPhone">Phone Number</label>
             <input type="text" id="orderPhone" placeholder="e.g. +91 98765 00000" required>
           </div>
-          <div class="form-group">
-            <label for="orderItem">Food Item & Quantity</label>
-            <input type="text" id="orderItem" placeholder="e.g. Bihari Thali ×1" required>
+          <div class="form-row-item-qty">
+            <div class="form-group">
+              <label for="orderItem">Food Item</label>
+              <select id="orderItem" required>
+                <option value="">-- Select Food Item --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="orderQuantity">Quantity</label>
+              <input type="number" id="orderQuantity" min="1" max="99" value="1" required>
+            </div>
           </div>
           <div class="form-group">
             <label for="orderAddress">Delivery Address & Pin Code</label>
             <input type="text" id="orderAddress" placeholder="e.g. Nayapalli, Bhubaneswar, Pin - 751012" required>
           </div>
-          <div class="form-group">
-            <label for="orderAmount">Amount (₹)</label>
-            <input type="text" id="orderAmount" placeholder="e.g. ₹299" required>
-          </div>
-          <div class="form-group">
-            <label for="orderStatus">Initial Status</label>
-            <select id="orderStatus">
-              <option value="Preparing" selected>Preparing</option>
-              <option value="Pending">Pending</option>
-              <option value="Dispatched">Dispatched</option>
-              <option value="Delivered">Delivered</option>
-            </select>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="orderAmount">Total Amount (₹)</label>
+              <input type="text" id="orderAmount" placeholder="Auto-calculated" required style="font-weight: 700; color: #8b193d; background: #fff8f9;">
+            </div>
+            <div class="form-group">
+              <label for="orderStatus">Initial Status</label>
+              <select id="orderStatus">
+                <option value="Preparing" selected>Preparing</option>
+                <option value="Pending">Pending</option>
+                <option value="Dispatched">Dispatched</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" id="cancelAddOrderBtn">Cancel</button>
+          <button type="button" class="btn-secondary" id="cancelAddOrderBtn" onclick="window.closeAddOrderModal && window.closeAddOrderModal()">Cancel</button>
           <button type="submit" class="btn-primary">Create Order</button>
         </div>
       </form>
@@ -2146,84 +2181,251 @@
      * Full-width interactivity, filtering, row selection, editing, adding orders, export
      */
     document.addEventListener('DOMContentLoaded', () => {
-      // --- Food Orders Data Store ---
-      let ordersData = [
-        {
-          id: 'ORD-1024',
-          code: 'FD-001',
-          item: 'Bihari Thali ×1',
-          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
-          customer: 'Anita Das',
-          phone: '+91 98765 43210',
-          address1: 'Satya Vihar, Bhubaneswar',
-          address2: 'Pin - 751007',
-          dateTime: 'Nov 30, 2026, 11:20 AM',
-          amount: '₹299',
-          status: 'Dispatched',
-          statusClass: 'dispatched',
-          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`
-        },
-        {
-          id: 'ORD-1023',
-          code: 'FD-005',
-          item: 'Chicken Biryani ×2',
-          thumb: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=120&q=80',
-          customer: 'Rahul Sen',
-          phone: '+91 87654 32109',
-          address1: 'Khandagiri, Bhubaneswar',
-          address2: 'Pin - 751030',
-          dateTime: 'Nov 30, 2026, 10:45 AM',
-          amount: '₹598',
-          status: 'Delivered',
-          statusClass: 'delivered',
-          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
-        },
-        {
-          id: 'ORD-1022',
-          code: 'FD-002',
-          item: 'Paneer Curry ×1',
-          thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=120&q=80',
-          customer: 'Sumi Patnaik',
-          phone: '+91 76543 21098',
-          address1: 'Jaydev Vihar, Bhubaneswar',
-          address2: 'Pin - 751013',
-          dateTime: 'Nov 30, 2026, 10:10 AM',
-          amount: '₹249',
-          status: 'Preparing',
-          statusClass: 'preparing',
-          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`
-        },
-        {
-          id: 'ORD-1021',
-          code: 'FD-004',
-          item: 'Veg Thali ×1',
-          thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
-          customer: 'Vikram Sahu',
-          phone: '+91 65432 10987',
-          address1: 'Patia, Bhubaneswar',
-          address2: 'Pin - 751024',
-          dateTime: 'Nov 30, 2026, 09:55 AM',
-          amount: '₹199',
-          status: 'Pending',
-          statusClass: 'pending',
-          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`
-        },
-        {
-          id: 'ORD-1020',
-          code: 'FD-003',
-          item: 'Mutton Thali ×1',
-          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
-          customer: 'Priya Mohanty',
-          phone: '+91 94321 09876',
-          address1: 'Chandrasekharpur, Bhubaneswar',
-          address2: 'Pin - 751016',
-          dateTime: 'Nov 30, 2026, 09:30 AM',
-          amount: '₹399',
-          status: 'Delivered',
-          statusClass: 'delivered',
-          statusIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+      // --- Helper to get admin token from sessionStorage ---
+      function getAdminToken() {
+        return sessionStorage.getItem('token') || sessionStorage.getItem('adminToken') || '';
+      }
+
+      // Helper function to return SVG icon for status
+      function getStatusSvg(status) {
+        switch (status) {
+          case 'Dispatched':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`;
+          case 'Delivered':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+          case 'Preparing':
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`;
+          case 'Pending':
+          default:
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
         }
-      ];
+      }
+
+      // Helper to resolve food thumbnail URLs
+      function resolveThumbUrl(thumb) {
+        if (!thumb || typeof thumb !== 'string') {
+          return 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80';
+        }
+        const clean = thumb.trim();
+        if (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('data:')) {
+          return clean;
+        }
+        if (clean.startsWith('/uploads/')) {
+          return `http://localhost:5000${clean}`;
+        }
+        if (clean.startsWith('uploads/')) {
+          return `http://localhost:5000/${clean}`;
+        }
+        if (clean.startsWith('food_') || clean.endsWith('.png') || clean.endsWith('.jpg') || clean.endsWith('.jpeg') || clean.endsWith('.svg') || clean.endsWith('.webp')) {
+          return `http://localhost:5000/uploads/${clean}`;
+        }
+        return clean;
+      }
+
+      // --- Dynamic Data Stores ---
+      let ordersData = [];
+      let modalCustomers = [];
+      let modalFoodItems = [];
+
+      // Helper: populate location dropdown dynamically from loaded orders
+      function populateLocationOptions() {
+        if (!locationFilter) return;
+        const currentVal = locationFilter.value;
+        const locations = new Set();
+        ordersData.forEach(o => {
+          if (o.address1) {
+            const loc = o.address1.split(',')[0].trim();
+            if (loc) locations.add(loc);
+          }
+        });
+        if (locations.size > 0) {
+          let opts = '<option value="All">All Locations</option>';
+          locations.forEach(loc => {
+            opts += `<option value="${loc}">${loc}</option>`;
+          });
+          locationFilter.innerHTML = opts;
+          if (locations.has(currentVal)) {
+            locationFilter.value = currentVal;
+          } else {
+            locationFilter.value = 'All';
+          }
+        }
+      }
+
+      // Fetch food orders from backend using JWT from sessionStorage
+      async function loadOrdersFromApi() {
+        const tableBody = document.getElementById('ordersTableBody');
+        try {
+          const token = getAdminToken();
+          if (!token) {
+            console.warn('Food Orders: No admin token found in sessionStorage.');
+            if (tableBody) {
+              tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 36px; color: #dc2626; font-size: 14px;">
+                <strong>Authentication Required:</strong> Please sign in as admin to view food orders.
+                <br><br><a href="login.html" style="color: #8b193d; text-decoration: underline; font-weight: 600;">Go to Login</a>
+              </td></tr>`;
+            }
+            if (paginationText) paginationText.innerText = 'Showing 0 orders';
+            return;
+          }
+
+          const headers = {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          };
+
+          const res = await fetch('http://localhost:5000/api/food-orders', { headers });
+          if (!res.ok) {
+            if (res.status === 401) {
+              console.warn('Food Orders: Authentication token required or expired.');
+              if (tableBody) {
+                tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 36px; color: #dc2626; font-size: 14px;">
+                  <strong>Authentication Required:</strong> Please sign in as admin to view food orders.
+                  <br><br><a href="login.html" style="color: #8b193d; text-decoration: underline; font-weight: 600;">Go to Login</a>
+                </td></tr>`;
+              }
+              if (paginationText) paginationText.innerText = 'Showing 0 orders';
+            } else {
+              throw new Error(`Server returned status ${res.status}`);
+            }
+            return;
+          }
+
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.orders)) {
+            ordersData = data.orders.map(o => ({
+              dbId: o.id,
+              id: o.order_code || `ORD-${o.id}`,
+              code: o.food_code || 'FD-001',
+              item: o.food_item || 'Food Item',
+              thumb: resolveThumbUrl(o.thumb),
+              customer: o.customer_name || 'Customer',
+              phone: o.phone || '',
+              address1: o.address_line1 || '',
+              address2: o.address_line2 || '',
+              dateTime: o.order_datetime
+                ? new Date(o.order_datetime).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })
+                : 'Just now',
+              amount: String(o.amount).startsWith('₹') ? o.amount : `₹${o.amount}`,
+              status: o.status || 'Preparing',
+              statusClass: (o.status || 'Preparing').toLowerCase(),
+              statusIcon: getStatusSvg(o.status || 'Preparing')
+            }));
+
+            if (data.stats) {
+              const t = document.getElementById('statTotalOrders'); if (t) t.innerText = Number(data.stats.totalOrders || 0).toLocaleString();
+              const p = document.getElementById('statPendingOrders'); if (p) p.innerText = Number(data.stats.pending || 0).toLocaleString();
+              const pr = document.getElementById('statPreparingOrders'); if (pr) pr.innerText = Number(data.stats.preparing || 0).toLocaleString();
+              const d = document.getElementById('statDispatchedOrders'); if (d) d.innerText = Number(data.stats.dispatched || 0).toLocaleString();
+              const de = document.getElementById('statDeliveredOrders'); if (de) de.innerText = Number(data.stats.delivered || 0).toLocaleString();
+            }
+
+            populateLocationOptions();
+            renderOrders(ordersData);
+          }
+        } catch (err) {
+          console.warn('API connection note:', err.message);
+          if (tableBody && ordersData.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">
+              Could not connect to API. Please ensure the backend server is running on port 5000.
+            </td></tr>`;
+          }
+        }
+      }
+
+      // Fetch customers for the manual order modal from GET http://localhost:5000/api/customers
+      async function loadCustomersForOrderModal() {
+        const customerSelect = document.getElementById('orderCustomer');
+        if (!customerSelect) return;
+        const currentVal = customerSelect.value;
+
+        try {
+          const token = getAdminToken();
+          const headers = { 'Accept': 'application/json' };
+          if (token) headers['Authorization'] = `Bearer ${token}`;
+
+          const res = await fetch('http://localhost:5000/api/customers', { headers });
+          if (!res.ok) return;
+
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.customers)) {
+            modalCustomers = data.customers;
+            customerSelect.innerHTML = '<option value="">-- Select Customer --</option>' + 
+              data.customers.map(c => `
+                <option value="${c.id}">
+                  ${c.name} (${c.customer_code || 'CUST-' + c.id}) ${c.phone ? '• ' + c.phone : ''}
+                </option>
+              `).join('');
+
+            if (currentVal && modalCustomers.some(c => String(c.id) === String(currentVal))) {
+              customerSelect.value = currentVal;
+            }
+          }
+        } catch (err) {
+          console.warn('Error loading customers for modal:', err.message);
+        }
+      }
+
+      // Fetch food items for the manual order modal from GET http://localhost:5000/api/food-items
+      async function loadFoodItemsForOrderModal() {
+        const itemSelect = document.getElementById('orderItem');
+        if (!itemSelect) return;
+        const currentVal = itemSelect.value;
+
+        try {
+          const token = getAdminToken();
+          const headers = { 'Accept': 'application/json' };
+          if (token) headers['Authorization'] = `Bearer ${token}`;
+
+          const res = await fetch('http://localhost:5000/api/food-items', { headers });
+          if (!res.ok) return;
+
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.items)) {
+            modalFoodItems = data.items.filter(item => item.available !== false && item.available !== 0);
+            itemSelect.innerHTML = '<option value="">-- Select Food Item --</option>' + 
+              modalFoodItems.map(item => `
+                <option value="${item.id}">
+                  ${item.name} (${item.category}) — ₹${parseFloat(item.price || 0).toFixed(2)}
+                </option>
+              `).join('');
+
+            if (currentVal && modalFoodItems.some(f => String(f.id) === String(currentVal))) {
+              itemSelect.value = currentVal;
+              recalculateOrderAmount();
+            }
+          }
+        } catch (err) {
+          console.warn('Error loading food items for modal:', err.message);
+        }
+      }
+
+      // Auto-calculate order amount when food item or quantity changes
+      function recalculateOrderAmount() {
+        const itemSelect = document.getElementById('orderItem');
+        const quantityInput = document.getElementById('orderQuantity');
+        const amountInput = document.getElementById('orderAmount');
+        if (!itemSelect || !quantityInput || !amountInput) return;
+
+        const itemId = itemSelect.value;
+        const qty = Math.max(1, parseInt(quantityInput.value, 10) || 1);
+        quantityInput.value = qty;
+
+        const foundItem = modalFoodItems.find(f => String(f.id) === String(itemId));
+        if (foundItem) {
+          const unitPrice = parseFloat(foundItem.price) || 0;
+          const total = unitPrice * qty;
+          amountInput.value = `₹${total.toFixed(2)}`;
+        } else {
+          amountInput.value = '';
+        }
+      }
 
       const tbody = document.getElementById('ordersTableBody');
       const tableSearch = document.getElementById('orderTableSearch');
@@ -2304,12 +2506,14 @@
         `).join('');
 
         if (paginationText) {
-          paginationText.innerText = `Showing 1 – ${data.length} of 1,248 orders`;
+          paginationText.innerText = `Showing 1 – ${data.length} of ${data.length} orders`;
         }
       }
 
-      // Initial Table Render
-      renderOrders();
+      // Initial Load from API
+      loadOrdersFromApi();
+      loadCustomersForOrderModal();
+      loadFoodItemsForOrderModal();
 
       // --- Filter Logic ---
       function applyFilters() {
@@ -2386,72 +2590,239 @@
       const cancelAddBtn = document.getElementById('cancelAddOrderBtn');
       const addOrderForm = document.getElementById('addOrderForm');
 
-      function openModal() { if (addModal) addModal.classList.add('open'); }
-      function closeModal() { if (addModal) addModal.classList.remove('open'); }
+      const customerSelect = document.getElementById('orderCustomer');
+      const phoneInput = document.getElementById('orderPhone');
+      const addressInput = document.getElementById('orderAddress');
+      const itemSelect = document.getElementById('orderItem');
+      const quantityInput = document.getElementById('orderQuantity');
+      const amountInput = document.getElementById('orderAmount');
+
+      // Auto-fill phone and address when customer is selected
+      if (customerSelect) {
+        customerSelect.addEventListener('change', () => {
+          const custId = customerSelect.value;
+          const found = modalCustomers.find(c => String(c.id) === String(custId));
+          if (found) {
+            if (phoneInput) phoneInput.value = found.phone || '';
+            if (addressInput) {
+              let addr = found.location || '';
+              if (found.pin) {
+                addr = addr ? `${addr}, Pin - ${found.pin}` : `Pin - ${found.pin}`;
+              }
+              addressInput.value = addr;
+            }
+          }
+        });
+      }
+
+      // Auto-recalculate amount when food item or quantity changes
+      if (itemSelect) {
+        itemSelect.addEventListener('change', recalculateOrderAmount);
+      }
+      if (quantityInput) {
+        quantityInput.addEventListener('input', recalculateOrderAmount);
+        quantityInput.addEventListener('change', recalculateOrderAmount);
+      }
+
+      function openModal() {
+        if (addModal) {
+          addModal.classList.add('open');
+          loadCustomersForOrderModal();
+          loadFoodItemsForOrderModal();
+          if (quantityInput && (!quantityInput.value || quantityInput.value < 1)) {
+            quantityInput.value = '1';
+          }
+          if (customerSelect) setTimeout(() => customerSelect.focus(), 100);
+        }
+      }
+      function closeModal() {
+        if (addModal) addModal.classList.remove('open');
+      }
 
       if (openAddBtn) openAddBtn.addEventListener('click', openModal);
       if (closeAddBtn) closeAddBtn.addEventListener('click', closeModal);
       if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeModal);
-
-      if (addOrderForm) {
-        addOrderForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const customer = document.getElementById('orderCustomer').value;
-          const phone = document.getElementById('orderPhone').value;
-          const item = document.getElementById('orderItem').value;
-          const address = document.getElementById('orderAddress').value;
-          const amount = document.getElementById('orderAmount').value;
-          const status = document.getElementById('orderStatus').value;
-
-          const newIdNum = 1025 + ordersData.length;
-          const newCodeNum = String(ordersData.length + 1).padStart(3, '0');
-
-          let icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
-          if (status === 'Dispatched') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`;
-          else if (status === 'Preparing') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`;
-          else if (status === 'Pending') icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
-
-          const newOrder = {
-            id: `ORD-${newIdNum}`,
-            code: `FD-${newCodeNum}`,
-            item: item,
-            thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
-            customer: customer,
-            phone: phone,
-            address1: address.split(',')[0] || address,
-            address2: address.split(',')[1] || 'Bhubaneswar',
-            dateTime: 'Nov 30, 2026, Just now',
-            amount: amount.startsWith('₹') ? amount : `₹${amount}`,
-            status: status,
-            statusClass: status.toLowerCase(),
-            statusIcon: icon
-          };
-
-          ordersData.unshift(newOrder);
-          renderOrders();
-          closeModal();
-          addOrderForm.reset();
-          showToast(`Order #${newOrder.id} added successfully!`);
+      window.openAddOrderModal = openModal;
+      window.closeAddOrderModal = closeModal;
+      if (addModal) {
+        addModal.addEventListener('click', (e) => {
+          if (e.target === addModal) closeModal();
         });
       }
 
-      // Helper function to return SVG icon for status
-      function getStatusSvg(status) {
-        switch (status) {
-          case 'Dispatched':
-            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`;
-          case 'Delivered':
-            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
-          case 'Preparing':
-            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/><path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/></svg>`;
-          case 'Pending':
-          default:
-            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>`;
-        }
+      if (addOrderForm) {
+        addOrderForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const customerSelect = document.getElementById('orderCustomer');
+          const phoneInput = document.getElementById('orderPhone');
+          const itemSelect = document.getElementById('orderItem');
+          const quantityInput = document.getElementById('orderQuantity');
+          const addressInput = document.getElementById('orderAddress');
+          const amountInput = document.getElementById('orderAmount');
+          const statusSelect = document.getElementById('orderStatus');
+
+          const custId = customerSelect ? customerSelect.value : '';
+          const selectedCustomer = modalCustomers.find(c => String(c.id) === String(custId));
+          const customerName = selectedCustomer ? selectedCustomer.name : (customerSelect ? customerSelect.options[customerSelect.selectedIndex]?.text : '');
+
+          const itemId = itemSelect ? itemSelect.value : '';
+          const selectedFood = modalFoodItems.find(f => String(f.id) === String(itemId));
+          const qty = Math.max(1, parseInt(quantityInput ? quantityInput.value : 1, 10) || 1);
+
+          let foodItemName = selectedFood ? selectedFood.name : '';
+          if (qty > 1) {
+            foodItemName = `${foodItemName} ×${qty}`;
+          }
+          const foodCode = selectedFood ? selectedFood.food_code : '';
+          const thumb = selectedFood ? selectedFood.image : '';
+
+          const phone = phoneInput ? phoneInput.value.trim() : '';
+          const address = addressInput ? addressInput.value.trim() : '';
+          let amount = amountInput ? amountInput.value.trim() : '';
+          const status = statusSelect ? statusSelect.value : 'Preparing';
+
+          if (!custId || !selectedCustomer) {
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({ icon: 'warning', title: 'Customer Required', text: 'Please select a customer from the list.' });
+            } else {
+              alert('Please select a customer.');
+            }
+            return;
+          }
+
+          if (!itemId || !selectedFood) {
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({ icon: 'warning', title: 'Food Item Required', text: 'Please select a food item.' });
+            } else {
+              alert('Please select a food item.');
+            }
+            return;
+          }
+
+          const token = getAdminToken();
+          if (!token) {
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({ icon: 'error', title: 'Session Expired', text: 'Please log in as admin to place orders.' });
+            } else {
+              alert('Authentication required. Please log in.');
+            }
+            return;
+          }
+
+          const submitBtn = addOrderForm.querySelector('button[type="submit"]');
+          const origBtnText = submitBtn ? submitBtn.innerText : 'Add Order';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Creating Order...';
+          }
+
+          try {
+            const res = await fetch('http://localhost:5000/api/food-orders', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                customer_id: selectedCustomer.id,
+                customer_name: customerName,
+                phone: phone,
+                food_code: foodCode,
+                food_item: foodItemName,
+                thumb: thumb,
+                address: address,
+                amount: amount,
+                status: status
+              })
+            });
+
+            const result = await res.json();
+            if (!res.ok || !result.success) {
+              throw new Error(result.message || 'Failed to create order');
+            }
+
+            closeModal();
+            addOrderForm.reset();
+            if (quantityInput) quantityInput.value = '1';
+            await loadOrdersFromApi();
+
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Order Created!',
+                text: result.message || 'Food order placed successfully.',
+                timer: 2000,
+                showConfirmButton: false,
+                customClass: { popup: 'rasoova-swal-popup' }
+              });
+            } else {
+              showToast(result.message || 'Order placed successfully.');
+            }
+          } catch (err) {
+            console.error('Failed to create order:', err);
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'error',
+                title: 'Order Failed',
+                text: err.message || 'Could not place order. Please check backend server.',
+                customClass: { popup: 'rasoova-swal-popup' }
+              });
+            } else {
+              alert(`Error: ${err.message}`);
+            }
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = origBtnText;
+            }
+          }
+        });
       }
 
       // --- Global Edit & Delete Handlers with SweetAlert2 ---
       window.deleteOrder = function(orderId) {
+        const doDelete = async () => {
+          try {
+            const token = getAdminToken();
+            if (!token) {
+              alert('Authentication required. Please sign in as admin.');
+              return;
+            }
+            const res = await fetch(`http://localhost:5000/api/food-orders/${orderId}`, {
+              method: 'DELETE',
+              headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+              throw new Error(data.message || 'Failed to delete order');
+            }
+            await loadOrdersFromApi();
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Order Deleted!',
+                text: data.message || `Order ${orderId} has been removed.`,
+                timer: 1800,
+                showConfirmButton: false,
+                customClass: { popup: 'rasoova-swal-popup' }
+              });
+            } else {
+              showToast(`Order ${orderId} deleted successfully.`);
+            }
+          } catch (err) {
+            console.error('Delete order error:', err);
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({ icon: 'error', title: 'Delete Failed', text: err.message });
+            } else {
+              alert(err.message);
+            }
+          }
+        };
+
         if (typeof Swal !== 'undefined') {
           Swal.fire({
             title: 'Delete Order?',
@@ -2470,23 +2841,12 @@
             }
           }).then((result) => {
             if (result.isConfirmed) {
-              ordersData = ordersData.filter(o => o.id !== orderId);
-              renderOrders();
-              Swal.fire({
-                icon: 'success',
-                title: 'Order Deleted!',
-                text: `Order ${orderId} has been removed.`,
-                timer: 1800,
-                showConfirmButton: false,
-                customClass: { popup: 'rasoova-swal-popup' }
-              });
+              doDelete();
             }
           });
         } else {
           if (confirm(`Are you sure you want to delete order ${orderId}?`)) {
-            ordersData = ordersData.filter(o => o.id !== orderId);
-            renderOrders();
-            showToast(`Order ${orderId} deleted successfully.`);
+            doDelete();
           }
         }
       };
@@ -2615,35 +2975,64 @@
               }
               return selectedRadio.value;
             }
-          }).then((result) => {
+          }).then(async (result) => {
             if (result.isConfirmed && result.value) {
               const newStatus = result.value;
-              order.status = newStatus;
-              order.statusClass = newStatus.toLowerCase();
-              order.statusIcon = getStatusSvg(newStatus);
-
-              renderOrders();
-
-              Swal.fire({
-                icon: 'success',
-                title: 'Status Updated!',
-                html: `Order <strong>${order.id}</strong> is now marked as <strong style="color: #8b193d;">${newStatus}</strong>.`,
-                timer: 2000,
-                showConfirmButton: false,
-                timerProgressBar: true,
-                customClass: { popup: 'rasoova-swal-popup' }
-              });
+              try {
+                const token = getAdminToken();
+                const res = await fetch(`http://localhost:5000/api/food-orders/${order.dbId || order.id}/status`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  },
+                  body: JSON.stringify({ status: newStatus })
+                });
+                const resData = await res.json();
+                if (!res.ok || !resData.success) {
+                  throw new Error(resData.message || 'Failed to update order status');
+                }
+                await loadOrdersFromApi();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Status Updated!',
+                  html: `Order <strong>${order.id}</strong> is now marked as <strong style="color: #8b193d;">${newStatus}</strong>.`,
+                  timer: 2000,
+                  showConfirmButton: false,
+                  timerProgressBar: true,
+                  customClass: { popup: 'rasoova-swal-popup' }
+                });
+              } catch (err) {
+                console.error('Update status error:', err);
+                Swal.fire({ icon: 'error', title: 'Update Failed', text: err.message });
+              }
             }
           });
         } else {
           // Native fallback if SweetAlert is unavailable
           const newStatus = prompt(`Update status for ${order.id} (${order.customer}):\nOptions: Dispatched, Delivered, Preparing, Pending`, order.status);
           if (newStatus && ['Dispatched', 'Delivered', 'Preparing', 'Pending'].includes(newStatus)) {
-            order.status = newStatus;
-            order.statusClass = newStatus.toLowerCase();
-            order.statusIcon = getStatusSvg(newStatus);
-            renderOrders();
-            showToast(`Order ${order.id} status updated to ${newStatus}.`);
+            const token = getAdminToken();
+            fetch(`http://localhost:5000/api/food-orders/${order.dbId || order.id}/status`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ status: newStatus })
+            })
+            .then(r => r.json())
+            .then(resData => {
+              if (resData.success) {
+                loadOrdersFromApi();
+                showToast(`Order ${order.id} status updated to ${newStatus}.`);
+              } else {
+                alert(resData.message || 'Failed to update status');
+              }
+            })
+            .catch(err => alert(err.message));
           }
         }
       };

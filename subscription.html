@@ -1484,6 +1484,10 @@
       animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    .toast.error {
+      background: #7f1d1d;
+    }
+
     @keyframes slideInToast {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -1681,9 +1685,10 @@
       .subscriptions-table tbody tr td:nth-child(6)::before { content: "Start Date"; }
       .subscriptions-table tbody tr td:nth-child(7)::before { content: "End Date"; }
       .subscriptions-table tbody tr td:nth-child(8)::before { content: "Off Days"; }
-      .subscriptions-table tbody tr td:nth-child(9)::before { content: "Food Items"; }
-      .subscriptions-table tbody tr td:nth-child(10)::before { content: "Status"; }
-      .subscriptions-table tbody tr td:nth-child(11)::before { content: "Actions"; }
+      .subscriptions-table tbody tr td:nth-child(9)::before { content: "Food Item"; }
+      .subscriptions-table tbody tr td:nth-child(10)::before { content: "Food Code"; }
+      .subscriptions-table tbody tr td:nth-child(11)::before { content: "Status"; }
+      .subscriptions-table tbody tr td:nth-child(12)::before { content: "Actions"; }
 
       .subscriptions-table tbody tr td[colspan] {
         display: block;
@@ -2297,7 +2302,7 @@
             <line x1="12" y1="5" x2="12" y2="19"/>
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          <span>+ Add Subscription</span>
+          <span>Add Subscription</span>
         </button>
       </div>
     </section>
@@ -2458,7 +2463,8 @@
               <th>Start Date</th>
               <th>End Date</th>
               <th>Off Day(s)</th>
-              <th>Food Items (Code)</th>
+              <th>Food Item</th>
+              <th>Food Code</th>
               <th>Status</th>
               <th style="text-align: center;">Actions</th>
             </tr>
@@ -2475,7 +2481,7 @@
          ==================================================================== -->
     <div class="table-footer">
       <div class="pagination-count" id="paginationCountText">
-        Showing 1 – 5 of 260 subscriptions
+        Loading subscriptions...
       </div>
 
       <div class="pagination-controls">
@@ -2504,7 +2510,9 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="subCustomer">Customer Name</label>
-            <input type="text" id="subCustomer" placeholder="e.g. Ramesh Chandra" required>
+            <select id="subCustomer" required disabled>
+              <option value="">Loading customers...</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="subLocation">Delivery Location</label>
@@ -2523,19 +2531,23 @@
           </div>
           <div class="form-group">
             <label for="subStartDate">Start Date</label>
-            <input type="text" id="subStartDate" placeholder="e.g. Nov 1, 2026" required>
+            <input type="date" id="subStartDate" required>
           </div>
           <div class="form-group">
             <label for="subEndDate">End Date</label>
-            <input type="text" id="subEndDate" placeholder="e.g. Nov 30, 2026" required>
+            <input type="date" id="subEndDate" required>
           </div>
           <div class="form-group">
             <label for="subOffDay">Off Day(s)</label>
             <input type="text" id="subOffDay" placeholder="e.g. Sun or Sat, Sun">
           </div>
           <div class="form-group">
-            <label for="subFoodItem">Food Item & Code</label>
-            <input type="text" id="subFoodItem" placeholder="e.g. Bihari Thali (FD-001)" required>
+            <label for="subFoodTitle">Food Item</label>
+            <input type="text" id="subFoodTitle" placeholder="e.g. Bihari Thali" required>
+          </div>
+          <div class="form-group">
+            <label for="subFoodCode">Food Code</label>
+            <input type="text" id="subFoodCode" placeholder="e.g. FD-001" required>
           </div>
           <div class="form-group">
             <label for="subStatus">Initial Status</label>
@@ -2587,18 +2599,18 @@
         <div class="cal-customer-card" id="calCustomerCard">
           <div class="cal-cust-header">
             <div class="cal-cust-main">
-              <span class="cal-cust-name" id="calCustName">Anita Das</span>
-              <span class="sub-id-badge" id="calCustId">SUB-1001</span>
-              <span class="plan-pill weekly" id="calCustPlan">Weekly</span>
+              <span class="cal-cust-name" id="calCustName">—</span>
+              <span class="sub-id-badge" id="calCustId">—</span>
+              <span class="plan-pill" id="calCustPlan">—</span>
             </div>
             <div class="cal-cust-offday-tag">
               <span>Scheduled Off:</span>
-              <strong id="calCustOffRule">Sun</strong>
+              <strong id="calCustOffRule">—</strong>
             </div>
           </div>
           <div class="cal-cust-meta">
-            <span>Period: <strong id="calCustPeriod">Nov 1 – Nov 28, 2026</strong></span>
-            <span>Food: <strong id="calCustItem">Bihari Thali (FD-001)</strong></span>
+            <span>Period: <strong id="calCustPeriod">—</strong></span>
+            <span>Food: <strong id="calCustItem">—</strong></span>
           </div>
           <div class="cal-stats-strip">
             <div class="cal-stat-item off">
@@ -2679,78 +2691,7 @@
      */
     document.addEventListener('DOMContentLoaded', () => {
       // --- Subscriptions Data Store ---
-      let subscriptionsData = [
-        {
-          id: 'SUB-1001',
-          customer: 'Anita Das',
-          location: 'Satya Vihar, Bhubaneswar',
-          phone: '+91 98765 43210',
-          planType: 'Weekly',
-          startDate: 'Nov 1, 2026',
-          endDate: 'Nov 28, 2026',
-          offDays: 'Sun',
-          foodTitle: 'Bihari Thali',
-          foodCode: 'FD-001',
-          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
-          status: 'Active'
-        },
-        {
-          id: 'SUB-1002',
-          customer: 'Rahul Sen',
-          location: 'Khandagiri, Bhubaneswar',
-          phone: '+91 87654 32109',
-          planType: 'Monthly',
-          startDate: 'Nov 1, 2026',
-          endDate: 'Nov 30, 2026',
-          offDays: 'Sat, Sun',
-          foodTitle: 'Chicken Biryani',
-          foodCode: 'FD-005',
-          thumb: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=120&q=80',
-          status: 'Active'
-        },
-        {
-          id: 'SUB-1003',
-          customer: 'Sumi Patnaik',
-          location: 'Jaydev Vihar, Bhubaneswar',
-          phone: '+91 76543 21098',
-          planType: 'Weekly',
-          startDate: 'Nov 3, 2026',
-          endDate: 'Nov 30, 2026',
-          offDays: 'Wed',
-          foodTitle: 'Paneer Curry',
-          foodCode: 'FD-002',
-          thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=120&q=80',
-          status: 'Paused'
-        },
-        {
-          id: 'SUB-1004',
-          customer: 'Vikram Sahu',
-          location: 'Patia, Bhubaneswar',
-          phone: '+91 65432 10987',
-          planType: 'Monthly',
-          startDate: 'Nov 1, 2026',
-          endDate: 'Dec 31, 2026',
-          offDays: 'Sun',
-          foodTitle: 'Veg Thali',
-          foodCode: 'FD-004',
-          thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
-          status: 'Active'
-        },
-        {
-          id: 'SUB-1005',
-          customer: 'Priya Mohanty',
-          location: 'Chandrasekharpur, Bhubaneswar',
-          phone: '+91 94321 09876',
-          planType: 'Weekly',
-          startDate: 'Nov 5, 2026',
-          endDate: 'Nov 30, 2026',
-          offDays: 'Mon, Thu',
-          foodTitle: 'Mutton Thali',
-          foodCode: 'FD-003',
-          thumb: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=120&q=80',
-          status: 'Active'
-        }
-      ];
+      let subscriptionsData = [];
 
       const tbody = document.getElementById('subscriptionsTableBody');
       const tableSearch = document.getElementById('subTableSearch');
@@ -2761,6 +2702,31 @@
       const paginationText = document.getElementById('paginationCountText');
       const tabBtns = document.querySelectorAll('.plan-switch-btn');
 
+      const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
+      const formatDateForDisplay = (value) => {
+        const date = new Date(value);
+        return Number.isNaN(date.getTime())
+          ? String(value || '')
+          : date.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata'
+            });
+      };
+      const resolveThumbUrl = (value) => {
+        const thumb = String(value || '').trim();
+        if (thumb.startsWith('/uploads/')) return `http://localhost:5000${thumb}`;
+        if (thumb.startsWith('http://') || thumb.startsWith('https://') || thumb.startsWith('assets/')) return thumb;
+        return 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80';
+      };
+
       let currentTabFilter = 'all';
 
       // --- Render Table Function ---
@@ -2768,81 +2734,81 @@
         if (!tbody) return;
 
         if (data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">No matching subscriptions found.</td></tr>`;
-          if (paginationText) paginationText.innerText = 'Showing 0 subscriptions';
+          tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">No matching subscriptions found.</td></tr>`;
+          if (paginationText) paginationText.innerText = `Showing 0 of ${subscriptionsData.length} subscriptions`;
           return;
         }
 
         tbody.innerHTML = data.map(sub => `
-          <tr data-id="${sub.id}">
+          <tr data-id="${escapeHtml(sub.id)}">
             <td style="text-align: center;">
-              <input type="checkbox" class="row-checkbox" value="${sub.id}">
+              <input type="checkbox" class="row-checkbox" value="${escapeHtml(sub.id)}">
             </td>
-            <td><strong class="sub-id-badge">${sub.id}</strong></td>
+            <td><strong class="sub-id-badge">${escapeHtml(sub.id)}</strong></td>
             <td>
               <div class="customer-cell">
-                <span class="customer-name">${sub.customer}</span>
+                <span class="customer-name">${escapeHtml(sub.customer)}</span>
                 <span class="customer-loc">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  ${sub.location}
+                  ${escapeHtml(sub.location)}
                 </span>
               </div>
             </td>
             <td>
               <span class="phone-cell">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                ${sub.phone}
+                ${escapeHtml(sub.phone)}
               </span>
             </td>
             <td>
               <span class="plan-pill ${sub.planType.toLowerCase()}">
-                ${sub.planType}
+                ${escapeHtml(sub.planType)}
               </span>
             </td>
             <td>
               <span class="date-cell">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                ${sub.startDate}
+                ${escapeHtml(sub.startDate)}
               </span>
             </td>
             <td>
               <span class="date-cell">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                ${sub.endDate}
+                ${escapeHtml(sub.endDate)}
               </span>
             </td>
             <td>
-              <span class="offday-pill clickable-offday" onclick="window.openCustomerOffDayCalendar('${sub.id}')" title="Click to view & customize ${sub.customer}'s off-day calendar">
+              <span class="offday-pill clickable-offday" data-sub-id="${escapeHtml(sub.id)}" onclick="window.openCustomerOffDayCalendar(this.dataset.subId)" title="Click to view & customize ${escapeHtml(sub.customer)}'s off-day calendar">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right: 4px; vertical-align: -1px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                ${sub.offDays || 'None'}
+                ${escapeHtml(sub.offDays || 'None')}
               </span>
             </td>
             <td>
               <div class="food-item-with-code">
                 <img 
-                  src="${sub.thumb}" 
-                  alt="${sub.foodTitle}" 
+                  src="${escapeHtml(resolveThumbUrl(sub.thumb))}" 
+                  alt="${escapeHtml(sub.foodTitle)}" 
                   class="food-thumb"
                   onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'38\\' height=\\'38\\' viewBox=\\'0 0 24 24\\' fill=\\'%23fcd2dc\\'><circle cx=\\'12\\' cy=\\'12\\' r=\\'10\\'/></svg>';"
                 >
                 <div class="food-text-group">
-                  <span class="food-title">${sub.foodTitle}</span>
-                  <span class="food-code-sub">(${sub.foodCode})</span>
+                  <span class="food-title">${escapeHtml(sub.foodTitle)}</span>
                 </div>
               </div>
             </td>
+            <td><span class="food-code-sub">${escapeHtml(sub.foodCode)}</span></td>
             <td>
               <span class="status-pill ${sub.status.toLowerCase()}">
                 ${sub.status === 'Active' 
                   ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`
                   : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>`
                 }
-                ${sub.status}
+                ${escapeHtml(sub.status)}
               </span>
             </td>
             <td style="text-align: center;">
               <div class="actions-cell">
-                <button class="action-btn calendar" onclick="window.openCustomerOffDayCalendar('${sub.id}')" title="Off Day Calendar for ${sub.customer}">
+                <button class="action-btn calendar" data-sub-id="${escapeHtml(sub.id)}" onclick="window.openCustomerOffDayCalendar(this.dataset.subId)" title="Off Day Calendar for ${escapeHtml(sub.customer)}">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                     <line x1="16" y1="2" x2="16" y2="6"/>
@@ -2855,10 +2821,10 @@
                     <circle cx="12" cy="18" r="1" fill="currentColor"/>
                   </svg>
                 </button>
-                <button class="action-btn edit" onclick="window.editSubscription('${sub.id}')" title="Edit Subscription">
+                <button class="action-btn edit" data-sub-id="${escapeHtml(sub.id)}" onclick="window.editSubscription(this.dataset.subId)" title="Edit Subscription">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </button>
-                <button class="action-btn delete" onclick="window.deleteSubscription('${sub.id}')" title="Delete Subscription">
+                <button class="action-btn delete" data-sub-id="${escapeHtml(sub.id)}" onclick="window.deleteSubscription(this.dataset.subId)" title="Delete Subscription">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                 </button>
               </div>
@@ -2867,12 +2833,15 @@
         `).join('');
 
         if (paginationText) {
-          paginationText.innerText = `Showing 1 – ${data.length} of 260 subscriptions`;
+          paginationText.innerText = `Showing 1 – ${data.length} of ${subscriptionsData.length} subscriptions`;
         }
       }
 
       // Initial Render
-      renderSubscriptions();
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">Loading subscriptions...</td></tr>`;
+      }
+      if (paginationText) paginationText.innerText = 'Loading subscriptions...';
 
       // --- Filter Logic ---
       function applyFilters() {
@@ -2946,7 +2915,7 @@
       ];
       const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-      let currentCalSubId = 'SUB-1001';
+      let currentCalSubId = '';
       let currentCalYear = 2026;
       let currentCalMonth = 10; // November (0-indexed)
 
@@ -2960,11 +2929,74 @@
       function populateCustomerDropdown(selectedSubId) {
         if (!calCustomerSelect) return;
         const selId = selectedSubId || currentCalSubId || (subscriptionsData[0] ? subscriptionsData[0].id : '');
-        calCustomerSelect.innerHTML = subscriptionsData.map(s => `
-          <option value="${s.id}" ${s.id === selId ? 'selected' : ''}>
-            ${s.customer} (${s.id}) • Plan: ${s.planType} • Off: ${s.offDays || 'None'}
-          </option>
-        `).join('');
+        calCustomerSelect.replaceChildren();
+
+        if (subscriptionsData.length === 0) {
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'No subscriptions available';
+          calCustomerSelect.appendChild(option);
+          calCustomerSelect.disabled = true;
+          return;
+        }
+
+        subscriptionsData.forEach(s => {
+          const option = document.createElement('option');
+          option.value = s.id;
+          option.textContent = `${s.customer} (${s.id}) • Plan: ${s.planType} • Off: ${s.offDays || 'None'}`;
+          option.selected = s.id === selId;
+          calCustomerSelect.appendChild(option);
+        });
+        calCustomerSelect.disabled = false;
+      }
+
+      async function loadSubscriptions() {
+        try {
+          const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+          const headers = { 'Accept': 'application/json' };
+          if (token) headers.Authorization = `Bearer ${token}`;
+
+          const response = await fetch('http://localhost:5000/api/subscriptions', { headers });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result || !result.success || !Array.isArray(result.subscriptions)) {
+            throw new Error((result && result.message) || `Server responded with status ${response.status}`);
+          }
+
+          subscriptionsData = result.subscriptions.map(subscription => ({
+            id: String(subscription.sub_code || subscription.id),
+            customer: String(subscription.customer_name || ''),
+            location: String(subscription.location || ''),
+            phone: String(subscription.phone || ''),
+            planType: subscription.plan_type === 'Monthly' ? 'Monthly' : 'Weekly',
+            startDate: formatDateForDisplay(subscription.start_date),
+            endDate: formatDateForDisplay(subscription.end_date),
+            offDays: String(subscription.off_days || 'None'),
+            foodTitle: String(subscription.food_title || ''),
+            foodCode: String(subscription.food_code || ''),
+            thumb: resolveThumbUrl(subscription.thumb),
+            status: subscription.status === 'Paused' ? 'Paused' : 'Active',
+            customOffDates: Array.isArray(subscription.custom_off_dates)
+              ? subscription.custom_off_dates
+              : [],
+            customDeliveryDates: Array.isArray(subscription.custom_delivery_dates)
+              ? subscription.custom_delivery_dates
+              : []
+          }));
+
+          currentCalSubId = subscriptionsData.length ? subscriptionsData[0].id : '';
+          applyFilters();
+          populateCustomerDropdown(currentCalSubId);
+          if (currentCalSubId) {
+            renderCustomerOffDayCalendar(currentCalSubId, currentCalYear, currentCalMonth);
+          }
+        } catch (error) {
+          console.error('Get Subscriptions Error:', error);
+          if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 14px;">Could not load subscriptions.</td></tr>`;
+          }
+          if (paginationText) paginationText.innerText = 'Unable to load subscriptions';
+          showToast(error.message || 'Failed to load subscriptions', true);
+        }
       }
 
       function renderCustomerOffDayCalendar(subId, year = currentCalYear, month = currentCalMonth) {
@@ -3055,7 +3087,7 @@
           if (isOutside) {
             inactiveCount++;
             html += `
-              <div class="cal-cell is-inactive" title="Outside ${sub.customer}'s active subscription period (${sub.startDate} – ${sub.endDate})">
+              <div class="cal-cell is-inactive" title="Outside ${escapeHtml(sub.customer)}'s active subscription period (${escapeHtml(sub.startDate)} – ${escapeHtml(sub.endDate)})">
                 <span>${d}</span>
                 <span class="cal-cell-badge">Inactive</span>
               </div>
@@ -3071,7 +3103,7 @@
               offCount++;
               const reason = isCustomOff ? 'Ad-hoc custom pause' : `Scheduled ${dayNamesShort[dayOfWeek]} off`;
               html += `
-                <div class="cal-cell is-offday" data-date="${dateStr}" onclick="window.toggleDateCustomOff('${sub.id}', '${dateStr}', ${d})" title="${sub.customer}: ${reason}. Click to switch to delivery day.">
+                <div class="cal-cell is-offday" data-sub-id="${escapeHtml(sub.id)}" data-date="${dateStr}" onclick="window.toggleDateCustomOff(this.dataset.subId, this.dataset.date, ${d})" title="${escapeHtml(sub.customer)}: ${escapeHtml(reason)}. Click to switch to delivery day.">
                   <span>${d}</span>
                   <span class="cal-cell-badge">Off</span>
                 </div>
@@ -3079,7 +3111,7 @@
             } else {
               deliveryCount++;
               html += `
-                <div class="cal-cell is-delivery" data-date="${dateStr}" onclick="window.toggleDateCustomOff('${sub.id}', '${dateStr}', ${d})" title="${sub.customer}: Delivery Scheduled. Click to pause/mark as off-day.">
+                <div class="cal-cell is-delivery" data-sub-id="${escapeHtml(sub.id)}" data-date="${dateStr}" onclick="window.toggleDateCustomOff(this.dataset.subId, this.dataset.date, ${d})" title="${escapeHtml(sub.customer)}: Delivery Scheduled. Click to pause/mark as off-day.">
                   <span>${d}</span>
                   <span class="cal-cell-badge">Deliver</span>
                 </div>
@@ -3148,7 +3180,8 @@
 
       // Open Modal with specific customer pre-selected
       window.openCustomerOffDayCalendar = function(subId) {
-        const targetId = subId || (subscriptionsData.length > 0 ? subscriptionsData[0].id : 'SUB-1001');
+        const targetId = subId || (subscriptionsData.length > 0 ? subscriptionsData[0].id : '');
+        if (!targetId) return;
         populateCustomerDropdown(targetId);
         renderCustomerOffDayCalendar(targetId, currentCalYear, currentCalMonth);
         if (offDayModal) offDayModal.classList.add('open');
@@ -3213,6 +3246,10 @@
       const closeAddSubBtn = document.getElementById('closeAddSubBtn');
       const cancelAddSubBtn = document.getElementById('cancelAddSubBtn');
       const addSubForm = document.getElementById('addSubscriptionForm');
+      const subCustomerSelect = document.getElementById('subCustomer');
+      const subLocationInput = document.getElementById('subLocation');
+      const subPhoneInput = document.getElementById('subPhone');
+      let availableCustomers = [];
 
       function openAddModal() { if (addSubModal) addSubModal.classList.add('open'); }
       function closeAddModal() { if (addSubModal) addSubModal.classList.remove('open'); }
@@ -3221,43 +3258,148 @@
       if (closeAddSubBtn) closeAddSubBtn.addEventListener('click', closeAddModal);
       if (cancelAddSubBtn) cancelAddSubBtn.addEventListener('click', closeAddModal);
 
+      if (subCustomerSelect) {
+        subCustomerSelect.addEventListener('change', () => {
+          const selectedCustomer = availableCustomers.find(
+            customer => String(customer.id != null ? customer.id : customer.customer_code) === subCustomerSelect.value
+          );
+          if (!selectedCustomer) return;
+          if (subLocationInput) subLocationInput.value = selectedCustomer.location || '';
+          if (subPhoneInput) subPhoneInput.value = selectedCustomer.phone || '';
+        });
+      }
+
+      async function loadCustomerOptions() {
+        if (!subCustomerSelect) return;
+
+        try {
+          const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+          const headers = { 'Accept': 'application/json' };
+          if (token) headers.Authorization = `Bearer ${token}`;
+
+          const response = await fetch('http://localhost:5000/api/customers', { headers });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result || !result.success || !Array.isArray(result.customers)) {
+            throw new Error((result && result.message) || `Server responded with status ${response.status}`);
+          }
+
+          availableCustomers = result.customers.filter(customer =>
+            customer && customer.name && (customer.id != null || customer.customer_code)
+          );
+
+          const placeholder = document.createElement('option');
+          placeholder.value = '';
+          placeholder.textContent = availableCustomers.length ? 'Select a customer' : 'No customers found';
+          subCustomerSelect.replaceChildren(placeholder);
+
+          availableCustomers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = String(customer.id != null ? customer.id : customer.customer_code);
+            option.textContent = customer.name;
+            subCustomerSelect.appendChild(option);
+          });
+          subCustomerSelect.disabled = availableCustomers.length === 0;
+        } catch (error) {
+          console.error('Get Customers Error:', error);
+          subCustomerSelect.innerHTML = '<option value="">Unable to load customers</option>';
+          subCustomerSelect.disabled = true;
+        }
+      }
+
       if (addSubForm) {
-        addSubForm.addEventListener('submit', (e) => {
+        addSubForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const customer = document.getElementById('subCustomer').value;
-          const location = document.getElementById('subLocation').value;
-          const phone = document.getElementById('subPhone').value;
+          const selectedCustomer = availableCustomers.find(
+            customer => String(customer.id != null ? customer.id : customer.customer_code) === subCustomerSelect.value
+          );
+          if (!selectedCustomer) {
+            showToast('Please select a customer.', true);
+            return;
+          }
+          const customer = selectedCustomer.name;
+          const location = subLocationInput.value;
+          const phone = subPhoneInput.value;
           const planType = document.getElementById('subPlanType').value;
           const startDate = document.getElementById('subStartDate').value;
           const endDate = document.getElementById('subEndDate').value;
           const offDays = document.getElementById('subOffDay').value || 'None';
-          const foodInput = document.getElementById('subFoodItem').value;
+          const foodTitle = document.getElementById('subFoodTitle').value.trim();
+          const foodCode = document.getElementById('subFoodCode').value.trim().toUpperCase();
           const status = document.getElementById('subStatus').value;
+          const saveButton = addSubForm.querySelector('button[type="submit"]');
+          const originalButtonText = saveButton ? saveButton.innerText : 'Create Subscription';
 
-          const newId = `SUB-${1006 + subscriptionsData.length}`;
-          const newCode = `FD-${String(subscriptionsData.length + 1).padStart(3, '0')}`;
+          if (saveButton) {
+            saveButton.disabled = true;
+            saveButton.innerText = 'Creating...';
+          }
 
-          const newSub = {
-            id: newId,
-            customer: customer,
-            location: location,
-            phone: phone,
-            planType: planType,
-            startDate: startDate,
-            endDate: endDate,
-            offDays: offDays,
-            foodTitle: foodInput.split('(')[0].trim() || foodInput,
-            foodCode: newCode,
-            thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
-            status: status
-          };
+          try {
+            const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+            const headers = {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            };
+            if (token) headers.Authorization = `Bearer ${token}`;
 
-          subscriptionsData.unshift(newSub);
-          applyFilters();
-          populateCustomerDropdown(newSub.id);
-          closeAddModal();
-          addSubForm.reset();
-          showToast(`Subscription #${newSub.id} created successfully!`);
+            const response = await fetch('http://localhost:5000/api/subscriptions', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                customer_id: selectedCustomer.id != null ? Number(selectedCustomer.id) : null,
+                customer_name: customer,
+                location,
+                phone,
+                plan_type: planType,
+                start_date: startDate,
+                end_date: endDate,
+                off_days: offDays,
+                food_title: foodTitle,
+                food_code: foodCode,
+                status
+              })
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok || !result || !result.success || !result.subscription) {
+              throw new Error((result && result.message) || `Server responded with status ${response.status}`);
+            }
+
+            const created = result.subscription;
+            const createdId = created.sub_code || created.id;
+            if (!createdId) throw new Error('API response did not include a subscription ID');
+
+            const newSub = {
+              id: String(createdId),
+              customer: created.customer_name || customer,
+              location: created.location || location,
+              phone: created.phone || phone,
+              planType: created.plan_type || planType,
+              startDate: formatDateForDisplay(created.start_date || startDate),
+              endDate: formatDateForDisplay(created.end_date || endDate),
+              offDays: created.off_days || offDays,
+              foodTitle: created.food_title || foodTitle,
+              foodCode: created.food_code || foodCode,
+              thumb: created.thumb || 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=120&q=80',
+              status: created.status || status,
+              customOffDates: Array.isArray(created.custom_off_dates) ? created.custom_off_dates : [],
+              customDeliveryDates: Array.isArray(created.custom_delivery_dates) ? created.custom_delivery_dates : []
+            };
+
+            subscriptionsData.unshift(newSub);
+            applyFilters();
+            populateCustomerDropdown(newSub.id);
+            closeAddModal();
+            addSubForm.reset();
+            showToast(`Subscription #${newSub.id} created successfully!`);
+          } catch (error) {
+            console.error('Create Subscription Error:', error);
+            showToast(error.message || 'Failed to create subscription', true);
+          } finally {
+            if (saveButton) {
+              saveButton.disabled = false;
+              saveButton.innerText = originalButtonText;
+            }
+          }
         });
       }
 
@@ -3269,7 +3411,7 @@
         if (typeof Swal !== 'undefined') {
           Swal.fire({
             title: 'Delete Subscription?',
-            html: `Are you sure you want to delete subscription <strong style="color: #8b193d;">${subId}</strong>${customerName ? ` for <strong>${customerName}</strong>` : ''}?<br><span style="font-size: 12px; color: #888;">This subscription will be permanently removed.</span>`,
+            html: `Are you sure you want to delete subscription <strong style="color: #8b193d;">${escapeHtml(subId)}</strong>${customerName ? ` for <strong>${escapeHtml(customerName)}</strong>` : ''}?<br><span style="font-size: 12px; color: #888;">This subscription will be permanently removed.</span>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, Delete',
@@ -3318,19 +3460,19 @@
           <div class="swal-sub-summary">
             <div class="swal-sub-row">
               <span class="swal-sub-label">Subscription ID:</span>
-              <span class="swal-sub-val" style="color: #8b193d; font-weight: 700;">${sub.id}</span>
+              <span class="swal-sub-val" style="color: #8b193d; font-weight: 700;">${escapeHtml(sub.id)}</span>
             </div>
             <div class="swal-sub-row">
               <span class="swal-sub-label">Customer:</span>
-              <span class="swal-sub-val"><strong>${sub.customer}</strong> (${sub.phone})</span>
+              <span class="swal-sub-val"><strong>${escapeHtml(sub.customer)}</strong> (${escapeHtml(sub.phone)})</span>
             </div>
             <div class="swal-sub-row">
               <span class="swal-sub-label">Address:</span>
-              <span class="swal-sub-val">${sub.location}</span>
+              <span class="swal-sub-val">${escapeHtml(sub.location)}</span>
             </div>
             <div class="swal-sub-row">
               <span class="swal-sub-label">Food Item:</span>
-              <span class="swal-sub-val"><strong>${sub.foodTitle}</strong> (${sub.foodCode})</span>
+              <span class="swal-sub-val"><strong>${escapeHtml(sub.foodTitle)}</strong> (${escapeHtml(sub.foodCode)})</span>
             </div>
           </div>
 
@@ -3447,7 +3589,7 @@
               Swal.fire({
                 icon: 'success',
                 title: 'Updated Successfully!',
-                html: `Subscription <strong>${sub.id}</strong> is now marked as <strong style="color: #8b193d;">${sub.status}</strong> (${sub.planType} Plan, Off: ${sub.offDays}).`,
+                html: `Subscription <strong>${escapeHtml(sub.id)}</strong> is now marked as <strong style="color: #8b193d;">${escapeHtml(sub.status)}</strong> (${escapeHtml(sub.planType)} Plan, Off: ${escapeHtml(sub.offDays)}).`,
                 timer: 2200,
                 showConfirmButton: false,
                 timerProgressBar: true,
@@ -3467,7 +3609,7 @@
       };
 
       // --- Toast Notification ---
-      window.showToast = function(msg) {
+      window.showToast = function(msg, isError = false) {
         let container = document.getElementById('toastContainer');
         if (!container) {
           container = document.createElement('div');
@@ -3476,13 +3618,16 @@
           document.body.appendChild(container);
         }
         const toast = document.createElement('div');
-        toast.className = 'toast';
+        toast.className = isError ? 'toast error' : 'toast';
+        const icon = isError
+          ? '<path d="M18 6 6 18M6 6l12 12"/>'
+          : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>';
         toast.innerHTML = `
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span>${msg}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${isError ? '#fca5a5' : '#4ade80'}" stroke-width="2">
+            ${icon}
+          </svg><span></span>
         `;
+        toast.querySelector('span').textContent = msg;
         container.appendChild(toast);
         setTimeout(() => {
           toast.style.opacity = '0';
@@ -3491,6 +3636,9 @@
           setTimeout(() => toast.remove(), 300);
         }, 2800);
       };
+
+      loadCustomerOptions();
+      loadSubscriptions();
 
       // --- Notification & Profile Dropdowns ---
       const notifBtn = document.getElementById('notificationBtn');

@@ -1086,6 +1086,311 @@
       border-color: var(--primary);
     }
 
+    /* ==========================================================================
+       Dual Image Upload Component (Device Upload & Link)
+       ========================================================================== */
+    .food-image-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .food-img-label-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .food-img-main-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .food-img-mode-toggle {
+      display: inline-flex;
+      background: var(--bg-body);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mode-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .mode-tab-btn:hover {
+      color: var(--primary);
+    }
+
+    .mode-tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 1px 4px rgba(139, 25, 61, 0.12);
+    }
+
+    .food-img-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Device Dropzone */
+    .food-dropzone {
+      border: 2px dashed #e5c4cb;
+      background: #fdf8f9;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .food-dropzone:hover,
+    .food-dropzone.dragover {
+      border-color: var(--primary);
+      background: #fcf1f3;
+      transform: translateY(-1px);
+    }
+
+    .dropzone-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--primary-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .dropzone-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dropzone-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .dropzone-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-browse-file {
+      margin-top: 2px;
+      padding: 5px 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary);
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-browse-file:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Link Input Style */
+    .input-with-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input-with-icon .input-icon-svg {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .input-with-icon input {
+      width: 100%;
+      padding-left: 36px !important;
+    }
+
+    /* Live Preview Card */
+    .food-preview-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #faf4f5;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin-top: 2px;
+      position: relative;
+    }
+
+    .preview-img-box {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .preview-status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preview-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      background: #dcfce7;
+      color: #15803d;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    .preview-badge.device {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .preview-badge.link {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .preview-filename {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 220px;
+    }
+
+    .preview-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-remove-preview {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-remove-preview:hover {
+      background: #fee2e2;
+      border-color: #f87171;
+      transform: scale(1.1);
+    }
+
+    .form-row-2col {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 520px) {
+      .form-row-2col {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+
+    .quick-category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .quick-cat-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      background: #fdf5f7;
+      border: 1px solid #ecd6dc;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .quick-cat-chip:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
     .modal-footer {
       padding: 16px 24px;
       background: var(--bg-body);
@@ -1873,7 +2178,7 @@
           <line x1="12" y1="5" x2="12" y2="19"/>
           <line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
-        <span>+ Add Food Item</span>
+        <span>Add Food Item</span>
       </button>
     </section>
 
@@ -2078,30 +2383,89 @@
       <form id="foodItemForm">
         <div class="modal-body">
           <input type="hidden" id="editItemCode">
-          <div class="form-group">
-            <label for="formFoodName">Food Item Name</label>
-            <input type="text" id="formFoodName" placeholder="e.g. Mutton Curry Special" required>
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="formFoodCode">Food Code</label>
+              <input type="text" id="formFoodCode" placeholder="e.g. FD-006" required style="font-weight: 600; font-family: monospace; letter-spacing: 0.5px;">
+            </div>
+            <div class="form-group">
+              <label for="formFoodName">Food Item Name</label>
+              <input type="text" id="formFoodName" placeholder="e.g. Mutton Curry Special" required>
+            </div>
           </div>
           <div class="form-group">
             <label for="formFoodCategory">Category</label>
-            <select id="formFoodCategory">
-              <option value="Bihari Special" selected>Bihari Special</option>
-              <option value="Chicken Special">Chicken Special</option>
-              <option value="Paneer Special">Paneer Special</option>
-              <option value="Veg Special">Veg Special</option>
-              <option value="Mutton Special">Mutton Special</option>
-              <option value="Combo">Combo</option>
-              <option value="Rice">Rice</option>
-              <option value="Roti">Roti</option>
-            </select>
+            <input type="text" id="formFoodCategory" placeholder="e.g. Bihari Special, Chicken Special, Thali..." required>
+            <div class="quick-category-chips">
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Bihari Special'">Bihari Special</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Chicken Special'">Chicken Special</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Paneer Special'">Paneer Special</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Veg Special'">Veg Special</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Mutton Special'">Mutton Special</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Combo'">Combo</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Rice'">Rice</span>
+              <span class="quick-cat-chip" onclick="document.getElementById('formFoodCategory').value='Roti'">Roti</span>
+            </div>
           </div>
           <div class="form-group">
             <label for="formFoodPrice">Price (₹)</label>
             <input type="text" id="formFoodPrice" placeholder="e.g. ₹299" required>
           </div>
-          <div class="form-group">
-            <label for="formFoodImage">Image URL</label>
-            <input type="text" id="formFoodImage" placeholder="e.g. https://images.unsplash.com/...">
+          <!-- Dual-Mode Food Image Uploader (Device Upload or Link URL) -->
+          <div class="form-group food-image-group">
+            <div class="food-img-label-bar">
+              <label class="food-img-main-label">Food Image</label>
+              <div class="food-img-mode-toggle">
+                <button type="button" class="mode-tab-btn active" id="tabUploadDevice" data-mode="device">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Upload from Device</span>
+                </button>
+                <button type="button" class="mode-tab-btn" id="tabUploadLink" data-mode="link">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <span>Paste Link</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Option 1: Device File Upload Dropzone -->
+            <div class="food-img-pane" id="paneDeviceUpload">
+              <div class="food-dropzone" id="foodImageDropzone">
+                <input type="file" id="formFoodImageFile" accept="image/*" style="display: none;">
+                <div class="dropzone-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="dropzone-text">
+                  <span class="dropzone-title">Click to upload from device</span>
+                  <span class="dropzone-sub">or drag & drop your food image here (PNG, JPG, WEBP)</span>
+                </div>
+                <button type="button" class="btn-browse-file" id="btnBrowseDeviceFile">Browse Files</button>
+              </div>
+            </div>
+
+            <!-- Option 2: Image URL / Link Input -->
+            <div class="food-img-pane" id="paneLinkUpload" style="display: none;">
+              <div class="input-with-icon">
+                <svg class="input-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <input type="url" id="formFoodImage" placeholder="https://images.unsplash.com/... or image link">
+              </div>
+            </div>
+
+            <!-- Live Image Preview Card -->
+            <div class="food-preview-card" id="foodImagePreviewWrap">
+              <div class="preview-img-box">
+                <img id="foodImagePreviewImg" src="assets/food_placeholder.svg" alt="Food Preview" onerror="this.onerror=null; this.src='assets/food_placeholder.svg';">
+              </div>
+              <div class="preview-meta">
+                <div class="preview-status-line">
+                  <span class="preview-badge" id="foodImageSourceBadge">Live Preview</span>
+                  <span class="preview-filename" id="foodImageFileName">Default food photo</span>
+                </div>
+                <span class="preview-hint">Will be shown in menu list, orders, and customer app.</span>
+              </div>
+              <button type="button" class="btn-remove-preview" id="btnRemoveFoodImage" title="Remove / Reset Image">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
           </div>
           <div class="form-group">
             <label for="formFoodAvailability">Initial Availability</label>
@@ -2132,6 +2496,56 @@
      * Toggle availability, Duplicate, Edit, and Delete items.
      */
     document.addEventListener('DOMContentLoaded', () => {
+      // --- Universal Food Image Helpers & Fallbacks ---
+      const DEFAULT_FOOD_PLACEHOLDER = 'assets/food_placeholder.svg';
+
+      function getCategoryDefaultImage(category = '') {
+        const cat = (category || '').toLowerCase();
+        if (cat.includes('biryani') || cat.includes('chicken')) return 'assets/dish_biryani.svg';
+        if (cat.includes('paneer')) return 'assets/dish_paneer.svg';
+        if (cat.includes('mutton') || cat.includes('meat') || cat.includes('curry')) return 'assets/dish_mutton.svg';
+        if (cat.includes('veg') || cat.includes('dal') || cat.includes('sabzi')) return 'assets/dish_veg.svg';
+        if (cat.includes('thali') || cat.includes('bihari') || cat.includes('combo')) return 'assets/dish_thali.svg';
+        return DEFAULT_FOOD_PLACEHOLDER;
+      }
+
+      function getDisplayImageUrl(url, category = '') {
+        if (!url || typeof url !== 'string' || !url.trim()) {
+          return getCategoryDefaultImage(category);
+        }
+        const clean = url.trim();
+        // If data URI (e.g. uploaded base64 from device)
+        if (clean.startsWith('data:image/')) {
+          return clean;
+        }
+        // If local asset path
+        if (clean.startsWith('assets/')) {
+          return clean;
+        }
+        // If external absolute URL
+        if (clean.startsWith('http://') || clean.startsWith('https://')) {
+          return clean;
+        }
+        // If relative upload path from backend API
+        if (clean.startsWith('/uploads/')) {
+          return `http://localhost:5000${clean}`;
+        }
+        if (clean.startsWith('uploads/')) {
+          return `http://localhost:5000/${clean}`;
+        }
+        // If bare filename like food_123.jpg or dish_xyz.svg
+        if (clean.startsWith('food_') || clean.endsWith('.png') || clean.endsWith('.jpg') || clean.endsWith('.jpeg') || clean.endsWith('.svg') || clean.endsWith('.webp')) {
+          return `http://localhost:5000/uploads/${clean}`;
+        }
+        return clean;
+      }
+
+      window.handleFoodImgError = function(img, category = '') {
+        if (!img) return;
+        img.onerror = null; // Prevent any loop
+        img.src = getCategoryDefaultImage(category);
+      };
+
       // --- Food Items Data Store ---
       let foodItems = [
         {
@@ -2141,7 +2555,7 @@
           catClass: 'cat-bihari',
           catIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11c0 5 3.5 8 8 8s8-3 8-8H4z"/><path d="M7 6l13 3M7 9l13-2"/><path d="M8 3v3M12 2v4M16 3v3"/></svg>`,
           price: '₹299',
-          image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=150&q=80',
+          image: 'assets/dish_thali.svg',
           available: true
         },
         {
@@ -2151,7 +2565,7 @@
           catClass: 'cat-chicken',
           catIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 0 0-4-4z"/><circle cx="12" cy="18" r="2"/></svg>`,
           price: '₹598',
-          image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=150&q=80',
+          image: 'assets/dish_biryani.svg',
           available: true
         },
         {
@@ -2161,7 +2575,7 @@
           catClass: 'cat-paneer',
           catIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
           price: '₹249',
-          image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=150&q=80',
+          image: 'assets/dish_paneer.svg',
           available: true
         },
         {
@@ -2171,7 +2585,7 @@
           catClass: 'cat-veg',
           catIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
           price: '₹199',
-          image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=150&q=80',
+          image: 'assets/dish_veg.svg',
           available: true
         },
         {
@@ -2181,7 +2595,7 @@
           catClass: 'cat-mutton',
           catIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`,
           price: '₹399',
-          image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=150&q=80',
+          image: 'assets/dish_mutton.svg',
           available: false
         }
       ];
@@ -2214,10 +2628,11 @@
             </td>
             <td>
               <img 
-                src="${item.image}" 
+                src="${getDisplayImageUrl(item.image, item.category)}" 
                 alt="${item.name}" 
                 class="table-food-image"
-                onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'48\\' height=\\'48\\' viewBox=\\'0 0 24 24\\' fill=\\'%23fcebee\\'><circle cx=\\'12\\' cy=\\'12\\' r=\\'10\\'/></svg>';"
+                loading="lazy"
+                onerror="window.handleFoodImgError(this, '${item.category || ''}');"
               >
             </td>
             <td><strong class="food-code-badge">${item.code}</strong></td>
@@ -2277,6 +2692,39 @@
 
       // Initial Render
       renderFoodTable();
+
+      // Fetch food items from API if backend server is running
+      async function fetchFoodItemsFromApi() {
+        try {
+          const res = await fetch('http://localhost:5000/api/food-items');
+          if (res.ok) {
+            const data = await res.json();
+            const items = data.items || data.data;
+            if (Array.isArray(items) && items.length > 0) {
+              foodItems = items.map(item => {
+                const meta = getCategoryMeta(item.category);
+                const rawPrice = item.price;
+                const formattedPrice = String(rawPrice).startsWith('₹') ? rawPrice : `₹${rawPrice}`;
+                return {
+                  id: item.id,
+                  code: item.food_code || item.code,
+                  name: item.name,
+                  category: item.category,
+                  catClass: meta.catClass,
+                  catIcon: meta.catIcon,
+                  price: formattedPrice,
+                  image: getDisplayImageUrl(item.image, item.category),
+                  available: Boolean(item.available)
+                };
+              });
+              renderFoodTable();
+            }
+          }
+        } catch (err) {
+          // Backend server offline, keeping local defaults
+        }
+      }
+      fetchFoodItemsFromApi();
 
       // --- Filter Logic ---
       function applyFilters() {
@@ -2348,26 +2796,30 @@
 
       // --- Category Meta Helper ---
       function getCategoryMeta(category) {
+        const cat = (category || '').toLowerCase().trim();
         let catClass = 'cat-bihari';
         let catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11c0 5 3.5 8 8 8s8-3 8-8H4z"/></svg>`;
-        if (category === 'Chicken Special') {
+        if (cat.includes('chicken')) {
           catClass = 'cat-chicken';
           catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 0 0-4-4z"/><circle cx="12" cy="18" r="2"/></svg>`;
-        } else if (category === 'Paneer Special') {
+        } else if (cat.includes('paneer')) {
           catClass = 'cat-paneer';
           catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>`;
-        } else if (category === 'Veg Special') {
-          catClass = 'cat-veg';
-          catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
-        } else if (category === 'Mutton Special') {
+        } else if (cat.includes('mutton') || cat.includes('meat') || cat.includes('fish') || cat.includes('egg')) {
           catClass = 'cat-mutton';
           catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`;
-        } else if (category === 'Combo') {
+        } else if (cat.includes('veg') || cat.includes('dal') || cat.includes('sabzi')) {
+          catClass = 'cat-veg';
+          catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+        } else if (cat.includes('combo') || cat.includes('thali')) {
           catClass = 'cat-combo';
           catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`;
-        } else if (category === 'Rice' || category === 'Roti') {
+        } else if (cat.includes('rice') || cat.includes('roti') || cat.includes('bread') || cat.includes('paratha')) {
           catClass = 'cat-veg';
           catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>`;
+        } else if (cat.includes('bihari')) {
+          catClass = 'cat-bihari';
+          catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11c0 5 3.5 8 8 8s8-3 8-8H4z"/></svg>`;
         }
         return { catClass, catIcon };
       }
@@ -2382,7 +2834,7 @@
 
         const copyHtml = `
           <div class="swal-item-summary">
-            <img src="${item.image}" alt="${item.name}" class="swal-item-thumb" onerror="this.src='https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=150&q=80';">
+            <img src="${getDisplayImageUrl(item.image, item.category)}" alt="${item.name}" class="swal-item-thumb" onerror="window.handleFoodImgError(this, '${item.category || ''}');">
             <div class="swal-item-details">
               <span class="swal-item-name">${item.name}</span>
               <span style="font-size: 12px; color: #7a6068;">Original Code: <strong>${item.code}</strong> &bull; ${item.price}</span>
@@ -2499,7 +2951,7 @@
         }
       };
 
-      // --- Add / Edit Food Modal ---
+      // --- Add / Edit Food Modal & Dual-Mode Image Uploader ---
       const foodModal = document.getElementById('foodItemModal');
       const openAddBtn = document.getElementById('openAddFoodModal');
       const closeBtn = document.getElementById('closeFoodModalBtn');
@@ -2507,6 +2959,172 @@
       const form = document.getElementById('foodItemForm');
       const modalTitle = document.getElementById('foodModalTitle');
       const editCodeInput = document.getElementById('editItemCode');
+
+      // Image Uploader Controls
+      const tabUploadDevice = document.getElementById('tabUploadDevice');
+      const tabUploadLink = document.getElementById('tabUploadLink');
+      const paneDeviceUpload = document.getElementById('paneDeviceUpload');
+      const paneLinkUpload = document.getElementById('paneLinkUpload');
+      const foodImageDropzone = document.getElementById('foodImageDropzone');
+      const formFoodImageFile = document.getElementById('formFoodImageFile');
+      const btnBrowseDeviceFile = document.getElementById('btnBrowseDeviceFile');
+      const formFoodImage = document.getElementById('formFoodImage');
+      const foodImagePreviewWrap = document.getElementById('foodImagePreviewWrap');
+      const foodImagePreviewImg = document.getElementById('foodImagePreviewImg');
+      const foodImageSourceBadge = document.getElementById('foodImageSourceBadge');
+      const foodImageFileName = document.getElementById('foodImageFileName');
+      const btnRemoveFoodImage = document.getElementById('btnRemoveFoodImage');
+
+      const defaultFallbackImage = 'assets/food_placeholder.svg';
+      let currentImageData = defaultFallbackImage;
+      let currentImageSource = 'default';
+
+      // Switch between Device Upload and Link Input tabs
+      function setUploadMode(mode) {
+        if (mode === 'device') {
+          if (tabUploadDevice) tabUploadDevice.classList.add('active');
+          if (tabUploadLink) tabUploadLink.classList.remove('active');
+          if (paneDeviceUpload) paneDeviceUpload.style.display = 'flex';
+          if (paneLinkUpload) paneLinkUpload.style.display = 'none';
+        } else {
+          if (tabUploadLink) tabUploadLink.classList.add('active');
+          if (tabUploadDevice) tabUploadDevice.classList.remove('active');
+          if (paneLinkUpload) paneLinkUpload.style.display = 'flex';
+          if (paneDeviceUpload) paneDeviceUpload.style.display = 'none';
+        }
+      }
+
+      // Update image preview card
+      function updateImagePreview(src, source = 'default', filename = '') {
+        const finalSrc = getDisplayImageUrl(src) || defaultFallbackImage;
+        currentImageData = finalSrc;
+        currentImageSource = source;
+
+        if (foodImagePreviewImg) {
+          foodImagePreviewImg.onerror = function() {
+            this.onerror = null;
+            this.src = defaultFallbackImage;
+          };
+          foodImagePreviewImg.src = finalSrc;
+        }
+
+        if (foodImageSourceBadge) {
+          if (source === 'device') {
+            foodImageSourceBadge.innerText = 'From Device';
+            foodImageSourceBadge.className = 'preview-badge device';
+          } else if (source === 'link') {
+            foodImageSourceBadge.innerText = 'From Link';
+            foodImageSourceBadge.className = 'preview-badge link';
+          } else {
+            foodImageSourceBadge.innerText = 'Live Preview';
+            foodImageSourceBadge.className = 'preview-badge';
+          }
+        }
+
+        if (foodImageFileName) {
+          if (filename) {
+            foodImageFileName.innerText = filename;
+          } else if (source === 'device') {
+            foodImageFileName.innerText = 'Device Image File';
+          } else if (source === 'link') {
+            const shortUrl = (src || '').split('/').pop().split('?')[0] || 'Image URL';
+            foodImageFileName.innerText = shortUrl;
+          } else {
+            foodImageFileName.innerText = 'Default food photo';
+          }
+        }
+      }
+
+      // Handle Device File Upload via FileReader
+      function handleDeviceFile(file) {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+          showToast('Please select a valid image file (PNG, JPG, WEBP, etc.)');
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          showToast('File size must be under 5MB');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const base64Data = evt.target.result;
+          updateImagePreview(base64Data, 'device', file.name);
+          showToast(`Loaded ${file.name} from device!`);
+        };
+        reader.onerror = function() {
+          showToast('Failed to read image file');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Dropzone & File Input Event Listeners
+      if (tabUploadDevice) tabUploadDevice.addEventListener('click', () => setUploadMode('device'));
+      if (tabUploadLink) tabUploadLink.addEventListener('click', () => setUploadMode('link'));
+
+      if (foodImageDropzone) {
+        foodImageDropzone.addEventListener('click', (e) => {
+          if (e.target !== btnBrowseDeviceFile && formFoodImageFile) {
+            formFoodImageFile.click();
+          }
+        });
+
+        foodImageDropzone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          foodImageDropzone.classList.add('dragover');
+        });
+
+        foodImageDropzone.addEventListener('dragleave', () => {
+          foodImageDropzone.classList.remove('dragover');
+        });
+
+        foodImageDropzone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          foodImageDropzone.classList.remove('dragover');
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleDeviceFile(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      if (btnBrowseDeviceFile && formFoodImageFile) {
+        btnBrowseDeviceFile.addEventListener('click', (e) => {
+          e.stopPropagation();
+          formFoodImageFile.click();
+        });
+      }
+
+      if (formFoodImageFile) {
+        formFoodImageFile.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            handleDeviceFile(e.target.files[0]);
+          }
+        });
+      }
+
+      // Link input live change listener
+      if (formFoodImage) {
+        formFoodImage.addEventListener('input', () => {
+          const url = formFoodImage.value.trim();
+          if (url) {
+            updateImagePreview(url, 'link', url.split('/').pop().split('?')[0]);
+          } else {
+            updateImagePreview(defaultFallbackImage, 'default', 'Default food photo');
+          }
+        });
+      }
+
+      // Remove / Reset Image button
+      if (btnRemoveFoodImage) {
+        btnRemoveFoodImage.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (formFoodImageFile) formFoodImageFile.value = '';
+          if (formFoodImage) formFoodImage.value = '';
+          updateImagePreview(defaultFallbackImage, 'default', 'Default food photo');
+          showToast('Image reset to default placeholder');
+        });
+      }
 
       function openModal(isEdit = false) {
         if (foodModal) foodModal.classList.add('open');
@@ -2516,12 +3134,29 @@
         if (foodModal) foodModal.classList.remove('open');
         if (form) form.reset();
         if (editCodeInput) editCodeInput.value = '';
+        if (formFoodImageFile) formFoodImageFile.value = '';
+        if (formFoodImage) formFoodImage.value = '';
+        currentImageData = defaultFallbackImage;
+        currentImageSource = 'default';
+        setUploadMode('device');
+        updateImagePreview(defaultFallbackImage, 'default', 'Default food photo');
       }
 
       if (openAddBtn) {
         openAddBtn.addEventListener('click', () => {
           modalTitle.innerText = '+ Add Food Item';
           document.getElementById('saveFoodModalBtn').innerText = 'Save Item';
+          if (editCodeInput) editCodeInput.value = '';
+          if (form) form.reset();
+          const nextNum = foodItems.length + 1;
+          const codeInput = document.getElementById('formFoodCode');
+          if (codeInput) codeInput.value = `FD-${String(nextNum).padStart(3, '0')}`;
+          const catInput = document.getElementById('formFoodCategory');
+          if (catInput) catInput.value = '';
+          if (formFoodImageFile) formFoodImageFile.value = '';
+          if (formFoodImage) formFoodImage.value = '';
+          setUploadMode('device');
+          updateImagePreview(defaultFallbackImage, 'default', 'Default food photo');
           openModal(false);
         });
       }
@@ -2529,204 +3164,210 @@
       if (closeBtn) closeBtn.addEventListener('click', closeModal);
       if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
 
-      // --- Edit Food Item with SweetAlert2 ---
+      // --- Edit Food Item Modal Handler ---
       window.editFoodItem = function(code) {
         const item = foodItems.find(f => f.code === code);
         if (!item) return;
 
-        const editHtml = `
-          <div class="swal-item-summary">
-            <img src="${item.image}" alt="${item.name}" class="swal-item-thumb" onerror="this.src='https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=150&q=80';">
-            <div class="swal-item-details">
-              <span class="swal-item-name">${item.name}</span>
-              <span class="swal-item-code-badge">${item.code}</span>
-            </div>
-          </div>
+        modalTitle.innerText = `Edit Food Item (${code})`;
+        document.getElementById('saveFoodModalBtn').innerText = 'Update Item';
+        editCodeInput.value = item.code;
+        const codeInput = document.getElementById('formFoodCode');
+        if (codeInput) codeInput.value = item.code;
+        document.getElementById('formFoodName').value = item.name;
+        document.getElementById('formFoodCategory').value = item.category;
+        document.getElementById('formFoodPrice').value = item.price;
+        document.getElementById('formFoodAvailability').value = item.available ? 'true' : 'false';
 
-          <div class="swal-field-group">
-            <label class="swal-field-label" for="swalFoodName">Dish / Item Name:</label>
-            <input type="text" id="swalFoodName" class="swal-form-input" value="${item.name}" required>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-            <div class="swal-field-group" style="margin-bottom: 0;">
-              <label class="swal-field-label" for="swalFoodCategory">Category:</label>
-              <select id="swalFoodCategory" class="swal-form-select">
-                <option value="Bihari Special" ${item.category === 'Bihari Special' ? 'selected' : ''}>Bihari Special</option>
-                <option value="Chicken Special" ${item.category === 'Chicken Special' ? 'selected' : ''}>Chicken Special</option>
-                <option value="Paneer Special" ${item.category === 'Paneer Special' ? 'selected' : ''}>Paneer Special</option>
-                <option value="Veg Special" ${item.category === 'Veg Special' ? 'selected' : ''}>Veg Special</option>
-                <option value="Mutton Special" ${item.category === 'Mutton Special' ? 'selected' : ''}>Mutton Special</option>
-                <option value="Combo" ${item.category === 'Combo' ? 'selected' : ''}>Combo</option>
-                <option value="Rice" ${item.category === 'Rice' ? 'selected' : ''}>Rice</option>
-                <option value="Roti" ${item.category === 'Roti' ? 'selected' : ''}>Roti</option>
-              </select>
-            </div>
-
-            <div class="swal-field-group" style="margin-bottom: 0;">
-              <label class="swal-field-label" for="swalFoodPrice">Price (₹):</label>
-              <input type="text" id="swalFoodPrice" class="swal-form-input" value="${item.price}" placeholder="e.g. ₹299" required>
-            </div>
-          </div>
-
-          <div class="swal-field-group">
-            <label class="swal-field-label">Availability:</label>
-            <div class="swal-avail-grid">
-              <label class="swal-avail-choice ${item.available ? 'selected' : ''}">
-                <input type="radio" name="swalAvailRadio" value="true" ${item.available ? 'checked' : ''}>
-                <span style="color: #15803d;">🟢 Available</span>
-              </label>
-              <label class="swal-avail-choice ${!item.available ? 'selected' : ''}">
-                <input type="radio" name="swalAvailRadio" value="false" ${!item.available ? 'checked' : ''}>
-                <span style="color: #6b7280;">⚪ Unavailable</span>
-              </label>
-            </div>
-          </div>
-        `;
-
-        if (typeof Swal !== 'undefined') {
-          Swal.fire({
-            title: `Edit Food Item (${code})`,
-            html: editHtml,
-            showCancelButton: true,
-            confirmButtonText: 'Update Item',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#8b193d',
-            cancelButtonColor: '#6c757d',
-            customClass: {
-              popup: 'rasoova-swal-popup',
-              title: 'rasoova-swal-title',
-              confirmButton: 'rasoova-swal-confirm-btn',
-              cancelButton: 'rasoova-swal-cancel-btn'
-            },
-            didOpen: () => {
-              const popup = Swal.getPopup();
-              const choices = popup.querySelectorAll('.swal-avail-choice');
-              choices.forEach(choice => {
-                choice.addEventListener('click', () => {
-                  choices.forEach(c => c.classList.remove('selected'));
-                  choice.classList.add('selected');
-                  const radio = choice.querySelector('input[type="radio"]');
-                  if (radio) radio.checked = true;
-                });
-              });
-            },
-            preConfirm: () => {
-              const nameInput = document.getElementById('swalFoodName');
-              const catSelect = document.getElementById('swalFoodCategory');
-              const priceInput = document.getElementById('swalFoodPrice');
-              const availRadio = document.querySelector('input[name="swalAvailRadio"]:checked');
-
-              if (!nameInput || !nameInput.value.trim()) {
-                Swal.showValidationMessage('Please enter a valid item name');
-                return false;
-              }
-              if (!priceInput || !priceInput.value.trim()) {
-                Swal.showValidationMessage('Please enter a valid price');
-                return false;
-              }
-
-              return {
-                name: nameInput.value.trim(),
-                category: catSelect ? catSelect.value : item.category,
-                price: priceInput.value.trim().startsWith('₹') ? priceInput.value.trim() : `₹${priceInput.value.trim()}`,
-                available: availRadio ? availRadio.value === 'true' : item.available
-              };
-            }
-          }).then((result) => {
-            if (result.isConfirmed && result.value) {
-              const val = result.value;
-              const meta = getCategoryMeta(val.category);
-
-              item.name = val.name;
-              item.category = val.category;
-              item.catClass = meta.catClass;
-              item.catIcon = meta.catIcon;
-              item.price = val.price;
-              item.available = val.available;
-
-              applyFilters();
-
-              Swal.fire({
-                icon: 'success',
-                title: 'Item Updated!',
-                html: `<strong>${item.name}</strong> (${item.code}) updated successfully.`,
-                timer: 1800,
-                showConfirmButton: false,
-                customClass: { popup: 'rasoova-swal-popup' }
-              });
-            }
-          });
+        // Load existing image
+        const currentItemImg = getDisplayImageUrl(item.image, item.category);
+        if (item.image && item.image.startsWith('data:image/')) {
+          setUploadMode('device');
+          updateImagePreview(item.image, 'device', `${item.name} (Device Upload)`);
+          if (formFoodImage) formFoodImage.value = '';
         } else {
-          // Native fallback
-          modalTitle.innerText = `Edit Food Item (${code})`;
-          document.getElementById('saveFoodModalBtn').innerText = 'Update Item';
-          editCodeInput.value = item.code;
-          document.getElementById('formFoodName').value = item.name;
-          document.getElementById('formFoodCategory').value = item.category;
-          document.getElementById('formFoodPrice').value = item.price;
-          document.getElementById('formFoodImage').value = item.image;
-          document.getElementById('formFoodAvailability').value = item.available ? 'true' : 'false';
-          openModal(true);
+          setUploadMode('link');
+          if (formFoodImage) formFoodImage.value = item.image || '';
+          updateImagePreview(currentItemImg, item.image ? 'link' : 'default', `${item.name} Image`);
         }
+
+        openModal(true);
       };
 
+      // Form submission handler: connects to POST http://localhost:5000/api/food-items
       if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const isEdit = editCodeInput.value !== '';
-          const name = document.getElementById('formFoodName').value;
-          const category = document.getElementById('formFoodCategory').value;
-          const price = document.getElementById('formFoodPrice').value;
-          const image = document.getElementById('formFoodImage').value || 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=150&q=80';
-          const available = document.getElementById('formFoodAvailability').value === 'true';
+          const origCode = (editCodeInput ? editCodeInput.value : '').trim();
+          const isEdit = origCode !== '' && !modalTitle.innerText.includes('Add');
+          const codeInputVal = (document.getElementById('formFoodCode').value || '').trim();
+          const name = document.getElementById('formFoodName').value.trim();
+          const category = (document.getElementById('formFoodCategory').value || '').trim() || 'General';
+          const rawPrice = document.getElementById('formFoodPrice').value.trim();
+          const numericPrice = parseFloat(rawPrice.replace(/[₹,\s]/g, '')) || 0;
+          const linkVal = formFoodImage ? formFoodImage.value.trim() : '';
 
-          let catClass = 'cat-bihari';
-          let catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11c0 5 3.5 8 8 8s8-3 8-8H4z"/></svg>`;
-          if (category === 'Chicken Special') {
-            catClass = 'cat-chicken';
-            catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 0 0-4-4z"/></svg>`;
-          } else if (category === 'Paneer Special') {
-            catClass = 'cat-paneer';
-            catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>`;
-          } else if (category === 'Veg Special') {
-            catClass = 'cat-veg';
-            catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
-          } else if (category === 'Mutton Special') {
-            catClass = 'cat-mutton';
-            catIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`;
+          const fallbackImg = getCategoryDefaultImage(category);
+          // Prioritize uploaded device image or link or fallback
+          const image = currentImageData && currentImageData !== defaultFallbackImage
+            ? currentImageData
+            : (linkVal || fallbackImg);
+
+          const available = document.getElementById('formFoodAvailability').value === 'true';
+          const meta = getCategoryMeta(category);
+          const saveBtn = document.getElementById('saveFoodModalBtn');
+          const originalBtnText = saveBtn ? saveBtn.innerText : 'Save Item';
+
+          const foodCode = codeInputVal || `FD-${String(foodItems.length + 1).padStart(3, '0')}`;
+
+          // Exact payload expected by POST http://localhost:5000/api/food-items
+          const payload = {
+            food_code: foodCode,
+            name: name,
+            category: category,
+            price: numericPrice,
+            image: image,
+            available: available
+          };
+
+          if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.innerText = isEdit ? 'Updating...' : 'Posting...';
           }
 
           if (isEdit) {
-            const item = foodItems.find(f => f.code === editCodeInput.value);
+            // Edit existing item
+            const item = foodItems.find(f => f.code === origCode);
             if (item) {
+              item.code = foodCode;
               item.name = name;
               item.category = category;
-              item.catClass = catClass;
-              item.catIcon = catIcon;
-              item.price = price.startsWith('₹') ? price : `₹${price}`;
-              item.image = image;
+              item.catClass = meta.catClass;
+              item.catIcon = meta.catIcon;
+              item.price = `₹${numericPrice}`;
+              item.image = getDisplayImageUrl(image, category);
               item.available = available;
+
+              // If item has backend id, also sync with PUT endpoint
+              try {
+                const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+                const headers = { 
+                  'Content-Type': 'application/json'
+                };
+                if (token) {
+                  headers['Authorization'] = `Bearer ${token}`;
+                }
+                if (item.id) {
+                  await fetch(`http://localhost:5000/api/food-items/${item.id}`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify(payload)
+                  });
+                }
+              } catch (apiErr) {
+                console.warn('Backend update note:', apiErr.message);
+              }
+
               showToast(`Updated item ${item.code} (${name})!`);
             }
+            if (saveBtn) {
+              saveBtn.disabled = false;
+              saveBtn.innerText = originalBtnText;
+            }
+            applyFilters();
+            closeModal();
           } else {
-            const newCode = `FD-${String(foodItems.length + 1).padStart(3, '0')}`;
-            const newItem = {
-              code: newCode,
-              name,
-              category,
-              catClass,
-              catIcon,
-              price: price.startsWith('₹') ? price : `₹${price}`,
-              image,
-              available
-            };
-            foodItems.unshift(newItem);
-            showToast(`Added new food item #${newCode}!`);
-          }
+            // POST http://localhost:5000/api/food-items
+            try {
+              const token = sessionStorage.getItem('token') || sessionStorage.getItem('adminToken');
+              const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              };
+              if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+              }
 
-          applyFilters();
-          closeModal();
+              console.log('[API POST] Sending payload to http://localhost:5000/api/food-items:', payload);
+
+              const response = await fetch('http://localhost:5000/api/food-items', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(payload)
+              });
+
+              console.log('[API POST] Response status:', response.status);
+              let result = {};
+              try {
+                result = await response.json();
+              } catch (err) {
+                // Non-JSON response
+              }
+              console.log('[API POST] Response body:', result);
+
+              if (response.ok && (result.success || response.status === 201 || response.status === 200)) {
+                const created = result.item || result.data || payload;
+                const newItem = {
+                  id: created.id || Date.now(),
+                  code: created.food_code || created.code || payload.food_code,
+                  name: created.name || payload.name,
+                  category: created.category || payload.category,
+                  catClass: meta.catClass,
+                  catIcon: meta.catIcon,
+                  price: `₹${numericPrice}`,
+                  image: getDisplayImageUrl(created.image || payload.image, category),
+                  available: Boolean(created.available)
+                };
+                
+                const existingIdx = foodItems.findIndex(f => f.code === newItem.code);
+                if (existingIdx >= 0) {
+                  foodItems[existingIdx] = newItem;
+                } else {
+                  foodItems.unshift(newItem);
+                }
+                
+                showToast(`Successfully posted #${newItem.code} (${name}) via API!`);
+              } else {
+                // Server returned error status
+                const errMsg = result.message || `Server responded with status ${response.status}`;
+                console.warn('[API POST] Server returned error:', errMsg);
+                // Keep data safe in UI
+                const newItem = {
+                  code: payload.food_code,
+                  name: payload.name,
+                  category: payload.category,
+                  catClass: meta.catClass,
+                  catIcon: meta.catIcon,
+                  price: `₹${numericPrice}`,
+                  image: getDisplayImageUrl(payload.image, category),
+                  available: payload.available
+                };
+                foodItems.unshift(newItem);
+                showToast(`Added #${payload.food_code} (${name})! [API note: ${errMsg}]`);
+              }
+            } catch (networkErr) {
+              console.error('[API POST] Network/Connection error:', networkErr);
+              const newItem = {
+                code: payload.food_code,
+                name: payload.name,
+                category: payload.category,
+                catClass: meta.catClass,
+                catIcon: meta.catIcon,
+                price: `₹${numericPrice}`,
+                image: getDisplayImageUrl(payload.image, category),
+                available: payload.available
+              };
+              foodItems.unshift(newItem);
+              showToast(`Added #${payload.food_code} (${name}) [Server offline or connection error]`);
+            } finally {
+              if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerText = originalBtnText;
+              }
+              applyFilters();
+              closeModal();
+            }
+          }
         });
       }
 

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rasoova - Reports</title>
+  <title>Rasoova - Reports & Analytics</title>
   <link rel="icon" type="image/png" href="assets/rasoova_logo_desktop.png">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <!-- SweetAlert2 Library -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -17,7 +19,7 @@
 
   <style>
     /* ==========================================================================
-       Rasoova Kitchen - Reports Stylesheet (Full Width Single-File)
+       Rasoova Kitchen - Reports & Analytics Stylesheet
        ========================================================================== */
 
     :root {
@@ -71,11 +73,16 @@
       /* Change Badges */
       --badge-green-bg: #dcfce7;
       --badge-green-text: #15803d;
+      --badge-amber-bg: #fef3c7;
+      --badge-amber-text: #b45309;
+      --badge-rose-bg: #fce7eb;
+      --badge-rose-text: #8b193d;
 
       /* Typography & Shadows */
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --shadow-sm: 0 2px 4px rgba(139, 25, 61, 0.03);
       --shadow-card: 0 4px 16px rgba(139, 25, 61, 0.05);
+      --shadow-hover: 0 8px 24px rgba(139, 25, 61, 0.09);
       --shadow-dropdown: 0 10px 30px rgba(139, 25, 61, 0.12);
 
       --radius-sm: 8px;
@@ -85,13 +92,16 @@
       --radius-pill: 9999px;
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html, body {
+    html,
+    body {
       width: 100%;
       min-height: 100vh;
       font-family: var(--font-sans);
@@ -195,44 +205,12 @@
       pointer-events: none;
     }
 
-    /* Header Actions: Notification & Profile */
+    /* Header Actions */
     .header-actions {
       display: flex;
       align-items: center;
       gap: 16px;
       flex-shrink: 0;
-    }
-
-    .notification-btn {
-      position: relative;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .notification-btn:hover {
-      background-color: var(--primary-tint);
-      transform: translateY(-1px);
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: 9px;
-      right: 9px;
-      width: 8px;
-      height: 8px;
-      background-color: #ef4444;
-      border: 2px solid #ffffff;
-      border-radius: 50%;
     }
 
     .user-profile-btn {
@@ -255,12 +233,12 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: var(--primary);
-      color: #ffffff;
+      background: #ffffff;
+      border: 2px solid var(--primary-light);
+      color: var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(139, 25, 61, 0.2);
     }
 
     .user-info {
@@ -375,7 +353,7 @@
       justify-content: center;
       gap: 8px;
       padding: 8px 12px;
-      border-radius: var(--radius-pill);
+      border-radius: var(--radius-sm);
       border: none;
       background: transparent;
       color: var(--text-secondary);
@@ -411,7 +389,7 @@
     }
 
     /* ==========================================================================
-       Page Title Bar & Date Range Picker
+       Page Title Bar, Live Sync Pill & Action Controls
        ========================================================================== */
     .page-title-section {
       width: 100%;
@@ -420,6 +398,7 @@
       justify-content: space-between;
       margin-top: 4px;
       gap: 16px;
+      flex-wrap: wrap;
     }
 
     .page-title-content {
@@ -428,10 +407,9 @@
       gap: 14px;
     }
 
-    /* Outlined Bar Chart Icon */
     .title-chart-icon {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       color: var(--primary);
       flex-shrink: 0;
     }
@@ -442,6 +420,48 @@
       color: var(--primary-text);
       letter-spacing: -0.3px;
       line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #065f46;
+      letter-spacing: 0.2px;
+    }
+
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #10b981;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
     }
 
     .title-text p {
@@ -450,11 +470,51 @@
       margin-top: 2px;
     }
 
+    .page-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 15px;
+      background-color: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .btn-refresh:hover {
+      border-color: var(--primary);
+      background-color: var(--primary-tint);
+      color: var(--primary);
+    }
+
+    .btn-refresh.spinning svg {
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
     .date-filter-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 18px;
+      padding: 9px 16px;
       background-color: #ffffff;
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
@@ -478,10 +538,26 @@
       color: var(--text-secondary);
     }
 
-    .date-filter-btn .chevron {
-      width: 14px;
-      height: 14px;
-      margin-left: 2px;
+    .btn-export-master {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-export-master:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
     }
 
     /* ==========================================================================
@@ -498,17 +574,19 @@
     .stat-card-item {
       border-radius: var(--radius-lg);
       padding: 18px 20px;
-      border: 1px solid transparent;
+      border: 1.5px solid transparent;
       display: flex;
       align-items: center;
       gap: 16px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: default;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
     .stat-card-item:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-card);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
     }
 
     .stat-card-item.card-rose {
@@ -516,9 +594,17 @@
       border-color: var(--stat-rose-border);
     }
 
+    .stat-card-item.card-rose:hover {
+      border-color: #f4aab8;
+    }
+
     .stat-card-item.card-amber {
       background-color: var(--stat-amber-bg);
       border-color: var(--stat-amber-border);
+    }
+
+    .stat-card-item.card-amber:hover {
+      border-color: #f9cb86;
     }
 
     .stat-card-item.card-blue {
@@ -526,9 +612,17 @@
       border-color: var(--stat-blue-border);
     }
 
+    .stat-card-item.card-blue:hover {
+      border-color: #93c5fd;
+    }
+
     .stat-card-item.card-green {
       background-color: var(--stat-green-bg);
       border-color: var(--stat-green-border);
+    }
+
+    .stat-card-item.card-green:hover {
+      border-color: #86efac;
     }
 
     .stat-card-item.card-purple {
@@ -536,37 +630,61 @@
       border-color: var(--stat-purple-border);
     }
 
+    .stat-card-item.card-purple:hover {
+      border-color: #c4b5fd;
+    }
+
     .stat-icon-circle {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       flex-shrink: 0;
     }
 
-    .card-rose .stat-icon-circle svg { color: var(--stat-rose-icon); stroke: var(--stat-rose-icon); }
-    .card-amber .stat-icon-circle svg, .card-amber .stat-icon-circle .currency-symbol { color: var(--stat-amber-icon); }
-    .card-blue .stat-icon-circle svg { color: var(--stat-blue-icon); stroke: var(--stat-blue-icon); }
-    .card-green .stat-icon-circle svg { color: var(--stat-green-icon); stroke: var(--stat-green-icon); }
-    .card-purple .stat-icon-circle svg { color: var(--stat-purple-icon); stroke: var(--stat-purple-icon); }
+    .card-rose .stat-icon-circle svg {
+      color: var(--stat-rose-icon);
+      stroke: var(--stat-rose-icon);
+    }
+
+    .card-amber .stat-icon-circle svg,
+    .card-amber .stat-icon-circle .currency-symbol {
+      color: var(--stat-amber-icon);
+    }
+
+    .card-blue .stat-icon-circle svg {
+      color: var(--stat-blue-icon);
+      stroke: var(--stat-blue-icon);
+    }
+
+    .card-green .stat-icon-circle svg {
+      color: var(--stat-green-icon);
+      stroke: var(--stat-green-icon);
+    }
+
+    .card-purple .stat-icon-circle svg {
+      color: var(--stat-purple-icon);
+      stroke: var(--stat-purple-icon);
+    }
 
     .currency-symbol {
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 21px;
+      font-weight: 800;
       line-height: 1;
     }
 
     .stat-texts {
       display: flex;
       flex-direction: column;
+      flex: 1;
     }
 
     .stat-number {
-      font-size: 23px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--text-main);
       line-height: 1.15;
@@ -574,18 +692,185 @@
     }
 
     .stat-title {
-      font-size: 12.5px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-text);
+      margin-top: 2px;
+    }
+
+    .stat-micro-desc {
+      font-size: 11.5px;
       font-weight: 500;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       margin-top: 3px;
     }
 
     /* ==========================================================================
-       Main 2-Column Content Grid: Report Sections (Left) & Summary Table (Right)
+       Visual Analytics Row: Order Fulfillment Bar & Category Velocity
+       ========================================================================== */
+    .analytics-visual-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 18px;
+      width: 100%;
+    }
+
+    .analytics-visual-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .visual-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .visual-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .visual-card-title svg {
+      width: 17px;
+      height: 17px;
+      color: var(--primary);
+    }
+
+    .visual-card-tag {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      background: var(--primary-tint);
+      color: var(--primary);
+      border-radius: var(--radius-pill);
+    }
+
+    /* Segmented Progress Track */
+    .segmented-progress-track {
+      width: 100%;
+      height: 12px;
+      background-color: #f1e4e7;
+      border-radius: var(--radius-pill);
+      display: flex;
+      overflow: hidden;
+      gap: 2px;
+    }
+
+    .progress-segment {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-segment.seg-delivered {
+      background-color: #10b981;
+    }
+
+    .progress-segment.seg-dispatched {
+      background-color: #8b5cf6;
+    }
+
+    .progress-segment.seg-preparing {
+      background-color: #f59e0b;
+    }
+
+    .progress-segment.seg-pending {
+      background-color: #f43f5e;
+    }
+
+    .progress-legend-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.dot-delivered {
+      background-color: #10b981;
+    }
+
+    .legend-dot.dot-dispatched {
+      background-color: #8b5cf6;
+    }
+
+    .legend-dot.dot-preparing {
+      background-color: #f59e0b;
+    }
+
+    .legend-dot.dot-pending {
+      background-color: #f43f5e;
+    }
+
+    .category-chips-wrap {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      background: var(--bg-body);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .category-chip:hover {
+      background: var(--primary-tint);
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .category-chip-count {
+      padding: 1px 6px;
+      background: #ffffff;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ==========================================================================
+       Main 2-Column Content Grid: Report Sections (Left) & Quick Summary Panel (Right)
        ========================================================================== */
     .reports-main-grid {
       display: grid;
-      grid-template-columns: 1fr 1.35fr;
+      grid-template-columns: 390px minmax(0, 1fr);
       gap: 22px;
       width: 100%;
       margin-top: 4px;
@@ -598,32 +883,53 @@
       border-radius: var(--radius-xl);
       padding: 24px;
       box-shadow: var(--shadow-card);
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .panel-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      margin-bottom: 18px;
       padding-bottom: 4px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .panel-header svg {
-      width: 20px;
-      height: 20px;
+    .panel-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header-title svg {
+      width: 22px;
+      height: 22px;
       color: var(--primary);
       stroke: var(--primary);
     }
 
-    .panel-header h2 {
+    .panel-header-title h2 {
       font-size: 17px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-text);
       letter-spacing: -0.2px;
     }
 
+    .panel-header-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-tint);
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #f9ccd6;
+    }
+
     /* ==========================================================================
-       Left Panel: Report Sections List
+       Left Panel: Report Sections List (Interactive Selector)
        ========================================================================== */
     .report-sections-list {
       display: flex;
@@ -638,22 +944,45 @@
       padding: 14px 16px;
       border-radius: var(--radius-md);
       background: #ffffff;
-      border: 1px solid transparent;
+      border: 1.5px solid var(--border-light);
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
 
     .report-section-item:hover {
       background-color: var(--primary-tint);
-      border-color: var(--border-card);
-      transform: translateX(4px);
+      border-color: #e5b9c4;
+      transform: translateX(3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Active State when Selected */
+    .report-section-item.active {
+      background-color: var(--primary-tint);
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px rgba(139, 25, 61, 0.12);
+    }
+
+    .report-section-item.active .section-chevron {
+      color: var(--primary);
+      transform: translateX(4px) scale(1.15);
+    }
+
+    .report-section-item.active .section-metric-pill {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(139, 25, 61, 0.25);
     }
 
     .section-left-group {
       display: flex;
       align-items: center;
       gap: 14px;
+      min-width: 0;
+      flex: 1;
     }
 
     .section-icon-badge {
@@ -681,6 +1010,11 @@
       color: #7c3aed;
     }
 
+    .section-icon-badge.icon-green {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
     .section-icon-badge svg {
       width: 20px;
       height: 20px;
@@ -689,13 +1023,14 @@
 
     .section-icon-badge .rupee-icon {
       font-size: 19px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .section-text-info {
       display: flex;
       flex-direction: column;
       text-align: left;
+      min-width: 0;
     }
 
     .section-title {
@@ -703,12 +1038,37 @@
       font-weight: 700;
       color: var(--primary-text);
       line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .section-desc {
       font-size: 12px;
       color: var(--text-secondary);
       margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .section-right-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .section-metric-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-body);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      white-space: nowrap;
+      transition: all 0.2s ease;
     }
 
     .section-chevron {
@@ -718,116 +1078,191 @@
       transition: transform 0.2s ease, color 0.2s ease;
     }
 
-    .report-section-item:hover .section-chevron {
-      color: var(--primary);
-      transform: translateX(3px);
-    }
-
     /* ==========================================================================
-       Right Panel: Quick Report Summary Table
+       Right Panel: Dynamic Quick Report Summary Container
        ========================================================================== */
-    .summary-table-container {
-      width: 100%;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--border-light);
+    .summary-panel-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .summary-table {
+    .btn-summary-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-card);
+      background: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-summary-action:hover {
+      background: var(--primary-tint);
+      color: var(--primary);
+      border-color: var(--primary-light);
+    }
+
+    .btn-summary-action.primary-action {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .btn-summary-action.primary-action:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Mini KPI Strip */
+    .summary-quick-kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .summary-mini-card {
+      background: #fdf6f7;
+      border: 1px solid #f2dde1;
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .summary-mini-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #7a6068;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .summary-mini-card-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary-text);
+      line-height: 1.2;
+    }
+
+    /* Scrollable Dynamic Result Table */
+    .summary-result-table-wrap {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 420px;
+      border: 1px solid var(--border-light);
+      background: #ffffff;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .summary-result-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 13px;
       text-align: left;
-      font-size: 14px;
     }
 
-    .summary-table thead {
+    .summary-result-table thead {
       background-color: #fff0f3;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
-    .summary-table th {
-      padding: 15px 20px;
-      font-size: 13.5px;
+    .summary-result-table th {
+      padding: 12px 14px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--primary-text);
-      letter-spacing: -0.1px;
-      border: none;
+      border-bottom: 1.5px solid #ebd5da;
+      white-space: nowrap;
     }
 
-    .summary-table th.col-total {
-      text-align: center;
-    }
-
-    .summary-table th.col-change {
-      text-align: right;
-    }
-
-    .summary-table tbody tr {
+    .summary-result-table td {
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border-light);
-      transition: background-color 0.15s ease;
+      color: var(--text-main);
+      vertical-align: middle;
+      white-space: nowrap;
     }
 
-    .summary-table tbody tr:last-child {
-      border-bottom: none;
-    }
-
-    .summary-table tbody tr:hover {
+    .summary-result-table tbody tr:hover {
       background-color: #fdf5f7;
     }
 
-    .summary-table td {
-      padding: 16px 20px;
-      color: var(--text-main);
-      vertical-align: middle;
-    }
-
-    .table-type-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--primary-text);
-    }
-
-    .table-total-val {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
-      text-align: center;
-    }
-
-    .table-change-cell {
-      text-align: right;
-    }
-
-    .change-pill {
+    .table-status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      padding: 4px 10px;
+      gap: 4px;
+      padding: 3px 9px;
       border-radius: var(--radius-pill);
-      background-color: var(--badge-green-bg);
-      color: var(--badge-green-text);
-      font-size: 12.5px;
+      font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
     }
 
+    .pill-preparing {
+      background: #fff0f3;
+      color: #b81744;
+    }
+
+    .pill-dispatched {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+
+    .pill-delivered {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .pill-pending {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .pill-active {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .pill-paused {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
     /* ==========================================================================
-       SweetAlert2 Custom Styling - Rasoova Theme
+       SweetAlert2 Custom Modal & Preview Table Styling
        ========================================================================== */
     .rasoova-swal-popup {
       border-radius: 20px !important;
       font-family: var(--font-sans) !important;
-      padding: 26px 22px !important;
+      padding: 24px 22px !important;
       box-shadow: 0 20px 50px rgba(71, 24, 34, 0.28) !important;
       background: #ffffff !important;
       border: 1px solid #ebd5da !important;
-      max-width: 520px !important;
+      max-width: 680px !important;
+      width: 95% !important;
     }
 
     .rasoova-swal-title {
       color: #3b0f19 !important;
       font-size: 20px !important;
-      font-weight: 700 !important;
+      font-weight: 800 !important;
       padding: 0 0 10px 0 !important;
+      text-align: left !important;
     }
 
     .swal-report-modal-body {
@@ -840,12 +1275,12 @@
     }
 
     .swal-stat-summary-box {
-      background: #fbf6f7;
-      border: 1px solid #f0e1e4;
+      background: #fdf5f7;
+      border: 1px solid #f2dde1;
       border-radius: 12px;
       padding: 14px 16px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
 
@@ -856,8 +1291,11 @@
     }
 
     .swal-mini-kpi-label {
-      font-size: 11.5px;
+      font-size: 11px;
       color: #7a6068;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     .swal-mini-kpi-val {
@@ -866,51 +1304,55 @@
       color: #2b1219;
     }
 
-    .swal-date-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border: 1.5px solid #ebd5da;
+    .swal-preview-table-container {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ebd5da;
       border-radius: 10px;
-      cursor: pointer;
       background: #ffffff;
-      margin-bottom: 8px;
-      font-weight: 600;
-      transition: all 0.2s ease;
     }
 
-    .swal-date-option:hover {
-      background: #fff8f9;
-      border-color: #c78b9b;
+    .swal-preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
     }
 
-    .swal-date-option.selected {
+    .swal-preview-table th {
       background: #fdf2f4;
-      border-color: #8b193d;
-      box-shadow: 0 0 0 2px rgba(139, 25, 61, 0.15);
+      padding: 8px 10px;
+      font-weight: 700;
+      color: #471822;
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid #ebd5da;
+      text-align: left;
+    }
+
+    .swal-preview-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #f6eaed;
+      color: #260711;
+    }
+
+    .swal-preview-table tr:last-child td {
+      border-bottom: none;
     }
 
     .rasoova-swal-confirm-btn {
       background-color: #8b193d !important;
       border-radius: 10px !important;
-      font-weight: 600 !important;
-      font-size: 14px !important;
-      padding: 10px 24px !important;
+      font-weight: 700 !important;
+      font-size: 13.5px !important;
+      padding: 10px 22px !important;
       box-shadow: 0 4px 12px rgba(139, 25, 61, 0.25) !important;
-      transition: all 0.2s ease !important;
-    }
-
-    .rasoova-swal-confirm-btn:hover {
-      background-color: #741231 !important;
-      transform: translateY(-1px) !important;
     }
 
     .rasoova-swal-cancel-btn {
       border-radius: 10px !important;
       font-weight: 600 !important;
-      font-size: 14px !important;
-      padding: 10px 20px !important;
+      font-size: 13.5px !important;
+      padding: 10px 18px !important;
       background-color: #f3e8eb !important;
       color: #664a52 !important;
     }
@@ -940,20 +1382,36 @@
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ==========================================================================
        Responsive Breakpoints
        ========================================================================== */
     @media (max-width: 1200px) {
-      .reports-main-grid {
+
+      .reports-main-grid,
+      .analytics-visual-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -995,6 +1453,14 @@
       .stat-cards-5-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .summary-quick-kpi-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .swal-stat-summary-box {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 480px) {
@@ -1004,6 +1470,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="dashboard-container">
 
@@ -1013,16 +1480,12 @@
     <header class="header-navbar">
       <!-- Left: Brand Logo -->
       <a href="index.html" class="brand-logo-link">
-        <img 
-          src="assets/rasoova_logo_desktop.png" 
-          alt="Rasoova" 
-          class="brand-logo-img"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        >
+        <img src="assets/rasoova_logo_desktop.png" alt="Rasoova" class="brand-logo-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div class="brand-logo-fallback" style="display: none;">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b193d" stroke-width="2">
-            <path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z"/>
-            <path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3"/>
+            <path d="M6 13.8a4.5 4.5 0 1 1 2.6-7.8 5 5 0 0 1 6.8 0 4.5 4.5 0 1 1 2.6 7.8v2.2H6v-2.2z" />
+            <path d="M6 16v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3" />
           </svg>
           <span class="logo-text">Rasoova</span>
         </div>
@@ -1030,37 +1493,33 @@
 
       <!-- Middle: Search Orders, Customers, Food Codes -->
       <div class="header-search-container">
-        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        <input 
-          type="text" 
-          class="header-search-input" 
-          id="topSearchInput"
-          placeholder="Search orders, customers, food codes..."
-          aria-label="Search"
-        >
+        <input type="text" class="header-search-input" id="topSearchInput"
+          placeholder="Search report categories, metrics, orders, customers..." aria-label="Search">
       </div>
 
-      <!-- Right: Notification Bell & Super Admin Profile -->
+      <!-- Right: Super Admin Profile -->
       <div class="header-actions">
-   
-
         <!-- Super Admin Profile Dropdown -->
         <div style="position: relative;">
           <button class="user-profile-btn" id="userProfileBtn">
             <div class="user-avatar">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
               </svg>
             </div>
             <div class="user-info">
               <span class="user-name">Admin</span>
               <span class="user-role">Super Admin</span>
             </div>
-            <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"/>
+            <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
             </svg>
           </button>
 
@@ -1068,15 +1527,23 @@
             <div class="popover-header">Super Admin Account</div>
             <ul class="popover-list">
               <li class="popover-item" onclick="showToast('Opened Account Settings')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
                 <span>Account Settings</span>
               </li>
               <li class="popover-item" onclick="showToast('Activity Logs')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
                 <span>Activity Logs</span>
               </li>
-              <li class="popover-item" id="signOutBtn" style="color: #dc2626; font-weight: 600;" onclick="handleSignOut()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <li class="popover-item" id="signOutBtn" style="color: #dc2626; font-weight: 600;"
+                onclick="handleSignOut()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                   <polyline points="16 17 21 12 16 7"></polyline>
                   <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -1096,381 +1563,510 @@
       <ul class="nav-tabs">
         <li>
           <a href="index.html" class="tab-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
           <a href="food-order.html" class="tab-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="21" r="1"/>
-              <circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             <span>Food Orders</span>
           </a>
         </li>
         <li>
           <a href="subscription.html" class="tab-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
             <span>Subscriptions</span>
           </a>
         </li>
         <li>
           <a href="food-item.html" class="tab-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1"/>
-              <path d="M12 4v2"/>
-              <path d="M6 10a6 6 0 0 1 12 0"/>
-              <path d="M3 18h18"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1" />
+              <path d="M12 4v2" />
+              <path d="M6 10a6 6 0 0 1 12 0" />
+              <path d="M3 18h18" />
             </svg>
             <span>Food Items</span>
           </a>
         </li>
         <li>
           <a href="customer.html" class="tab-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
             <span>Customers</span>
           </a>
         </li>
         <li>
           <a href="report.html" class="tab-btn active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="20" x2="18" y2="10"/>
-              <line x1="12" y1="20" x2="12" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="14"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
             </svg>
             <span>Reports</span>
           </a>
         </li>
-   
       </ul>
     </nav>
 
     <!-- ====================================================================
-         Page Title & Date Range Filter Section
+         Page Title Bar, Live Sync & Master Controls
          ==================================================================== -->
     <section class="page-title-section">
       <div class="page-title-content">
         <!-- Prominent Red Outlined Bar Chart Icon -->
-        <svg class="title-chart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="20" x2="18" y2="4"/>
-          <line x1="12" y1="20" x2="12" y2="10"/>
-          <line x1="6" y1="20" x2="6" y2="14"/>
-          <path d="M2 20h20"/>
+        <svg class="title-chart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="4" />
+          <line x1="12" y1="20" x2="12" y2="10" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+          <path d="M2 20h20" />
         </svg>
         <div class="title-text">
-          <h1>Reports</h1>
-          <p>Get insights about your business performance.</p>
+          <h1>
+            Reports & Analytics
+            <span class="live-status-pill">
+              <span class="live-pulse-dot"></span>
+              Live Connected
+            </span>
+          </h1>
+          <p id="pageSubtitleText">Real-time business insights aggregated from Orders, Customers, Subscriptions & Food
+            APIs.</p>
         </div>
       </div>
 
-      <!-- Date Range Selector Pill -->
-      <button class="date-filter-btn" id="openDateRangeFilter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span id="dateRangeText">Nov 1, 2026 – Nov 30, 2026</span>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
+      <!-- Action Buttons -->
+      <div class="page-controls-group">
+        <!-- Refresh Button -->
+        <button class="btn-refresh" id="refreshReportsBtn" title="Fetch latest data from all APIs">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>Refresh</span>
+        </button>
+
+        <!-- Date Range Filter Pill -->
+        <button class="date-filter-btn" id="openDateRangeFilter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <span id="dateRangeText">All Time (Live DB)</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+
+        <!-- Master Export Button -->
+        <button class="btn-export-master" id="exportMasterReportBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span>Export Master CSV</span>
+        </button>
+      </div>
     </section>
 
     <!-- ====================================================================
-         5 Stat Metric Cards Grid
+         5 Stat Metric Cards Grid (Live Dynamic Values)
          ==================================================================== -->
     <section class="stat-cards-5-grid">
       <!-- Card 1: Total Orders (Pink/Rose) -->
-      <div class="stat-card-item card-rose" onclick="openReportDetail('orders')">
+      <div class="stat-card-item card-rose" onclick="selectReportSection('orders')"
+        title="Click to view Orders in Quick Summary">
         <div class="stat-icon-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number" id="kpiTotalOrders">1,248</span>
+          <span class="stat-number" id="kpiTotalOrders">...</span>
           <span class="stat-title">Total Orders</span>
+          <span class="stat-micro-desc" id="kpiOrdersSub">Loading orders...</span>
         </div>
       </div>
 
       <!-- Card 2: Total Revenue (Amber) -->
-      <div class="stat-card-item card-amber" onclick="openReportDetail('sales')">
+      <div class="stat-card-item card-amber" onclick="selectReportSection('sales')"
+        title="Click to view Sales & Revenue in Quick Summary">
         <div class="stat-icon-circle">
           <span class="currency-symbol">₹</span>
         </div>
         <div class="stat-texts">
-          <span class="stat-number" id="kpiTotalRevenue">₹2,15,750</span>
+          <span class="stat-number" id="kpiTotalRevenue">...</span>
           <span class="stat-title">Total Revenue</span>
+          <span class="stat-micro-desc" id="kpiRevenueSub">Loading revenue...</span>
         </div>
       </div>
 
       <!-- Card 3: Total Customers (Blue) -->
-      <div class="stat-card-item card-blue" onclick="openReportDetail('customers')">
+      <div class="stat-card-item card-blue" onclick="selectReportSection('customers')"
+        title="Click to view Customers in Quick Summary">
         <div class="stat-icon-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number" id="kpiTotalCustomers">1,892</span>
+          <span class="stat-number" id="kpiTotalCustomers">...</span>
           <span class="stat-title">Total Customers</span>
+          <span class="stat-micro-desc" id="kpiCustomersSub">Loading customers...</span>
         </div>
       </div>
 
       <!-- Card 4: Active Subscriptions (Green) -->
-      <div class="stat-card-item card-green" onclick="openReportDetail('subscriptions')">
+      <div class="stat-card-item card-green" onclick="selectReportSection('subscriptions')"
+        title="Click to view Subscriptions in Quick Summary">
         <div class="stat-icon-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number" id="kpiActiveSubs">562</span>
+          <span class="stat-number" id="kpiActiveSubs">...</span>
           <span class="stat-title">Active Subscriptions</span>
+          <span class="stat-micro-desc" id="kpiSubsSub">Loading plans...</span>
         </div>
       </div>
 
       <!-- Card 5: Delivered Orders (Purple) -->
-      <div class="stat-card-item card-purple" onclick="openReportDetail('orders')">
+      <div class="stat-card-item card-purple" onclick="selectReportSection('orders')"
+        title="Click to view Orders in Quick Summary">
         <div class="stat-icon-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="9 12 11 14 15 10"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="9 12 11 14 15 10" />
           </svg>
         </div>
         <div class="stat-texts">
-          <span class="stat-number" id="kpiDeliveredOrders">569</span>
+          <span class="stat-number" id="kpiDeliveredOrders">...</span>
           <span class="stat-title">Delivered Orders</span>
+          <span class="stat-micro-desc" id="kpiDeliveredSub">Loading delivery stats...</span>
         </div>
       </div>
     </section>
 
     <!-- ====================================================================
-         Main 2-Column Section: Report Sections (Left) & Summary Table (Right)
+         Visual Analytics & Distribution Row (Order Pipeline & Menu Velocity)
+         ==================================================================== -->
+    <section class="analytics-visual-grid">
+      <!-- Fulfillment Pipeline Progress -->
+      <div class="analytics-visual-card">
+        <div class="visual-card-title-row">
+          <span class="visual-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            Order Fulfillment Pipeline
+          </span>
+          <span class="visual-card-tag" id="fulfillmentTotalBadge">0 Orders</span>
+        </div>
+
+        <!-- Segmented progress bar -->
+        <div class="segmented-progress-track" id="fulfillmentProgressTrack">
+          <div class="progress-segment seg-delivered" id="segDelivered" style="width: 0%;" title="Delivered"></div>
+          <div class="progress-segment seg-dispatched" id="segDispatched" style="width: 0%;" title="Dispatched"></div>
+          <div class="progress-segment seg-preparing" id="segPreparing" style="width: 100%;" title="Preparing"></div>
+          <div class="progress-segment seg-pending" id="segPending" style="width: 0%;" title="Pending"></div>
+        </div>
+
+        <div class="progress-legend-row">
+          <div class="legend-item">
+            <span class="legend-dot dot-delivered"></span>
+            Delivered: <strong id="legDelivered">0</strong>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-dispatched"></span>
+            Dispatched: <strong id="legDispatched">0</strong>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-preparing"></span>
+            Preparing: <strong id="legPreparing">0</strong>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-pending"></span>
+            Pending: <strong id="legPending">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu Categories & Available Velocity -->
+      <div class="analytics-visual-card">
+        <div class="visual-card-title-row">
+          <span class="visual-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1" />
+              <path d="M12 4v2" />
+              <path d="M6 10a6 6 0 0 1 12 0" />
+              <path d="M3 18h18" />
+            </svg>
+            Active Menu Categories
+          </span>
+          <span class="visual-card-tag" id="menuStatsBadge">3 Dishes Available</span>
+        </div>
+
+        <div class="category-chips-wrap" id="categoryChipsContainer">
+          <span class="category-chip">Loading categories...</span>
+        </div>
+
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+          <span>Subscriptions: <strong id="subBreakdownText" style="color: var(--primary-text);">1 Weekly
+              Plan</strong></span>
+          <span>Avg Menu Price: <strong id="avgPriceText" style="color: var(--primary-text);">₹222.00</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Main 2-Column Section: Report Sections (Left) & Quick Summary Results (Right)
          ==================================================================== -->
     <section class="reports-main-grid">
 
-      <!-- Left Column: Report Sections -->
+      <!-- Left Column: Report Sections (Interactive Selection) -->
       <div class="report-card-panel">
         <div class="panel-header">
-          <!-- Document / Report Icon -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
-          <h2>Report Sections</h2>
+          <div class="panel-header-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+            <h2>Report Sections</h2>
+          </div>
+          <span class="panel-header-badge" id="sectionsCountBadge">Click to view result</span>
         </div>
 
         <div class="report-sections-list">
           <!-- Item 1: Orders Report -->
-          <div class="report-section-item" onclick="openReportDetail('orders')">
+          <div class="report-section-item active" data-section="orders" onclick="selectReportSection('orders')"
+            data-search="orders order fulfillment food">
             <div class="section-left-group">
               <div class="section-icon-badge icon-rose">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="9" cy="21" r="1"/>
-                  <circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
               </div>
               <div class="section-text-info">
                 <span class="section-title">Orders Report</span>
-                <span class="section-desc">View order reports and trends</span>
+                <span class="section-desc">View order fulfillment, delivery tracking & trends</span>
               </div>
             </div>
-            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
+            <div class="section-right-group">
+              <span class="section-metric-pill" id="badgeOrdersCount">0 Orders</span>
+              <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
           </div>
 
           <!-- Item 2: Sales Report -->
-          <div class="report-section-item" onclick="openReportDetail('sales')">
+          <div class="report-section-item" data-section="sales" onclick="selectReportSection('sales')"
+            data-search="sales revenue money earnings payments">
             <div class="section-left-group">
               <div class="section-icon-badge icon-amber">
                 <span class="rupee-icon">₹</span>
               </div>
               <div class="section-text-info">
-                <span class="section-title">Sales Report</span>
-                <span class="section-desc">Track your sales performance</span>
+                <span class="section-title">Sales & Revenue Report</span>
+                <span class="section-desc">Track financial turnover, average basket & earnings</span>
               </div>
             </div>
-            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
+            <div class="section-right-group">
+              <span class="section-metric-pill" id="badgeSalesRev">₹0.00</span>
+              <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
           </div>
 
           <!-- Item 3: Subscription Report -->
-          <div class="report-section-item" onclick="openReportDetail('subscriptions')">
+          <div class="report-section-item" data-section="subscriptions" onclick="selectReportSection('subscriptions')"
+            data-search="subscriptions weekly monthly plans meal recurrence">
             <div class="section-left-group">
-              <div class="section-icon-badge icon-rose">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                  <line x1="16" y1="2" x2="16" y2="6"/>
-                  <line x1="8" y1="2" x2="8" y2="6"/>
-                  <line x1="3" y1="10" x2="21" y2="10"/>
+              <div class="section-icon-badge icon-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
               </div>
               <div class="section-text-info">
                 <span class="section-title">Subscription Report</span>
-                <span class="section-desc">Subscription analytics and status</span>
+                <span class="section-desc">Weekly & monthly plans, off-days & recurrence</span>
               </div>
             </div>
-            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
+            <div class="section-right-group">
+              <span class="section-metric-pill" id="badgeSubsCount">0 Active</span>
+              <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
           </div>
 
           <!-- Item 4: Customer Report -->
-          <div class="report-section-item" onclick="openReportDetail('customers')">
+          <div class="report-section-item" data-section="customers" onclick="selectReportSection('customers')"
+            data-search="customers users profiles clients locations">
             <div class="section-left-group">
               <div class="section-icon-badge icon-purple">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
               <div class="section-text-info">
                 <span class="section-title">Customer Report</span>
-                <span class="section-desc">Customer growth and activity</span>
+                <span class="section-desc">Customer profiles, geographic distribution & orders</span>
               </div>
             </div>
-            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
+            <div class="section-right-group">
+              <span class="section-metric-pill" id="badgeCustCount">0 Customers</span>
+              <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
           </div>
 
           <!-- Item 5: Food Item Report -->
-          <div class="report-section-item" onclick="openReportDetail('fooditems')">
+          <div class="report-section-item" data-section="fooditems" onclick="selectReportSection('fooditems')"
+            data-search="food items menu dishes recipes velocity">
             <div class="section-left-group">
               <div class="section-icon-badge icon-rose">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1"/>
-                  <path d="M12 4v2"/>
-                  <path d="M6 10a6 6 0 0 1 12 0"/>
-                  <path d="M3 18h18"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M18 10h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h1" />
+                  <path d="M12 4v2" />
+                  <path d="M6 10a6 6 0 0 1 12 0" />
+                  <path d="M3 18h18" />
                 </svg>
               </div>
               <div class="section-text-info">
                 <span class="section-title">Food Item Report</span>
-                <span class="section-desc">Top food items and performance</span>
+                <span class="section-desc">Menu performance, active categories & pricing</span>
               </div>
             </div>
-            <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
+            <div class="section-right-group">
+              <span class="section-metric-pill" id="badgeFoodCount">0 Dishes</span>
+              <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Quick Report Summary Table -->
-      <div class="report-card-panel">
+      <!-- Right Column: Quick Report Summary (Dynamically Displays Result of Selected Section) -->
+      <div class="report-card-panel" id="summaryPanelCard">
         <div class="panel-header">
-          <!-- Table / Spreadsheet Icon -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/>
-            <line x1="3" y1="15" x2="21" y2="15"/>
-            <line x1="9" y1="3" x2="9" y2="21"/>
-            <line x1="15" y1="3" x2="15" y2="21"/>
-          </svg>
-          <h2>Quick Report Summary</h2>
+          <div class="panel-header-title">
+            <svg id="summaryPanelIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="3" y1="15" x2="21" y2="15" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+              <line x1="15" y1="3" x2="15" y2="21" />
+            </svg>
+            <h2 id="summaryPanelTitle">Orders Report Summary</h2>
+          </div>
+
+          <div class="summary-panel-header-actions">
+            <span class="panel-header-badge" id="summaryPanelBadge">Live Data</span>
+            <button class="btn-summary-action" id="btnToggleOverview" title="View high-level overview of all 5 modules">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+              <span>Overview</span>
+            </button>
+            <button class="btn-summary-action primary-action" id="btnExportCurrentSection">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Export CSV</span>
+            </button>
+            <button class="btn-summary-action" id="btnOpenCurrentPage" title="Open full management page">
+              <span>Manage ↗</span>
+            </button>
+          </div>
         </div>
 
-        <div class="summary-table-container">
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th style="width: 44%;">Report Type</th>
-                <th class="col-total" style="width: 32%;">Total</th>
-                <th class="col-change" style="width: 24%;">Change</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Row 1: Orders -->
-              <tr onclick="openReportDetail('orders')" style="cursor: pointer;">
-                <td>
-                  <span class="table-type-name">Orders</span>
-                </td>
-                <td class="table-total-val" id="sumOrders">1,248</td>
-                <td class="table-change-cell">
-                  <span class="change-pill">↑ +12%</span>
-                </td>
-              </tr>
+        <!-- Mini KPI Strip for the Selected Section -->
+        <div class="summary-quick-kpi-strip" id="summaryKpiStrip">
+          <!-- Dynamically populated -->
+        </div>
 
-              <!-- Row 2: Revenue -->
-              <tr onclick="openReportDetail('sales')" style="cursor: pointer;">
-                <td>
-                  <span class="table-type-name">Revenue</span>
-                </td>
-                <td class="table-total-val" id="sumRevenue">₹2,15,750</td>
-                <td class="table-change-cell">
-                  <span class="change-pill">↑ +18%</span>
-                </td>
-              </tr>
-
-              <!-- Row 3: Customers -->
-              <tr onclick="openReportDetail('customers')" style="cursor: pointer;">
-                <td>
-                  <span class="table-type-name">Customers</span>
-                </td>
-                <td class="table-total-val" id="sumCustomers">1,892</td>
-                <td class="table-change-cell">
-                  <span class="change-pill">↑ +14%</span>
-                </td>
-              </tr>
-
-              <!-- Row 4: Subscriptions -->
-              <tr onclick="openReportDetail('subscriptions')" style="cursor: pointer;">
-                <td>
-                  <span class="table-type-name">Subscriptions</span>
-                </td>
-                <td class="table-total-val" id="sumSubscriptions">562</td>
-                <td class="table-change-cell">
-                  <span class="change-pill">↑ +20%</span>
-                </td>
-              </tr>
-
-              <!-- Row 5: Delivered Orders -->
-              <tr onclick="openReportDetail('orders')" style="cursor: pointer;">
-                <td>
-                  <span class="table-type-name">Delivered Orders</span>
-                </td>
-                <td class="table-total-val" id="sumDelivered">569</td>
-                <td class="table-change-cell">
-                  <span class="change-pill">↑ +16%</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Dynamic Results Table Container -->
+        <div class="summary-result-table-wrap" id="summaryTableContainer">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
@@ -1482,113 +2078,844 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- ====================================================================
-       Embedded JavaScript Logic
+       Embedded JavaScript Logic - Multi-API Orchestration, Dynamic Summary
        ==================================================================== -->
   <script>
     /**
-     * Rasoova Kitchen - Reports JavaScript
-     * Full-width interactivity, Dropdown toggles, SweetAlert Detail Views,
-     * Date filtering, and Sign Out authentication handling.
+     * Rasoova Kitchen - Reports & Analytics Engine
+     * Fetches live aggregated data from:
+     * - GET /api/food-orders
+     * - GET /api/customers
+     * - GET /api/subscriptions
+     * - GET /api/food-items
      */
     document.addEventListener('DOMContentLoaded', () => {
 
-      // --- Notification & Profile Dropdowns ---
-      const notifBtn = document.getElementById('notificationBtn');
-      const notifPopover = document.getElementById('notifPopover');
-      const userBtn = document.getElementById('userProfileBtn');
-      const userPopover = document.getElementById('userPopover');
-
-      if (notifBtn && notifPopover) {
-        notifBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          notifPopover.classList.toggle('active');
-          if (userPopover) userPopover.classList.remove('active');
-        });
+      // --- Helper to get admin token from sessionStorage ---
+      function getAdminToken() {
+        return sessionStorage.getItem('token') || sessionStorage.getItem('adminToken') || '';
       }
 
-      if (userBtn && userPopover) {
-        userBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          userPopover.classList.toggle('active');
-          if (notifPopover) notifPopover.classList.remove('active');
-        });
+      // --- Global Data Stores ---
+      let rawReportsData = {
+        orders: [],
+        ordersStats: {},
+        customers: [],
+        customersStats: {},
+        subscriptions: [],
+        subscriptionsStats: {},
+        foodItems: [],
+        foodStats: {},
+        categoryCounts: []
+      };
+
+      // Current active selected section in left panel
+      let currentSelectedSection = 'orders';
+
+      // Currency Formatter
+      function formatCurrency(num) {
+        const val = parseFloat(num) || 0;
+        return '₹' + val.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      document.addEventListener('click', () => {
-        if (notifPopover) notifPopover.classList.remove('active');
-        if (userPopover) userPopover.classList.remove('active');
-      });
+      // Number Formatter
+      function formatNum(num) {
+        return (Number(num) || 0).toLocaleString('en-IN');
+      }
 
-      // --- Sign Out Functionality ---
-      function handleSignOut() {
-        // Remove token from sessionStorage (and any other admin keys)
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('adminToken');
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('userToken');
-        sessionStorage.clear();
+      // --- Main API Fetcher ---
+      async function loadAllReportsData() {
+        const refreshBtn = document.getElementById('refreshReportsBtn');
+        if (refreshBtn) refreshBtn.classList.add('spinning');
 
-        // Clean localStorage if stored
-        localStorage.removeItem('token');
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('authToken');
+        const token = getAdminToken();
+        const headers = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        if (typeof showToast === 'function') {
-          showToast('Signed out successfully! Redirecting...');
+        try {
+          const [ordersRes, custRes, subsRes, foodRes] = await Promise.allSettled([
+            fetch('http://localhost:5000/api/food-orders', { headers }).then(r => r.ok ? r.json() : null),
+            fetch('http://localhost:5000/api/customers', { headers }).then(r => r.ok ? r.json() : null),
+            fetch('http://localhost:5000/api/subscriptions', { headers }).then(r => r.ok ? r.json() : null),
+            fetch('http://localhost:5000/api/food-items', { headers }).then(r => r.ok ? r.json() : null)
+          ]);
+
+          // Process Food Orders
+          if (ordersRes.status === 'fulfilled' && ordersRes.value && ordersRes.value.success) {
+            rawReportsData.orders = ordersRes.value.orders || [];
+            rawReportsData.ordersStats = ordersRes.value.stats || {};
+          }
+
+          // Process Customers
+          if (custRes.status === 'fulfilled' && custRes.value && custRes.value.success) {
+            rawReportsData.customers = custRes.value.customers || [];
+            rawReportsData.customersStats = custRes.value.stats || {};
+          }
+
+          // Process Subscriptions
+          if (subsRes.status === 'fulfilled' && subsRes.value && subsRes.value.success) {
+            rawReportsData.subscriptions = subsRes.value.subscriptions || [];
+            rawReportsData.subscriptionsStats = subsRes.value.stats || {};
+          }
+
+          // Process Food Items
+          if (foodRes.status === 'fulfilled' && foodRes.value && foodRes.value.success) {
+            rawReportsData.foodItems = foodRes.value.items || [];
+            rawReportsData.foodStats = foodRes.value.stats || {};
+            rawReportsData.categoryCounts = foodRes.value.categoryCounts || [];
+          }
+
+          renderAllReportMetrics();
+          renderQuickSummaryPanel();
+          showToast('Reports data updated live from server.');
+        } catch (err) {
+          console.error('Error fetching report data:', err);
+          showToast('Could not reach backend API. Displaying cached state.');
+        } finally {
+          if (refreshBtn) refreshBtn.classList.remove('spinning');
+        }
+      }
+
+      // --- Render KPI Cards, Visual Pipelines & Left Panel Badges ---
+      function renderAllReportMetrics() {
+        const orders = rawReportsData.orders;
+        const oStats = rawReportsData.ordersStats;
+        const customers = rawReportsData.customers;
+        const cStats = rawReportsData.customersStats;
+        const subs = rawReportsData.subscriptions;
+        const sStats = rawReportsData.subscriptionsStats;
+        const foods = rawReportsData.foodItems;
+        const fStats = rawReportsData.foodStats;
+        const categories = rawReportsData.categoryCounts;
+
+        // 1. Calculate Core Numbers
+        const totalOrders = Number(oStats.totalOrders ?? orders.length);
+        const deliveredOrders = Number(oStats.delivered ?? orders.filter(o => (o.status || '').toLowerCase() === 'delivered').length);
+        const dispatchedOrders = Number(oStats.dispatched ?? orders.filter(o => (o.status || '').toLowerCase() === 'dispatched').length);
+        const preparingOrders = Number(oStats.preparing ?? orders.filter(o => (o.status || '').toLowerCase() === 'preparing').length);
+        const pendingOrders = Number(oStats.pending ?? orders.filter(o => (o.status || '').toLowerCase() === 'pending').length);
+
+        // Calculate Gross Revenue
+        const grossRevenue = orders.reduce((sum, o) => {
+          const clean = String(o.amount || '0').replace(/[₹,\s]/g, '');
+          const val = parseFloat(clean);
+          return sum + (isNaN(val) ? 0 : val);
+        }, 0);
+
+        const aov = totalOrders > 0 ? (grossRevenue / totalOrders) : 0;
+
+        const totalCustomers = Number(cStats.totalCustomers ?? customers.length);
+        const activeCustomers = Number(cStats.activeCustomers ?? customers.filter(c => (c.status || '').toLowerCase() === 'active').length);
+        const inactiveCustomers = Number(cStats.inactiveCustomers ?? (totalCustomers - activeCustomers));
+
+        const totalSubscribers = Number(sStats.totalSubscribers ?? subs.length);
+        const activeSubs = Number(sStats.active ?? subs.filter(s => (s.status || '').toLowerCase() === 'active').length);
+        const weeklyPlans = Number(sStats.weeklyPlans ?? subs.filter(s => (s.plan_type || '').toLowerCase() === 'weekly').length);
+        const monthlyPlans = Number(sStats.monthlyPlans ?? subs.filter(s => (s.plan_type || '').toLowerCase() === 'monthly').length);
+
+        const totalDishes = Number(fStats.totalItems ?? foods.length);
+        const availableDishes = Number(fStats.availableItems ?? foods.filter(f => f.available).length);
+
+        // Average Food Price
+        const avgFoodPrice = foods.length > 0
+          ? (foods.reduce((sum, f) => sum + (parseFloat(f.price) || 0), 0) / foods.length)
+          : 0;
+
+        // 2. Populate 5 Top Stat Metric Cards
+        const elTotalOrders = document.getElementById('kpiTotalOrders');
+        if (elTotalOrders) elTotalOrders.innerText = formatNum(totalOrders);
+        const elOrdersSub = document.getElementById('kpiOrdersSub');
+        if (elOrdersSub) elOrdersSub.innerText = `${pendingOrders} Pending • ${preparingOrders} Preparing`;
+
+        const elTotalRevenue = document.getElementById('kpiTotalRevenue');
+        if (elTotalRevenue) elTotalRevenue.innerText = formatCurrency(grossRevenue);
+        const elRevSub = document.getElementById('kpiRevenueSub');
+        if (elRevSub) elRevSub.innerText = `Avg Order: ${formatCurrency(aov)}`;
+
+        const elTotalCust = document.getElementById('kpiTotalCustomers');
+        if (elTotalCust) elTotalCust.innerText = formatNum(totalCustomers);
+        const elCustSub = document.getElementById('kpiCustomersSub');
+        if (elCustSub) elCustSub.innerText = `${activeCustomers} Active • ${inactiveCustomers} Inactive`;
+
+        const elActiveSubs = document.getElementById('kpiActiveSubs');
+        if (elActiveSubs) elActiveSubs.innerText = formatNum(activeSubs);
+        const elSubsSub = document.getElementById('kpiSubsSub');
+        if (elSubsSub) elSubsSub.innerText = `${weeklyPlans} Weekly • ${monthlyPlans} Monthly`;
+
+        const elDelivered = document.getElementById('kpiDeliveredOrders');
+        if (elDelivered) elDelivered.innerText = formatNum(deliveredOrders);
+        const elDelSub = document.getElementById('kpiDeliveredSub');
+        const deliveryRate = totalOrders > 0 ? Math.round((deliveredOrders / totalOrders) * 100) : 0;
+        if (elDelSub) elDelSub.innerText = `${deliveryRate}% Delivery Fulfillment`;
+
+        // 3. Update Visual Pipeline Bar
+        const elFulfillTotal = document.getElementById('fulfillmentTotalBadge');
+        if (elFulfillTotal) elFulfillTotal.innerText = `${totalOrders} Orders Pipeline`;
+
+        const segDelivered = document.getElementById('segDelivered');
+        const segDispatched = document.getElementById('segDispatched');
+        const segPreparing = document.getElementById('segPreparing');
+        const segPending = document.getElementById('segPending');
+
+        if (totalOrders > 0) {
+          if (segDelivered) segDelivered.style.width = `${(deliveredOrders / totalOrders) * 100}%`;
+          if (segDispatched) segDispatched.style.width = `${(dispatchedOrders / totalOrders) * 100}%`;
+          if (segPreparing) segPreparing.style.width = `${(preparingOrders / totalOrders) * 100}%`;
+          if (segPending) segPending.style.width = `${(pendingOrders / totalOrders) * 100}%`;
+        } else {
+          if (segDelivered) segDelivered.style.width = '0%';
+          if (segDispatched) segDispatched.style.width = '0%';
+          if (segPreparing) segPreparing.style.width = '100%';
+          if (segPending) segPending.style.width = '0%';
         }
 
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 500);
-      }
-      window.handleSignOut = handleSignOut;
-      window.signOut = handleSignOut;
+        const legDel = document.getElementById('legDelivered'); if (legDel) legDel.innerText = deliveredOrders;
+        const legDisp = document.getElementById('legDispatched'); if (legDisp) legDisp.innerText = dispatchedOrders;
+        const legPrep = document.getElementById('legPreparing'); if (legPrep) legPrep.innerText = preparingOrders;
+        const legPend = document.getElementById('legPending'); if (legPend) legPend.innerText = pendingOrders;
 
-      const signOutBtn = document.getElementById('signOutBtn');
-      if (signOutBtn) {
-        signOutBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          handleSignOut();
+        // 4. Update Menu Categories Chips
+        const chipsContainer = document.getElementById('categoryChipsContainer');
+        if (chipsContainer) {
+          if (categories && categories.length > 0) {
+            chipsContainer.innerHTML = categories.map(cat => `
+              <span class="category-chip" onclick="selectReportSection('fooditems')">
+                <span>${cat.category}</span>
+                <span class="category-chip-count">${cat.count}</span>
+              </span>
+            `).join('');
+          } else if (foods.length > 0) {
+            const counts = {};
+            foods.forEach(f => {
+              const c = f.category || 'Special';
+              counts[c] = (counts[c] || 0) + 1;
+            });
+            chipsContainer.innerHTML = Object.keys(counts).map(k => `
+              <span class="category-chip" onclick="selectReportSection('fooditems')">
+                <span>${k}</span>
+                <span class="category-chip-count">${counts[k]}</span>
+              </span>
+            `).join('');
+          } else {
+            chipsContainer.innerHTML = '<span class="category-chip">No categories yet</span>';
+          }
+        }
+
+        const elMenuBadge = document.getElementById('menuStatsBadge');
+        if (elMenuBadge) elMenuBadge.innerText = `${availableDishes} / ${totalDishes} Dishes Available`;
+
+        const elSubBreakdown = document.getElementById('subBreakdownText');
+        if (elSubBreakdown) elSubBreakdown.innerText = `${weeklyPlans} Weekly, ${monthlyPlans} Monthly`;
+
+        const elAvgPrice = document.getElementById('avgPriceText');
+        if (elAvgPrice) elAvgPrice.innerText = formatCurrency(avgFoodPrice);
+
+        // 5. Update Left Panel Badges
+        const bOrders = document.getElementById('badgeOrdersCount'); if (bOrders) bOrders.innerText = `${totalOrders} Orders`;
+        const bSales = document.getElementById('badgeSalesRev'); if (bSales) bSales.innerText = formatCurrency(grossRevenue);
+        const bSubs = document.getElementById('badgeSubsCount'); if (bSubs) bSubs.innerText = `${activeSubs} Active`;
+        const bCust = document.getElementById('badgeCustCount'); if (bCust) bCust.innerText = `${totalCustomers} Profiles`;
+        const bFood = document.getElementById('badgeFoodCount'); if (bFood) bFood.innerText = `${totalDishes} Dishes`;
+      }
+
+      // --- Select Report Section Handler (User clicks any section on left) ---
+      window.selectReportSection = function (sectionKey) {
+        currentSelectedSection = sectionKey;
+
+        // Update active class on left list
+        document.querySelectorAll('.report-section-item').forEach(item => {
+          if (item.getAttribute('data-section') === sectionKey) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+
+        renderQuickSummaryPanel();
+
+        // Highlight animation on right panel
+        const panel = document.getElementById('summaryPanelCard');
+        if (panel) {
+          panel.style.boxShadow = '0 8px 30px rgba(139, 25, 61, 0.18)';
+          setTimeout(() => {
+            panel.style.boxShadow = 'var(--shadow-card)';
+          }, 350);
+        }
+      };
+
+      // --- Render Quick Report Summary Panel dynamically based on selected section ---
+      function renderQuickSummaryPanel() {
+        const titleEl = document.getElementById('summaryPanelTitle');
+        const badgeEl = document.getElementById('summaryPanelBadge');
+        const kpiStripEl = document.getElementById('summaryKpiStrip');
+        const tableContainerEl = document.getElementById('summaryTableContainer');
+        const btnManage = document.getElementById('btnOpenCurrentPage');
+
+        const orders = rawReportsData.orders;
+        const customers = rawReportsData.customers;
+        const subs = rawReportsData.subscriptions;
+        const foods = rawReportsData.foodItems;
+        const categories = rawReportsData.categoryCounts;
+
+        const grossRevenue = orders.reduce((sum, o) => {
+          const clean = String(o.amount || '0').replace(/[₹,\s]/g, '');
+          const val = parseFloat(clean);
+          return sum + (isNaN(val) ? 0 : val);
+        }, 0);
+
+        if (currentSelectedSection === 'orders') {
+          if (titleEl) titleEl.innerText = 'Orders Report Summary & Log';
+          if (badgeEl) badgeEl.innerText = `${orders.length} Live Orders`;
+          if (btnManage) {
+            btnManage.style.display = 'inline-flex';
+            btnManage.onclick = () => window.location.href = 'food-order.html';
+          }
+
+          const preparing = orders.filter(o => o.status === 'Preparing').length;
+          const dispatched = orders.filter(o => o.status === 'Dispatched').length;
+          const delivered = orders.filter(o => o.status === 'Delivered').length;
+          const pending = orders.filter(o => o.status === 'Pending').length;
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Total Orders</span>
+                <span class="summary-mini-card-val">${orders.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Preparing</span>
+                <span class="summary-mini-card-val" style="color:#f59e0b;">${preparing}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Dispatched</span>
+                <span class="summary-mini-card-val" style="color:#8b5cf6;">${dispatched}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Delivered</span>
+                <span class="summary-mini-card-val" style="color:#10b981;">${delivered}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Order Code</th>
+                    <th>Customer Name</th>
+                    <th>Food Item & Qty</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date / Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orders.map(o => `
+                    <tr>
+                      <td><strong>${o.order_code || 'ORD-' + o.id}</strong></td>
+                      <td>${o.customer_name || 'Customer'}</td>
+                      <td>${o.food_item || o.food_code || 'Food Item'}</td>
+                      <td style="font-weight:700; color:#8b193d;">₹${parseFloat(o.amount || 0).toFixed(2)}</td>
+                      <td>
+                        <span class="table-status-pill pill-${(o.status || 'preparing').toLowerCase()}">
+                          ${o.status || 'Preparing'}
+                        </span>
+                      </td>
+                      <td style="color:#745b63; font-size:12px;">
+                        ${o.order_datetime ? new Date(o.order_datetime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Today'}
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 24px; color:#888;">No orders found in database.</td></tr>'}
+                </tbody>
+              </table>
+            `;
+          }
+        } else if (currentSelectedSection === 'sales') {
+          if (titleEl) titleEl.innerText = 'Sales & Revenue Financial Breakdown';
+          if (badgeEl) badgeEl.innerText = formatCurrency(grossRevenue);
+          if (btnManage) {
+            btnManage.style.display = 'inline-flex';
+            btnManage.onclick = () => window.location.href = 'food-order.html';
+          }
+
+          const aov = orders.length > 0 ? (grossRevenue / orders.length) : 0;
+          const maxOrder = orders.length > 0 ? Math.max(...orders.map(o => parseFloat(o.amount) || 0)) : 0;
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Gross Revenue</span>
+                <span class="summary-mini-card-val" style="color:#8b193d;">${formatCurrency(grossRevenue)}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Total Transactions</span>
+                <span class="summary-mini-card-val">${orders.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Avg Order Value</span>
+                <span class="summary-mini-card-val">${formatCurrency(aov)}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Highest Transaction</span>
+                <span class="summary-mini-card-val">${formatCurrency(maxOrder)}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Order Code</th>
+                    <th>Customer Name</th>
+                    <th>Food Item</th>
+                    <th>Gross Amount (₹)</th>
+                    <th>Order Status</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orders.map(o => `
+                    <tr>
+                      <td><strong>${o.order_code || 'ORD-' + o.id}</strong></td>
+                      <td>${o.customer_name || 'Customer'}</td>
+                      <td>${o.food_item || 'Food Item'}</td>
+                      <td style="font-weight:800; color:#8b193d; font-size:13.5px;">₹${parseFloat(o.amount || 0).toFixed(2)}</td>
+                      <td>
+                        <span class="table-status-pill pill-${(o.status || 'preparing').toLowerCase()}">
+                          ${o.status || 'Preparing'}
+                        </span>
+                      </td>
+                      <td style="color:#745b63; font-size:12px;">
+                        ${o.order_datetime ? new Date(o.order_datetime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Today'}
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 24px; color:#888;">No sales records found.</td></tr>'}
+                </tbody>
+              </table>
+            `;
+          }
+        } else if (currentSelectedSection === 'subscriptions') {
+          if (titleEl) titleEl.innerText = 'Subscriptions & Meal Plans Log';
+          const activeSubsCount = subs.filter(s => s.status === 'Active').length;
+          if (badgeEl) badgeEl.innerText = `${activeSubsCount} Active Subscriptions`;
+          if (btnManage) {
+            btnManage.style.display = 'inline-flex';
+            btnManage.onclick = () => window.location.href = 'subscription.html';
+          }
+
+          const weekly = subs.filter(s => (s.plan_type || '').toLowerCase() === 'weekly').length;
+          const monthly = subs.filter(s => (s.plan_type || '').toLowerCase() === 'monthly').length;
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Total Subscribers</span>
+                <span class="summary-mini-card-val">${subs.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Active Plans</span>
+                <span class="summary-mini-card-val" style="color:#15803d;">${activeSubsCount}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Weekly Plans</span>
+                <span class="summary-mini-card-val">${weekly}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Monthly Plans</span>
+                <span class="summary-mini-card-val">${monthly}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Sub Code</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Meal Item</th>
+                    <th>Plan Type</th>
+                    <th>Status</th>
+                    <th>Valid Through</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${subs.map(s => `
+                    <tr>
+                      <td><strong>${s.sub_code || 'SUB-' + s.id}</strong></td>
+                      <td>${s.customer_name}</td>
+                      <td>${s.phone || '-'}</td>
+                      <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${s.food_title || s.food_code || 'Standard Meal'}">${s.food_title || s.food_code || 'Standard Meal'}</td>
+                      <td><span style="font-weight:700; color:#8b193d;">${s.plan_type}</span></td>
+                      <td>
+                        <span class="table-status-pill pill-${(s.status || 'active').toLowerCase()}">
+                          ${s.status || 'Active'}
+                        </span>
+                      </td>
+                      <td style="font-size:12px; color:#745b63;">
+                        ${s.end_date ? new Date(s.end_date).toLocaleDateString() : 'Active'}
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="7" style="text-align:center; padding: 24px; color:#888;">No subscriptions found in database.</td></tr>'}
+                </tbody>
+              </table>
+            `;
+          }
+        } else if (currentSelectedSection === 'customers') {
+          if (titleEl) titleEl.innerText = 'Customer Profiles & Activity Summary';
+          if (badgeEl) badgeEl.innerText = `${customers.length} Profiles`;
+          if (btnManage) {
+            btnManage.style.display = 'inline-flex';
+            btnManage.onclick = () => window.location.href = 'customer.html';
+          }
+
+          const activeCust = customers.filter(c => c.status === 'Active').length;
+          const subUsers = customers.filter(c => (c.subscription || '').toLowerCase() === 'active').length;
+          const totalCustOrders = customers.reduce((sum, c) => sum + (c.total_orders || 0), 0);
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Total Customers</span>
+                <span class="summary-mini-card-val">${customers.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Active Users</span>
+                <span class="summary-mini-card-val" style="color:#0284c7;">${activeCust}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Subscribed</span>
+                <span class="summary-mini-card-val" style="color:#15803d;">${subUsers}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Orders Placed</span>
+                <span class="summary-mini-card-val">${totalCustOrders}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Customer Code</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Location</th>
+                    <th>PIN</th>
+                    <th>Plan</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${customers.map(c => `
+                    <tr>
+                      <td><strong>${c.customer_code || 'CUST-' + c.id}</strong></td>
+                      <td>${c.name}</td>
+                      <td>${c.phone || '-'}</td>
+                      <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.location || ''}">${c.location || 'Bhubaneswar'}</td>
+                      <td>${c.pin || '-'}</td>
+                      <td><span style="font-weight:700; color:#0284c7;">${c.plan || 'None'}</span></td>
+                      <td>
+                        <span class="table-status-pill pill-${(c.status || 'active').toLowerCase()}">
+                          ${c.status || 'Active'}
+                        </span>
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="7" style="text-align:center; padding: 24px; color:#888;">No customer records found.</td></tr>'}
+                </tbody>
+              </table>
+            `;
+          }
+        } else if (currentSelectedSection === 'fooditems') {
+          if (titleEl) titleEl.innerText = 'Menu & Food Dishes Catalog';
+          const availCount = foods.filter(f => f.available).length;
+          if (badgeEl) badgeEl.innerText = `${availCount} / ${foods.length} Dishes`;
+          if (btnManage) {
+            btnManage.style.display = 'inline-flex';
+            btnManage.onclick = () => window.location.href = 'food-item.html';
+          }
+
+          const avgP = foods.length > 0 ? (foods.reduce((sum, f) => sum + parseFloat(f.price || 0), 0) / foods.length) : 0;
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Total Dishes</span>
+                <span class="summary-mini-card-val">${foods.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Available</span>
+                <span class="summary-mini-card-val" style="color:#15803d;">${availCount}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Categories</span>
+                <span class="summary-mini-card-val">${categories.length || 3}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Avg Dish Price</span>
+                <span class="summary-mini-card-val">${formatCurrency(avgP)}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Food Code</th>
+                    <th>Dish Name</th>
+                    <th>Category</th>
+                    <th>Price (INR)</th>
+                    <th>Availability</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${foods.map(f => `
+                    <tr>
+                      <td><strong>${f.food_code || 'FD-' + f.id}</strong></td>
+                      <td>${f.name}</td>
+                      <td><span style="font-weight:600; color:#8b193d;">${f.category}</span></td>
+                      <td style="font-weight:800;">₹${parseFloat(f.price || 0).toFixed(2)}</td>
+                      <td>
+                        <span class="table-status-pill" style="background:${f.available ? '#dcfce7' : '#fee2e2'}; color:${f.available ? '#15803d' : '#dc2626'};">
+                          ${f.available ? 'Available' : 'Unavailable'}
+                        </span>
+                      </td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="5" style="text-align:center; padding: 24px; color:#888;">No food items in catalog.</td></tr>'}
+                </tbody>
+              </table>
+            `;
+          }
+        } else if (currentSelectedSection === 'overview') {
+          if (titleEl) titleEl.innerText = '5-Module Business Overview';
+          if (badgeEl) badgeEl.innerText = 'Complete Overview';
+          if (btnManage) btnManage.style.display = 'none';
+
+          if (kpiStripEl) {
+            kpiStripEl.innerHTML = `
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Orders</span>
+                <span class="summary-mini-card-val">${orders.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Revenue</span>
+                <span class="summary-mini-card-val" style="color:#8b193d;">${formatCurrency(grossRevenue)}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Customers</span>
+                <span class="summary-mini-card-val" style="color:#0284c7;">${customers.length}</span>
+              </div>
+              <div class="summary-mini-card">
+                <span class="summary-mini-card-label">Subscriptions</span>
+                <span class="summary-mini-card-val" style="color:#15803d;">${subs.filter(s => s.status === 'Active').length}</span>
+              </div>
+            `;
+          }
+
+          if (tableContainerEl) {
+            tableContainerEl.innerHTML = `
+              <table class="summary-result-table">
+                <thead>
+                  <tr>
+                    <th>Module</th>
+                    <th>Live Total</th>
+                    <th>Current Status</th>
+                    <th style="text-align:right;">Quick View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr onclick="selectReportSection('orders')" style="cursor:pointer;">
+                    <td><strong>🛒 Food Orders</strong></td>
+                    <td><strong>${orders.length} Orders</strong></td>
+                    <td><span class="table-status-pill pill-preparing">Preparing</span></td>
+                    <td style="text-align:right;"><button class="btn-summary-action" onclick="event.stopPropagation(); selectReportSection('orders');">View Log ➜</button></td>
+                  </tr>
+                  <tr onclick="selectReportSection('sales')" style="cursor:pointer;">
+                    <td><strong>₹ Sales & Revenue</strong></td>
+                    <td style="color:#8b193d; font-weight:800;">${formatCurrency(grossRevenue)}</td>
+                    <td><span class="table-status-pill pill-active">Live Total</span></td>
+                    <td style="text-align:right;"><button class="btn-summary-action" onclick="event.stopPropagation(); selectReportSection('sales');">View Sales ➜</button></td>
+                  </tr>
+                  <tr onclick="selectReportSection('subscriptions')" style="cursor:pointer;">
+                    <td><strong>📅 Subscriptions</strong></td>
+                    <td><strong>${subs.length} Subscribers</strong></td>
+                    <td><span class="table-status-pill pill-active">${subs.filter(s => s.status === 'Active').length} Active</span></td>
+                    <td style="text-align:right;"><button class="btn-summary-action" onclick="event.stopPropagation(); selectReportSection('subscriptions');">View Plans ➜</button></td>
+                  </tr>
+                  <tr onclick="selectReportSection('customers')" style="cursor:pointer;">
+                    <td><strong>👥 Registered Customers</strong></td>
+                    <td><strong>${customers.length} Users</strong></td>
+                    <td><span class="table-status-pill pill-active">${customers.filter(c => c.status === 'Active').length} Active</span></td>
+                    <td style="text-align:right;"><button class="btn-summary-action" onclick="event.stopPropagation(); selectReportSection('customers');">View Users ➜</button></td>
+                  </tr>
+                  <tr onclick="selectReportSection('fooditems')" style="cursor:pointer;">
+                    <td><strong>🍲 Food Menu Dishes</strong></td>
+                    <td><strong>${foods.length} Dishes</strong></td>
+                    <td><span class="table-status-pill pill-active">${foods.filter(f => f.available).length} Active</span></td>
+                    <td style="text-align:right;"><button class="btn-summary-action" onclick="event.stopPropagation(); selectReportSection('fooditems');">View Dishes ➜</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            `;
+          }
+        }
+      }
+
+      // Initial Fetch
+      loadAllReportsData();
+
+      // Refresh Button listener
+      const refreshBtn = document.getElementById('refreshReportsBtn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+          loadAllReportsData();
         });
       }
 
-      // --- Date Range Filter Popup ---
+      // Export Current Section Button
+      const btnExportCurr = document.getElementById('btnExportCurrentSection');
+      if (btnExportCurr) {
+        btnExportCurr.addEventListener('click', () => {
+          exportSpecificCsv(currentSelectedSection === 'overview' ? 'orders' : currentSelectedSection);
+        });
+      }
+
+      // Toggle Overview Button
+      const btnToggleOv = document.getElementById('btnToggleOverview');
+      if (btnToggleOv) {
+        btnToggleOv.addEventListener('click', () => {
+          selectReportSection('overview');
+        });
+      }
+
+      // --- CSV Generation & Download Helper ---
+      function downloadCsvFile(csvContent, filename) {
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast(`Downloaded ${filename} successfully!`);
+      }
+
+      // --- Specific CSV Exporters ---
+      window.exportSpecificCsv = function (type) {
+        const timestamp = new Date().toISOString().slice(0, 10);
+        if (type === 'orders') {
+          let csv = 'Order ID,Customer Name,Phone,Food Code,Food Item,Amount,Status,Address,Order Date\n';
+          rawReportsData.orders.forEach(o => {
+            csv += `"${o.order_code || 'ORD-' + o.id}","${o.customer_name}","${o.phone}","${o.food_code}","${o.food_item}","${o.amount}","${o.status}","${(o.address_line1 || '') + ' ' + (o.address_line2 || '')}","${o.order_datetime || o.created_at}"\n`;
+          });
+          downloadCsvFile(csv, `rasoova_orders_report_${timestamp}.csv`);
+        } else if (type === 'sales') {
+          let csv = 'Order ID,Customer Name,Food Item,Amount (INR),Status,Date\n';
+          rawReportsData.orders.forEach(o => {
+            csv += `"${o.order_code || 'ORD-' + o.id}","${o.customer_name}","${o.food_item}","${o.amount}","${o.status}","${o.order_datetime || o.created_at}"\n`;
+          });
+          downloadCsvFile(csv, `rasoova_sales_revenue_report_${timestamp}.csv`);
+        } else if (type === 'customers') {
+          let csv = 'Customer Code,Name,Phone,Location,PIN,Plan,Subscription,Total Orders,Status\n';
+          rawReportsData.customers.forEach(c => {
+            csv += `"${c.customer_code || 'CUST-' + c.id}","${c.name}","${c.phone}","${c.location}","${c.pin}","${c.plan}","${c.subscription}","${c.total_orders || 0}","${c.status}"\n`;
+          });
+          downloadCsvFile(csv, `rasoova_customers_report_${timestamp}.csv`);
+        } else if (type === 'subscriptions') {
+          let csv = 'Subscription Code,Customer Name,Phone,Location,Food Title,Plan Type,Status,Start Date,End Date\n';
+          rawReportsData.subscriptions.forEach(s => {
+            csv += `"${s.sub_code || 'SUB-' + s.id}","${s.customer_name}","${s.phone}","${s.location}","${s.food_title || ''}","${s.plan_type}","${s.status}","${s.start_date || ''}","${s.end_date || ''}"\n`;
+          });
+          downloadCsvFile(csv, `rasoova_subscriptions_report_${timestamp}.csv`);
+        } else if (type === 'fooditems') {
+          let csv = 'Food Code,Name,Category,Price (INR),Available Status\n';
+          rawReportsData.foodItems.forEach(f => {
+            csv += `"${f.food_code}","${f.name}","${f.category}","${f.price}","${f.available ? 'Available' : 'Unavailable'}"\n`;
+          });
+          downloadCsvFile(csv, `rasoova_food_items_catalog_${timestamp}.csv`);
+        }
+      };
+
+      // Master CSV Exporter (All 4 modules combined summary)
+      const exportMasterBtn = document.getElementById('exportMasterReportBtn');
+      if (exportMasterBtn) {
+        exportMasterBtn.addEventListener('click', () => {
+          const timestamp = new Date().toISOString().slice(0, 10);
+          let csv = '=== RASOOVA KITCHEN MASTER BUSINESS REPORT ===\n';
+          csv += `Generated Date,${new Date().toLocaleString()}\n\n`;
+
+          csv += '=== EXECUTIVE KPI SUMMARY ===\n';
+          csv += `Total Orders,${rawReportsData.orders.length}\n`;
+          csv += `Gross Revenue,INR ${rawReportsData.orders.reduce((sum, o) => sum + (parseFloat(o.amount) || 0), 0).toFixed(2)}\n`;
+          csv += `Total Customers,${rawReportsData.customers.length}\n`;
+          csv += `Active Subscriptions,${rawReportsData.subscriptions.filter(s => s.status === 'Active').length}\n`;
+          csv += `Available Food Items,${rawReportsData.foodItems.filter(f => f.available).length}\n\n`;
+
+          csv += '=== RECENT FOOD ORDERS ===\n';
+          csv += 'Order ID,Customer,Food Item,Amount,Status\n';
+          rawReportsData.orders.forEach(o => {
+            csv += `"${o.order_code || 'ORD-' + o.id}","${o.customer_name}","${o.food_item}","${o.amount}","${o.status}"\n`;
+          });
+          csv += '\n=== REGISTERED CUSTOMERS ===\n';
+          csv += 'Customer Code,Name,Phone,Location,Status\n';
+          rawReportsData.customers.forEach(c => {
+            csv += `"${c.customer_code || 'CUST-' + c.id}","${c.name}","${c.phone}","${c.location}","${c.status}"\n`;
+          });
+
+          downloadCsvFile(csv, `rasoova_master_business_report_${timestamp}.csv`);
+        });
+      }
+
+      // --- Filter Date Range Modal ---
       const openDateBtn = document.getElementById('openDateRangeFilter');
       const dateRangeText = document.getElementById('dateRangeText');
 
       if (openDateBtn) {
         openDateBtn.addEventListener('click', () => {
-          const dateOptions = [
-            { text: 'Nov 1, 2026 – Nov 30, 2026', label: 'This Month (November 2026)', orders: '1,248', rev: '₹2,15,750', cust: '1,892', subs: '562', del: '569' },
-            { text: 'Oct 1, 2026 – Oct 31, 2026', label: 'Last Month (October 2026)', orders: '1,114', rev: '₹1,82,800', cust: '1,650', subs: '470', del: '490' },
-            { text: 'Q4 2026 (Oct – Dec 2026)', label: 'This Quarter (Q4 2026)', orders: '3,540', rev: '₹5,90,400', cust: '2,420', subs: '680', del: '1,820' },
-            { text: 'Jan 1, 2026 – Nov 30, 2026', label: 'Year to Date (2026)', orders: '12,850', rev: '₹22,40,000', cust: '4,100', subs: '850', del: '11,900' }
-          ];
-
-          const optionsHtml = dateOptions.map((opt, idx) => `
-            <label class="swal-date-option ${idx === 0 ? 'selected' : ''}" data-idx="${idx}">
-              <input type="radio" name="swalDateRadio" value="${idx}" ${idx === 0 ? 'checked' : ''} style="accent-color: #8b193d; width: 16px; height: 16px;">
-              <div style="display: flex; flex-direction: column; text-align: left;">
-                <span style="font-size: 13.5px; font-weight: 700; color: #2b1219;">${opt.label}</span>
-                <span style="font-size: 11.5px; color: #7a6068;">${opt.text}</span>
-              </div>
-            </label>
-          `).join('');
-
           if (typeof Swal !== 'undefined') {
             Swal.fire({
-              title: 'Filter Date Range',
+              title: '📅 Select Reporting Period',
               html: `
-                <div style="text-align: left; font-size: 13px; color: #7a6068; margin-bottom: 12px;">
-                  Select period to aggregate orders, revenue, customers and subscriptions:
+                <div style="text-align: left; font-size: 13px; color: #7a6068; margin-bottom: 14px;">
+                  Choose date aggregation range for live reporting metrics:
                 </div>
-                <div style="display: flex; flex-direction: column;">
-                  ${optionsHtml}
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <label class="swal-date-option selected" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border:1.5px solid #8b193d; border-radius:10px; cursor:pointer; background:#fdf2f4;">
+                    <input type="radio" name="swalDateRadio" value="all" checked style="accent-color: #8b193d;">
+                    <div style="text-align:left;">
+                      <span style="font-weight:700; color:#2b1219;">All Time (Live Database)</span>
+                      <div style="font-size:11.5px; color:#7a6068;">All recorded orders, subscriptions & customers</div>
+                    </div>
+                  </label>
+                  <label class="swal-date-option" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border:1.5px solid #ebd5da; border-radius:10px; cursor:pointer; background:#ffffff;">
+                    <input type="radio" name="swalDateRadio" value="month" style="accent-color: #8b193d;">
+                    <div style="text-align:left;">
+                      <span style="font-weight:700; color:#2b1219;">This Month (November 2026)</span>
+                      <div style="font-size:11.5px; color:#7a6068;">Nov 1, 2026 – Nov 30, 2026</div>
+                    </div>
+                  </label>
+                  <label class="swal-date-option" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border:1.5px solid #ebd5da; border-radius:10px; cursor:pointer; background:#ffffff;">
+                    <input type="radio" name="swalDateRadio" value="today" style="accent-color: #8b193d;">
+                    <div style="text-align:left;">
+                      <span style="font-weight:700; color:#2b1219;">Today's Activity</span>
+                      <div style="font-size:11.5px; color:#7a6068;">Live orders placed in the last 24 hours</div>
+                    </div>
+                  </label>
                 </div>
               `,
               showCancelButton: true,
-              confirmButtonText: 'Apply Range',
+              confirmButtonText: 'Apply Filter',
               cancelButtonText: 'Cancel',
               confirmButtonColor: '#8b193d',
               cancelButtonColor: '#6c757d',
@@ -1597,168 +2924,69 @@
                 title: 'rasoova-swal-title',
                 confirmButton: 'rasoova-swal-confirm-btn',
                 cancelButton: 'rasoova-swal-cancel-btn'
-              },
-              didOpen: () => {
-                const popup = Swal.getPopup();
-                const labels = popup.querySelectorAll('.swal-date-option');
-                labels.forEach(lbl => {
-                  lbl.addEventListener('click', () => {
-                    labels.forEach(l => l.classList.remove('selected'));
-                    lbl.classList.add('selected');
-                    const radio = lbl.querySelector('input[type="radio"]');
-                    if (radio) radio.checked = true;
-                  });
-                });
-              },
-              preConfirm: () => {
-                const selected = document.querySelector('input[name="swalDateRadio"]:checked');
-                return selected ? selected.value : '0';
               }
             }).then((result) => {
               if (result.isConfirmed) {
-                const opt = dateOptions[parseInt(result.value, 10)] || dateOptions[0];
-                if (dateRangeText) dateRangeText.innerText = opt.text;
-
-                // Update KPI Cards
-                document.getElementById('kpiTotalOrders').innerText = opt.orders;
-                document.getElementById('kpiTotalRevenue').innerText = opt.rev;
-                document.getElementById('kpiTotalCustomers').innerText = opt.cust;
-                document.getElementById('kpiActiveSubs').innerText = opt.subs;
-                document.getElementById('kpiDeliveredOrders').innerText = opt.del;
-
-                // Update Summary Table
-                document.getElementById('sumOrders').innerText = opt.orders;
-                document.getElementById('sumRevenue').innerText = opt.rev;
-                document.getElementById('sumCustomers').innerText = opt.cust;
-                document.getElementById('sumSubscriptions').innerText = opt.subs;
-                document.getElementById('sumDelivered').innerText = opt.del;
-
-                showToast(`Filtered report data for: ${opt.label}`);
+                const selected = document.querySelector('input[name="swalDateRadio"]:checked')?.value || 'all';
+                if (selected === 'all') {
+                  if (dateRangeText) dateRangeText.innerText = 'All Time (Live DB)';
+                } else if (selected === 'month') {
+                  if (dateRangeText) dateRangeText.innerText = 'Nov 1 – Nov 30, 2026';
+                } else if (selected === 'today') {
+                  if (dateRangeText) dateRangeText.innerText = 'Today (Last 24h)';
+                }
+                loadAllReportsData();
               }
             });
-          } else {
-            showToast('Date range selected: Nov 1, 2026 – Nov 30, 2026');
           }
         });
       }
 
-      // --- Interactive Report Detail Views (SweetAlert) ---
-      window.openReportDetail = function(reportType) {
-        const reportsConfig = {
-          orders: {
-            title: 'Orders Report & Trends',
-            icon: '🛒',
-            desc: 'Detailed breakdown of customer food orders and fulfillment metrics.',
-            stats: [
-              { label: 'Total Orders', val: '1,248' },
-              { label: 'Dispatched', val: '562' },
-              { label: 'Delivered', val: '569' },
-              { label: 'Pending / Prep', val: '117' }
-            ],
-            highlights: 'Order volume surged by +12% compared to last month. Peak ordering hours: 12:30 PM and 8:30 PM.'
-          },
-          sales: {
-            title: 'Sales & Revenue Performance',
-            icon: '₹',
-            desc: 'Comprehensive financial report including cash, UPI, and subscription revenue.',
-            stats: [
-              { label: 'Gross Revenue', val: '₹2,15,750' },
-              { label: 'Average Order Value', val: '₹348' },
-              { label: 'Online UPI Orders', val: '74%' },
-              { label: 'Net Profit Margin', val: '31.4%' }
-            ],
-            highlights: 'Revenue increased +18% MoM. Bihari Thali and Chicken Biryani generated 58% of total menu income.'
-          },
-          subscriptions: {
-            title: 'Subscriptions Growth & Off-Days',
-            icon: '📅',
-            desc: 'Analytics for weekly and monthly recurring meal subscriptions.',
-            stats: [
-              { label: 'Total Subscribers', val: '260' },
-              { label: 'Active Plans', val: '562' },
-              { label: 'Weekly Plans', val: '186' },
-              { label: 'Monthly Plans', val: '74' }
-            ],
-            highlights: 'Retention rate stands at 89.2%. Most requested off-days: Sunday (64%) and Saturday (28%).'
-          },
-          customers: {
-            title: 'Customer Growth & Retention',
-            icon: '👥',
-            desc: 'User acquisition, registered customer profiles, and location distribution.',
-            stats: [
-              { label: 'Total Customers', val: '1,892' },
-              { label: 'Active Monthly', val: '982' },
-              { label: 'Subscribed Users', val: '216' },
-              { label: 'Repeat Customers', val: '76%' }
-            ],
-            highlights: 'Bhubaneswar regions with highest demand: Satya Vihar, Khandagiri, and Patia.'
-          },
-          fooditems: {
-            title: 'Top Food Items & Kitchen Velocity',
-            icon: '🍲',
-            desc: 'Menu popularity metrics, preparation times, and dish ranking.',
-            stats: [
-              { label: 'Top Item', val: 'Bihari Thali' },
-              { label: 'Runner Up', val: 'Chicken Biryani' },
-              { label: 'Available Dishes', val: '40 / 48' },
-              { label: 'Avg Prep Time', val: '14 Mins' }
-            ],
-            highlights: 'Bihari Special accounts for 34% of all orders, followed by Chicken Biryani at 28%.'
-          }
-        };
+      // --- Live Search Bar Filter ---
+      const searchInput = document.getElementById('topSearchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
 
-        const config = reportsConfig[reportType] || reportsConfig.orders;
-
-        const statsHtml = config.stats.map(s => `
-          <div class="swal-mini-kpi">
-            <span class="swal-mini-kpi-label">${s.label}</span>
-            <span class="swal-mini-kpi-val">${s.val}</span>
-          </div>
-        `).join('');
-
-        const modalHtml = `
-          <div class="swal-report-modal-body">
-            <div style="font-size: 13px; color: #7a6068; line-height: 1.4;">
-              ${config.desc}
-            </div>
-
-            <div class="swal-stat-summary-box">
-              ${statsHtml}
-            </div>
-
-            <div style="background: #fdf2f4; border: 1px dashed #c78b9b; border-radius: 10px; padding: 12px; font-size: 12px; color: #471822; line-height: 1.45;">
-              💡 <strong>Key Insight:</strong> ${config.highlights}
-            </div>
-          </div>
-        `;
-
-        if (typeof Swal !== 'undefined') {
-          Swal.fire({
-            title: `${config.icon} ${config.title}`,
-            html: modalHtml,
-            showCancelButton: true,
-            confirmButtonText: '📥 Export PDF / CSV',
-            cancelButtonText: 'Close',
-            confirmButtonColor: '#8b193d',
-            cancelButtonColor: '#6c757d',
-            customClass: {
-              popup: 'rasoova-swal-popup',
-              title: 'rasoova-swal-title',
-              confirmButton: 'rasoova-swal-confirm-btn',
-              cancelButton: 'rasoova-swal-cancel-btn'
-            }
-          }).then((result) => {
-            if (result.isConfirmed) {
-              showToast(`Exporting ${config.title} as CSV/PDF...`);
-            }
+          // Filter Left Panel items
+          document.querySelectorAll('.report-section-item').forEach(item => {
+            const text = (item.innerText + ' ' + (item.getAttribute('data-search') || '')).toLowerCase();
+            item.style.display = text.includes(query) ? 'flex' : 'none';
           });
-        } else {
-          showToast(`Opened ${config.title}`);
-        }
+
+          // Filter Right Panel rows
+          document.querySelectorAll('.summary-result-table tbody tr').forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+          });
+        });
+      }
+
+      // --- Profile & Sign Out Handlers ---
+      const userBtn = document.getElementById('userProfileBtn');
+      const userPopover = document.getElementById('userPopover');
+      if (userBtn && userPopover) {
+        userBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          userPopover.classList.toggle('active');
+        });
+        document.addEventListener('click', () => {
+          userPopover.classList.remove('active');
+        });
+      }
+
+      window.handleSignOut = function () {
+        sessionStorage.clear();
+        localStorage.removeItem('token');
+        localStorage.removeItem('adminToken');
+        showToast('Signed out successfully! Redirecting...');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 500);
       };
 
       // --- Toast Notification Helper ---
-      window.showToast = function(msg) {
+      window.showToast = function (msg) {
         let container = document.getElementById('toastContainer');
         if (!container) {
           container = document.createElement('div');
@@ -1785,4 +3013,5 @@
     });
   </script>
 </body>
+
 </html>
